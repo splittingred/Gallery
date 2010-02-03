@@ -1,0 +1,5 @@
+Changelog for Gallery.
+
+Gallery 0.1 ($LastChangedRevision$, $LastChangedDate$)
+====================================
+- Initial commit

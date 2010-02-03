@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="gallery" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" tablePrefix="gallery_">    
+    
+    <object class="galItem" table="items" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
+        
+        <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign" />
+    </object>
+    
+</model>
