@@ -11,7 +11,17 @@ $mtime = $mtime[1] + $mtime[0];
 $tstart = $mtime;
 set_time_limit(0);
 
-require_once dirname(__FILE__).'/build.config.php';
+/* setup paths */
+$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))).'/';
+$sources = array(
+    'root' => $root,
+    'build' => $root.'_build/',
+    'core' => $root.'core/components/gallery/',
+    'model' => $root.'core/components/gallery/model/',
+    'assets' => $root.'assets/components/gallery/',
+);
+
+require_once $sources['build'].'/build.config.php';
 include_once MODX_CORE_PATH . 'model/modx/modx.class.php';
 $modx= new modX();
 $modx->initialize('mgr');
@@ -20,13 +30,6 @@ echo '<pre>'; /* used for nice formatting of log messages */
 $modx->setLogLevel(modX::LOG_LEVEL_INFO);
 $modx->setLogTarget('ECHO');
 
-$root = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))).'/';
-$sources = array(
-    'root' => $root,
-    'core' => $root.'core/components/gallery/',
-    'model' => $root.'core/components/gallery/model/',
-    'assets' => $root.'assets/components/gallery/',
-);
 $manager= $modx->getManager();
 $generator= $manager->getGenerator();
 
@@ -58,7 +61,7 @@ if (!is_dir($sources['model'])) {
     $modx->log(modX::LOG_LEVEL_ERROR,'Model directory not found!');
     die();
 }
-$generator->parseSchema(dirname(__FILE__) . '/schema/gallery.mysql.schema.xml',$sources['model']);
+$generator->parseSchema(dirname(__FILE__) . '/gallery.mysql.schema.xml',$sources['model']);
 
 
 $mtime= microtime();

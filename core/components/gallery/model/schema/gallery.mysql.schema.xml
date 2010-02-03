@@ -1,10 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model package="gallery" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" tablePrefix="gallery_">    
-    
+    <!--
+        An image or video
+    -->
     <object class="galItem" table="items" extends="xPDOSimpleObject">
         <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
+        <field key="filename" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="description" dbtype="text" phptype="text" null="false" default="" />
+        <field key="mediatype" dbtype="varchar" precision="40" phptype="string" null="false" default="image" /><!-- image/video -->
+        
+        <field key="createdon" dbtype="datetime" phptype="datetime" null="true" />
+        <field key="createdby" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="active" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
+        
+        <field key="duration" dbtype="varchar" precision="40" phptype="string" null="false" default="" />
+        <field key="streamer" dbtype="text" phptype="string" null="false" default="" />
+        <field key="watermark_pos" dbtype="varchar" precision="10" phptype="string" null="false" default="tl" /><!-- BR, BL, TR, TL, C, R, L, T, B, * -->
+                
+        <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign" />
+        <composite alias="AlbumItems" class="galAlbumItem" local="id" foreign="item" cardinality="many" owner="local" />
+        <composite alias="Tags" class="galTag" local="id" foreign="item" cardinality="many" owner="local" />
+    </object>
+    
+    <!--
+        A collection of items
+    -->
+    <object class="galAlbum" table="albums" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="index" />
+        <field key="description" dbtype="text" phptype="string" null="false" default="" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" null="true" />
+        <field key="createdby" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="rank" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" />
+        <field key="active" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
+        <field key="prominent" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
         
         <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign" />
+        <composite alias="AlbumItems" class="galAlbumItem" local="id" foreign="album" cardinality="many" owner="local" />
+        <composite alias="Contexts" class="galAlbumContext" local="id" foreign="album" cardinality="many" owner="local" />
+    </object>
+    
+    <!--
+        Many to many relationship between items and albums
+    -->
+    <object class="galAlbumItem" table="album_items" extends="xPDOSimpleObject">
+        <field key="item" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
+        <field key="album" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
+        <field key="rank" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        
+        <aggregate alias="Album" class="galAlbum" local="album" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Item" class="galItem" local="item" foreign="id" cardinality="one" owner="foreign" />
+    </object>
+    
+    <!--
+        One to many relationship on context access for each album
+    -->
+    <object class="galAlbumContext" table="album_contexts" extends="xPDOSimpleObject">
+        <field key="album" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
+        <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="web" index="index" />
+        
+        <aggregate alias="Album" class="galAlbum" local="album" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Context" class="modContext" local="context_key" foreign="key" cardinality="one" owner="foreign" />
+    </object>
+    
+    <!--
+        Tags for items
+    -->
+    <object class="galTag" table="tags" extends="xPDOSimpleObject">
+        <field key="item" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
+        <field key="tag" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="index" />
+        
+        <aggregate alias="Item" class="galItem" local="item" foreign="id" cardinality="one" owner="foreign" />
     </object>
     
 </model>

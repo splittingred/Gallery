@@ -15,6 +15,10 @@ if ($object->xpdo) {
             $manager = $modx->getManager();
 
             $manager->createObjectContainer('galItem');
+            $manager->createObjectContainer('galAlbum');
+            $manager->createObjectContainer('galAlbumItem');
+            $manager->createObjectContainer('galAlbumContext');
+            $manager->createObjectContainer('galTag');
 
             break;
         case xPDOTransport::ACTION_UPGRADE:

@@ -31,7 +31,7 @@ class GalControllerRequest extends modRequest {
         $this->action = isset($_REQUEST[$this->actionVar]) ? $_REQUEST[$this->actionVar] : $this->defaultAction;
 
         $modx =& $this->modx;
-        $discuss =& $this->gallery;
+        $gallery =& $this->gallery;
         $viewHeader = include $this->gallery->config['corePath'].'controllers/mgr/header.php';
 
         $f = $this->gallery->config['corePath'].'controllers/mgr/'.strtolower($this->action).'.php';

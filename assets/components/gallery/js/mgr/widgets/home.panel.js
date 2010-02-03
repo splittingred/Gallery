@@ -13,9 +13,17 @@ GAL.panel.Home = function(config) {
             ,defaults: { border: false ,autoHeight: true }
             ,border: true
             ,activeItem: 0
+            ,hideMode: 'offsets'
             ,items: [{
-                title: 'Home'
-                ,html: '<p>This is home.</p>'
+                title: 'Albums'
+                ,items: [{
+                    html: '<p>Manage your albums.</p><br />'
+                    ,border: false
+                },{
+                    xtype: 'gal-grid-albums'
+                    ,preventRender: true
+                    ,width: '97%'
+                }]
             }]
         }]
     });

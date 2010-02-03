@@ -52,9 +52,11 @@ class Gallery {
      */
     public function initialize($ctx = 'web') {
 
+/*
         $this->modx->getService('hooks','gallery.galHooks',$this->config['modelPath'],array(
             'gallery' => &$this,
         ));
+        */
 
         switch ($ctx) {
             case 'mgr':
