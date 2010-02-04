@@ -37,8 +37,7 @@ GAL.panel.Album = function(config) {
                     xtype: 'textarea'
                     ,fieldLabel: _('description')
                     ,name: 'description'
-                    ,width: 300
-                    ,grow: true
+                    ,width: 400
                 },{
                     xtype: 'checkbox'
                     ,fieldLabel: 'Active'
@@ -119,10 +118,17 @@ GAL.panel.AlbumItems = function(config) {
         ,album: config.album
     });
     this.view.pagingBar = new Ext.PagingToolbar({
-        pageSize: 10
+        pageSize: 24
         ,store: this.view.store
         ,displayInfo: true
         ,autoLoad: true
+    });
+    var dv = this.view;
+    
+    
+    dv.on('render', function() {
+        dv.dragZone = new MODx.DataView.dragZone(dv);
+        dv.dropZone = new MODx.DataView.dropZone(dv);
     });
     
     Ext.applyIf(config,{
@@ -176,6 +182,7 @@ GAL.panel.AlbumItems = function(config) {
         }]
     });
     GAL.panel.AlbumItems.superclass.constructor.call(this,config);
+    
 };
 Ext.extend(GAL.panel.AlbumItems,MODx.Panel,{
     windows: {}

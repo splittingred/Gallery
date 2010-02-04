@@ -2,4 +2,5 @@ Changelog for Gallery.
 
 Gallery 0.1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Lots of dev work, got basics mostly functional
 - Initial commit

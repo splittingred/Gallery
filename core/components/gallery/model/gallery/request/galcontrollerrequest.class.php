@@ -32,6 +32,8 @@ class GalControllerRequest extends modRequest {
 
         $modx =& $this->modx;
         $gallery =& $this->gallery;
+
+        $modx->regClientCSS($gallery->config['cssUrl'].'mgr.css');
         $viewHeader = include $this->gallery->config['corePath'].'controllers/mgr/header.php';
 
         $f = $this->gallery->config['corePath'].'controllers/mgr/'.strtolower($this->action).'.php';

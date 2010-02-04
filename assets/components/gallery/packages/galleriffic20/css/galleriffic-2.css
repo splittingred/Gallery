@@ -1,0 +1,150 @@
+div.galleriffic div.gal_main {
+    /* The display of content is enabled using jQuery so that the slideshow content won't display unless javascript is enabled. */
+    display: none;
+    float: right;
+    width: 550px; 
+}
+div.galleriffic div.gal_main a, div.galleriffic div.navigation a {
+    text-decoration: none;
+    color: #777;
+}
+div.galleriffic div.gal_main a:focus, div.galleriffic div.gal_main a:hover, div.galleriffic div.gal_main a:active {
+    text-decoration: underline;
+}
+div.galleriffic div.controls {
+    margin-top: 5px;
+    height: 23px;
+}
+div.galleriffic div.controls a {
+    padding: 5px;
+}
+div.galleriffic div.ss-controls {
+    float: left;
+}
+div.galleriffic div.nav-controls {
+    float: right;
+}
+div.galleriffic div.slideshow-container {
+    position: relative;
+    clear: both;
+    height: 502px; /* This should be set to be at least the height of the largest image in the slideshow */
+}
+div.galleriffic div.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url('loader.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 550px;
+    height: 502px; /* This should be set to be at least the height of the largest image in the slideshow */
+}
+div.galleriffic div.slideshow {
+
+}
+div.galleriffic div.slideshow span.image-wrapper {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+div.galleriffic div.slideshow a.advance-link {
+    display: block;
+    width: 550px;
+    height: 502px; /* This should be set to be at least the height of the largest image in the slideshow */
+    line-height: 502px; /* This should be set to be at least the height of the largest image in the slideshow */
+    text-align: center;
+}
+div.galleriffic div.slideshow a.advance-link:hover, div.galleriffic div.slideshow a.advance-link:active, div.galleriffic div.slideshow a.advance-link:visited {
+    text-decoration: none;
+}
+div.galleriffic div.slideshow img {
+    vertical-align: middle;
+    border: 1px solid #ccc;
+}
+div.galleriffic div.download {
+    float: right;
+}
+div.galleriffic div.caption-container {
+    position: relative;
+    clear: left;
+    height: 75px;
+}
+div.galleriffic span.image-caption {
+    display: block;
+    position: absolute;
+    width: 550px;
+    top: 0;
+    left: 0;
+}
+div.galleriffic div.caption {
+    padding: 12px;
+}
+div.galleriffic div.image-title {
+    font-weight: bold;
+    font-size: 1.4em;
+}
+div.galleriffic div.image-desc {
+    line-height: 1.3em;
+    padding-top: 12px;
+}
+div.galleriffic div.navigation {
+    /* The navigation style is set using jQuery so that the javascript specific styles won't be applied unless javascript is enabled. */
+}
+div.galleriffic ul.thumbs {
+    clear: both;
+    margin: 0;
+    padding: 0;
+}
+div.galleriffic ul.thumbs li {
+    float: left;
+    padding: 0;
+    margin: 5px 10px 5px 0;
+    list-style: none;
+}
+div.galleriffic a.thumb {
+    padding: 2px;
+    display: block;
+    border: 1px solid #ccc;
+}
+div.galleriffic ul.thumbs li.selected a.thumb {
+    background: #000;
+}
+div.galleriffic a.thumb:focus {
+    outline: none;
+}
+ul.thumbs img {
+    border: none;
+    display: block;
+}
+div.galleriffic div.pagination {
+    clear: both;
+}
+div.galleriffic div.navigation div.top {
+    margin-bottom: 12px;
+    height: 11px;
+}
+div.navigation div.bottom {
+    margin-top: 12px;
+}
+div.galleriffic div.pagination a, div.galleriffic div.pagination span.current, div.galleriffic div.pagination span.ellipsis {
+    display: block;
+    float: left;
+    margin-right: 2px;
+    padding: 4px 7px 2px 7px;
+    border: 1px solid #ccc;
+}
+div.galleriffic div.pagination a:hover {
+    background-color: #eee;
+    text-decoration: none;
+}
+div.galleriffic div.pagination span.current {
+    font-weight: bold;
+    background-color: #000;
+    border-color: #000;
+    color: #fff;
+}
+div.galleriffic div.pagination span.ellipsis {
+    border: none;
+    padding: 5px 0 3px 2px;
+}

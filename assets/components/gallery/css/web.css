@@ -1,0 +1,11 @@
+.gal-item {
+    float: left;
+    padding: 3px;
+    border: 1px solid #d4d4d4;
+    margin: 4px;
+    opacity: 0.8;
+}
+
+.gal-item:hover {
+    opacity: 1.0;
+}

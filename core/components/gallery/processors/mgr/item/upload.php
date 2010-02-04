@@ -9,7 +9,7 @@
 $album = $modx->getOption('album',$_POST,false);
 if (empty($album)) return $modx->error->failure($modx->lexicon('gallery.album_err_ns'));
 
-if (empty($_POST['name'])) $modx->error->addField('name',$modx->lexicon('gallery.item_err_ns_name'));
+//if (empty($_POST['name'])) $modx->error->addField('name',$modx->lexicon('gallery.item_err_ns_name'));
 if (empty($_FILES['file'])) $modx->error->addField('name',$modx->lexicon('gallery.item_err_ns_file'));
 
 if ($modx->error->hasError()) {
@@ -21,6 +21,7 @@ $_POST['active'] = !empty($_POST['active']) ? 1 : 0;
 $item = $modx->newObject('galItem');
 $item->fromArray($_POST);
 
+if (empty($_FILES['file'])) return $modx->error->failure($modx->lexicon('gallery.item_err_file_nf'));
 if (!$item->upload($_FILES['file'])) {
     return $modx->error->failure($modx->lexicon('gallery.item_err_upload'));
 }

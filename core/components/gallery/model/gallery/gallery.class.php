@@ -38,6 +38,10 @@ class Gallery {
             'loadJQuery' => true,
         ),$config);
 
+        if (!file_exists($this->modx->getOption('core_path').'cache/phpthumb/')) {
+            @mkdir($this->modx->getOption('core_path').'cache/phpthumb/',0755);
+        }
+
         $this->modx->addPackage('gallery',$this->config['modelPath'],'gallery_');
         if ($this->modx->getOption('gallery.debug',$this->config,true)) {
             $this->startDebugTimer();

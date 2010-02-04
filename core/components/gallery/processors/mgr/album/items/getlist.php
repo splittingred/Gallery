@@ -7,7 +7,7 @@
  */
 $isLimit = !empty($_REQUEST['limit']);
 $start = $modx->getOption('start',$_REQUEST,0);
-$limit = $modx->getOption('limit',$_REQUEST,20);
+$limit = $modx->getOption('limit',$_REQUEST,24);
 $sort = $modx->getOption('sort',$_REQUEST,'name');
 $dir = $modx->getOption('dir',$_REQUEST,'ASC');
 $album = $modx->getOption('album',$_REQUEST,false);
@@ -23,6 +23,7 @@ $modx->setLogTarget('ECHO');
 $c->leftJoin('galTag','Tags');
 $c->select('
     `galItem`.*,
+    `AlbumItems`.`rank` AS `rank`,
     `Album`.`id` AS `album`,
     (
         SELECT GROUP_CONCAT(`Tags`.`tag`) FROM '.$modx->getTableName('galTag').' AS `Tags`
@@ -31,12 +32,27 @@ $c->select('
 ');
 
 if ($isLimit) $c->limit($limit,$start);
+$c->sortby('rank','ASC');
 $items = $modx->getCollection('galItem',$c);
 
 $list = array();
 foreach ($items as $item) {
     $itemArray = $item->toArray();
-    $itemArray['thumbnail'] = $item->get('thumbnail');
+    $itemArray['filename'] = basename($item->get('filename'));
+    $imagePath = $item->get('image_path');
+    $size = @getimagesize($imagePath);
+    if (is_array($size)) {
+        $itemArray['image_width'] = $size[0];
+        $itemArray['image_height'] = $size[1];
+        $itemArray['image_type'] = $size[2];
+    }
+    $c = array();
+    $c['h'] = 100;
+    $c['w'] = 100;
+    $c['zc'] = 'C';
+    $itemArray['thumbnail'] = $item->get('thumbnail',$c);
+    $itemArray['image'] = $item->get('image');
+
     $itemArray['filesize'] = $item->get('filesize');
 
     $itemArray['menu'] = array();

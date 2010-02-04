@@ -1,0 +1,5 @@
+.floating-insertion-indicator {
+    position: absolute;
+    background-color: #77BC71;
+    width: 4px;
+}

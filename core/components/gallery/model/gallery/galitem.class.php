@@ -7,12 +7,22 @@ class galItem extends xPDOSimpleObject {
     public function get($k, $format = null, $formatTemplate= null) {
         switch ($k) {
             case 'thumbnail':
-                $value = $this->xpdo->getOption('gallery.files_url').$this->get('filename');
+                $value = $this->getPhpThumbUrl();
+                if (empty($format)) $format = array();
+                $format['src']= MODX_URL_SCHEME.MODX_HTTP_HOST.$this->xpdo->getOption('gallery.files_url').$this->get('filename');
+                return $value.'?'.http_build_query($format);
+
+                break;
+            case 'image':
+                $value = $this->getPhpThumbUrl().'?src='.MODX_URL_SCHEME.MODX_HTTP_HOST.$this->xpdo->getOption('gallery.files_url').$this->get('filename');
                 break;
             case 'filesize':
                 $filename = $this->xpdo->getOption('gallery.files_path').$this->get('filename');
                 $value = @filesize($filename);
                 $value = $this->formatFileSize($value);
+                break;
+            case 'image_path':
+                $value = $this->xpdo->getOption('gallery.files_path').$this->get('filename');
                 break;
             default:
                 $value = parent::get($k,$format,$formatTemplate);
@@ -21,9 +31,10 @@ class galItem extends xPDOSimpleObject {
         return $value;
     }
 
-    public function getThumbnailUrl() {
-        return $this->xpdo->getOption('gallery.files_url').$this->get('filename');
+    public function getPhpThumbUrl() {
+        return MODX_URL_SCHEME.MODX_HTTP_HOST.$this->xpdo->getOption('gallery.phpthumb_url').'phpThumb.php';
     }
+
 
     public function upload($file) {
         if (empty($file) || empty($file['tmp_name']) || empty($file['name'])) return false;

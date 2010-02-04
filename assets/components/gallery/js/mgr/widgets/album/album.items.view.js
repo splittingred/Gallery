@@ -4,7 +4,7 @@ GAL.view.AlbumItems = function(config) {
     this._initTemplates();
     Ext.applyIf(config,{
         url: GAL.config.connector_url
-        ,fields: ['id','name','description','mediatype','createdon','createdby','filename','filesize','thumbnail','tags','active','menu']
+        ,fields: ['id','name','description','mediatype','createdon','createdby','filename','filesize','thumbnail','image','image_width','image_height','tags','active','rank','menu']
         ,ident: 'galbit'
         ,id: 'gal-album-items-view'
         ,baseParams: {
@@ -13,6 +13,7 @@ GAL.view.AlbumItems = function(config) {
         }
         ,loadingText: _('loading')
         ,tpl: this.templates.thumb
+        ,enableDD: true
         ,listeners: {
             'dblclick': {fn: this.onDblClick ,scope:this }
         }
@@ -20,9 +21,31 @@ GAL.view.AlbumItems = function(config) {
     });
     GAL.view.AlbumItems.superclass.constructor.call(this,config);
     this.on('selectionchange',this.showDetails,this,{buffer: 100});
+    this.addEvents({
+        'sort': true
+    });
+    this.on('sort',this.onSort,this);
+    
 };
 Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     templates: {}
+    
+    ,onSort: function(o) {
+        MODx.Ajax.request({
+            url: this.config.url
+            ,params: {
+                action: 'mgr/album/items/sort'
+                ,album: this.config.album
+                ,source: o.source.id
+                ,target: o.target.id
+            }
+            ,listeners: {
+                'success':{fn:function(r) {
+                    this.run();
+                },scope:this}
+            }
+        });
+    }
     
     ,deleteItem: function(btn,e) {
         var node = this.cm.activeNode;
@@ -169,7 +192,10 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
             });
         }
         this.ssWin.show();
-        Ext.get('gal-item-ss').update('<img src="'+data.thumbnail+'" width="600" height="400" alt="" onclick="Ext.getCmp(\'gal-album-items-view\').ssWin.hide();" />');
+        this.ssWin.setSize(data.image_width,data.image_height);
+        this.ssWin.center();
+        this.ssWin.setTitle(data.name);
+        Ext.get('gal-item-ss').update('<img src="'+data.image+'" alt="" onclick="Ext.getCmp(\'gal-album-items-view\').ssWin.hide();" />');
     }
 });
 Ext.reg('gal-view-album-items',GAL.view.AlbumItems);
