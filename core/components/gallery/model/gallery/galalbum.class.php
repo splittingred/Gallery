@@ -12,17 +12,17 @@ class galAlbum extends xPDOSimpleObject {
         return $saved;
     }
 
-
-
     public function remove(array $ancestors = array()) {
+        $c = $this->xpdo->newQuery('galItem');
+        $c->innerJoin('galAlbumItem','AlbumItems');
+        $c->where(array(
+            'AlbumItems.album' => $this->get('id'),
+        ));
+        $items = $this->xpdo->getCollection('galItem',$c);
+
         $removed = parent::remove($ancestors);
+
         if ($removed) {
-            $c = $this->xpdo->newQuery('galItem');
-            $c->innerJoin('galAlbumItem','AlbumItems');
-            $c->where(array(
-                'AlbumItems.album' => $this->get('id'),
-            ));
-            $items = $this->xpdo->getCollection('galItem',$c);
             foreach ($items as $item) {
                 $count = $this->xpdo->getCount('galAlbumItem',array(
                     'item' => $item->get('id'),

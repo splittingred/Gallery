@@ -103,10 +103,17 @@ GAL.window.CreateAlbum = function(config) {
             ,width: 300
         },{
             xtype: 'checkbox'
+            ,fieldLabel: _('gallery.active')
+            ,name: 'active'
+            ,id: 'gal-'+this.ident+'-active'
+            ,checked: true
+            ,inputValue: 1
+        },{
+            xtype: 'checkbox'
             ,fieldLabel: _('gallery.prominent')
             ,description: _('gallery.prominent_desc')
             ,name: 'prominent'
-            ,id: 'dis-'+this.ident+'-prominent'
+            ,id: 'gal-'+this.ident+'-prominent'
             ,checked: true
             ,inputValue: 1
         }]

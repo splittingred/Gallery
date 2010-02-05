@@ -28,12 +28,14 @@ if ($object->xpdo) {
             createSetting($modx,'core_path',$modx->getOption('core_path').'components/gallery/');
             createSetting($modx,'assets_path',$modx->getOption('assets_path').'components/gallery/');
             createSetting($modx,'files_path',$modx->getOption('assets_path').'components/gallery/files/');
+            createSetting($modx,'phpthumb_path',$modx->getOption('assets_path').'components/phpthumb/');
 
             @mkdir($modx->getOption('assets_path').'components/gallery/files/',0775);
 
             /* setup urls */
             createSetting($modx,'assets_url',$modx->getOption('assets_url').'components/gallery/');
             createSetting($modx,'files_url',$modx->getOption('assets_url').'components/gallery/files/');
+            createSetting($modx,'phpthumb_url',$modx->getOption('assets_url').'components/phpthumb/');
         break;
     }
 }

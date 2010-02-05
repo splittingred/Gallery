@@ -5,6 +5,7 @@
  */
 if (empty($_POST['name'])) $modx->error->addField('name',$modx->lexicon('gallery.album_err_ns_name'));
 $_POST['prominent'] = !empty($_POST['prominent']) ? 1 : 0;
+$_POST['active'] = !empty($_POST['active']) ? 1 : 0;
 
 if ($modx->error->hasError()) {
     return $modx->error->failure();

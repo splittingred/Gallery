@@ -121,7 +121,7 @@ $builder->putVehicle($vehicle);
 /* load system settings */
 $modx->log(modX::LOG_LEVEL_INFO,'Packaging in System Settings...');
 $settings = include $sources['data'].'transport.settings.php';
-if (empty($settings)) $modx->log(modX::LOG_LEVEL_ERROR,'Could not package in settings.');
+if (!is_array($settings)) $modx->log(modX::LOG_LEVEL_ERROR,'Could not package in settings.');
 $attributes= array(
     xPDOTransport::UNIQUE_KEY => 'key',
     xPDOTransport::PRESERVE_KEYS => true,

@@ -4,11 +4,10 @@
  * @subpackage build
  */
 $modx =& $object->xpdo;
-$sucecss = true;
-if (isset($options) && !empty($options['install_resources'])) {
-    switch ($options[xPDOTransport::PACKAGE_ACTION]) {
-        case xPDOTransport::ACTION_INSTALL:
-        case xPDOTransport::ACTION_UPGRADE:
+$success = true;
+switch ($options[xPDOTransport::PACKAGE_ACTION]) {
+    case xPDOTransport::ACTION_INSTALL:
+    case xPDOTransport::ACTION_UPGRADE:
 
 $modx->log(modX::LOG_LEVEL_INFO,'Installing default Resources...');
 
@@ -19,6 +18,8 @@ if (!empty($setting)) {
     $resource = $modx->getObject('modResource',$setting->get('value'));
 }
 if (empty($resource)) {
+
+    $modx->log(modX::LOG_LEVEL_INFO,'Adding Connector Resource...');
     $resource = $modx->newObject('modResource');
     $resource->fromArray(array(
         'context_key' => 'web',
@@ -26,6 +27,7 @@ if (empty($resource)) {
         'pagetitle' => 'Gallery Connector',
         'alias' => 'gallery-connector',
         'content' => '[[!GalleryConnector]]',
+        'parent' => 0,
         'template' => 0,
         'published' => true,
         'cacheable' => false,
@@ -43,11 +45,10 @@ if (empty($resource)) {
     $setting->set('area','Resource Map');
     $setting->save();
 }
-        case xPDOTransport::ACTION_UNINSTALL:
+    case xPDOTransport::ACTION_UNINSTALL:
 
-            $success= true;
-            break;
-    }
+        $success= true;
+        break;
 }
 
 return $success;

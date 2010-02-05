@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 0.1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Fixed various bugs found in test install
 - Setup build script for initial alpha release
 - Added phpThumb to assets directory
 - Added active indicators, name shortening to album update mgr ui

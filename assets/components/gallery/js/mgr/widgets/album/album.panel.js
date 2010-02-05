@@ -188,6 +188,7 @@ Ext.extend(GAL.panel.AlbumItems,MODx.Panel,{
     ,uploadItem: function(btn,e) {
         var r = {
             album: this.config.album
+            ,active: true
         };
         if (!this.windows.uploadItem) {
             this.windows.uploadItem = MODx.load({
