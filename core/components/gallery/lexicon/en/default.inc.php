@@ -24,6 +24,7 @@ $_lang['gallery.comma_separated_list'] = 'Comma-separated list';
 $_lang['gallery.file'] = 'File';
 $_lang['gallery.file_name'] = 'File Name';
 $_lang['gallery.file_size'] = 'File Size';
+$_lang['gallery.inactive'] = 'Inactive';
 $_lang['gallery.intro_msg'] = 'Here you can manage your albums. Right-click on an album to view more options.';
 $_lang['gallery.item_delete'] = 'Delete Item';
 $_lang['gallery.item_delete_confirm'] = 'Are you sure you want to delete this item entirely? This is irreversible.';

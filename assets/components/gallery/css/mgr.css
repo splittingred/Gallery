@@ -3,3 +3,8 @@
     background-color: #77BC71;
     width: 4px;
 }
+.gal-item-inactive {
+    opacity: 0.5;
+}
+.green { color: green; }
+.red { color: red; }

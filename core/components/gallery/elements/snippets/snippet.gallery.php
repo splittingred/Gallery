@@ -15,6 +15,7 @@ $sort = $modx->getOption('sort',$scriptProperties,'rank');
 $sortAlias = $modx->getOption('sortAlias',$scriptProperties,'galItem');
 if ($sort == 'rank') $sortAlias = 'AlbumItems';
 $dir = $modx->getOption('dir',$scriptProperties,'ASC');
+$showInactive = $modx->getOption('showInactive',$scriptProperties,false);
 
 /* check for REQUEST vars if property set */
 if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,false)) {
@@ -59,8 +60,13 @@ if (!empty($tag)) { /* pull by tag */
     }
 }
 $c->where(array(
-    'mediatype' => $modx->getOption('mediatype',$scriptProperties,'image'),
+    'galItem.mediatype' => $modx->getOption('mediatype',$scriptProperties,'image'),
 ));
+if (!$showInactive) {
+    $c->where(array(
+        'galItem.active' => true,
+    ));
+}
 
 $c->sortby($sortAlias.'.'.$sort,$dir);
 if (!empty($limit)) $c->where($limit,$start);
