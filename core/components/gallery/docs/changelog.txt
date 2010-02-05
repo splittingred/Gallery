@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 0.1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Added copyright info to Gallery
 - Fixed various bugs found in test install
 - Setup build script for initial alpha release
 - Added phpThumb to assets directory

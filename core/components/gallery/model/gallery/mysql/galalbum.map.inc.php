@@ -1,11 +1,31 @@
 <?php
 /**
+ * Gallery
+ *
+ * Copyright 2010 by Shaun McCormick <shaun@collabpad.com>
+ *
+ * Gallery is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * Gallery is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Gallery; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * @package gallery
+ */
+/**
  * @package gallery
  */
 $xpdo_meta_map['galAlbum']= array (
   'package' => 'gallery',
   'table' => 'albums',
-  'fields' => 
+  'fields' =>
   array (
     'name' => '',
     'description' => '',
@@ -16,9 +36,9 @@ $xpdo_meta_map['galAlbum']= array (
     'prominent' => 0,
     'watermark' => '',
   ),
-  'fieldMeta' => 
+  'fieldMeta' =>
   array (
-    'name' => 
+    'name' =>
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
@@ -27,20 +47,20 @@ $xpdo_meta_map['galAlbum']= array (
       'default' => '',
       'index' => 'index',
     ),
-    'description' => 
+    'description' =>
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
     ),
-    'createdon' => 
+    'createdon' =>
     array (
       'dbtype' => 'datetime',
       'phptype' => 'datetime',
       'null' => true,
     ),
-    'createdby' => 
+    'createdby' =>
     array (
       'dbtype' => 'int',
       'precision' => '10',
@@ -50,7 +70,7 @@ $xpdo_meta_map['galAlbum']= array (
       'default' => 0,
       'index' => 'index',
     ),
-    'rank' => 
+    'rank' =>
     array (
       'dbtype' => 'int',
       'precision' => '10',
@@ -59,7 +79,7 @@ $xpdo_meta_map['galAlbum']= array (
       'null' => false,
       'default' => 0,
     ),
-    'active' => 
+    'active' =>
     array (
       'dbtype' => 'tinyint',
       'precision' => '1',
@@ -68,7 +88,7 @@ $xpdo_meta_map['galAlbum']= array (
       'null' => false,
       'default' => 0,
     ),
-    'prominent' => 
+    'prominent' =>
     array (
       'dbtype' => 'tinyint',
       'precision' => '1',
@@ -77,7 +97,7 @@ $xpdo_meta_map['galAlbum']= array (
       'null' => false,
       'default' => 0,
     ),
-    'watermark' => 
+    'watermark' =>
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
@@ -86,9 +106,9 @@ $xpdo_meta_map['galAlbum']= array (
       'default' => '',
     ),
   ),
-  'aggregates' => 
+  'aggregates' =>
   array (
-    'CreatedBy' => 
+    'CreatedBy' =>
     array (
       'class' => 'modUser',
       'local' => 'createdby',
@@ -97,9 +117,9 @@ $xpdo_meta_map['galAlbum']= array (
       'owner' => 'foreign',
     ),
   ),
-  'composites' => 
+  'composites' =>
   array (
-    'AlbumItems' => 
+    'AlbumItems' =>
     array (
       'class' => 'galAlbumItem',
       'local' => 'id',
@@ -107,7 +127,7 @@ $xpdo_meta_map['galAlbum']= array (
       'cardinality' => 'many',
       'owner' => 'local',
     ),
-    'Contexts' => 
+    'Contexts' =>
     array (
       'class' => 'galAlbumContext',
       'local' => 'id',
