@@ -6,6 +6,7 @@
  * @subpackage build
  */
 $settings = array();
+
 /*
 $settings['gallery.']= $modx->newObject('modSystemSetting');
 $settings['gallery.']->fromArray(array(

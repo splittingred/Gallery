@@ -32,6 +32,7 @@ $sources = array(
     'pages' => $root.'core/components/'.PKG_NAME_LOWER.'/elements/pages/',
     'source_assets' => $root.'assets/components/'.PKG_NAME_LOWER,
     'source_core' => $root.'core/components/'.PKG_NAME_LOWER,
+    'source_phpthumb' => $root.'assets/components/phpthumb',
 );
 unset($root);
 
@@ -111,6 +112,10 @@ $vehicle->resolve('file',array(
     'source' => $sources['source_core'],
     'target' => "return MODX_CORE_PATH . 'components/';",
 ));
+$vehicle->resolve('file',array(
+    'source' => $sources['source_phpthumb'],
+    'target' => "return MODX_ASSETS_PATH . 'components/';",
+));
 $builder->putVehicle($vehicle);
 
 /* load system settings */
@@ -152,6 +157,15 @@ $vehicle= $builder->createVehicle($menu,array (
 $modx->log(modX::LOG_LEVEL_INFO,'Adding in PHP resolvers...');
 $vehicle->resolve('php',array(
     'source' => $sources['resolvers'] . 'resolve.tables.php',
+));
+$vehicle->resolve('php',array(
+    'source' => $sources['resolvers'] . 'resolve.resources.php',
+));
+$vehicle->resolve('php',array(
+    'source' => $sources['resolvers'] . 'resolve.phpthumb.php',
+));
+$vehicle->resolve('php',array(
+    'source' => $sources['resolvers'] . 'resolve.paths.php',
 ));
 $builder->putVehicle($vehicle);
 unset($vehicle,$menu);

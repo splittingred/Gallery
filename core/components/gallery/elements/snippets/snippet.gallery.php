@@ -22,7 +22,7 @@ if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,false)) {
     $album = $modx->getOption('album',$_REQUEST,$album);
 }
 if ($modx->getOption('checkForRequestTagVar',$scriptProperties,false)) {
-    $album = $modx->getOption('tag',$_REQUEST,$tag);
+    $tag = $modx->getOption('tag',$_REQUEST,$tag);
 }
 
 /* build query */
@@ -115,13 +115,18 @@ if (!empty($containerTpl)) {
     if (!empty($ct)) $output = $ct;
 }
 
-if ($toPlaceholder = $modx->getOption('toPlaceholder',$scriptProperties,false)) {
+$toPlaceholder = $modx->getOption('toPlaceholder',$scriptProperties,false);
+if (!empty($toPlaceholder)) {
     $modx->toPlaceholders(array(
         $toPlaceholder => $output,
         $toPlaceholder.'.name' => $galleryName,
         $toPlaceholder.'.description' => $galleryDescription,
     ));
 } else {
+    $modx->toPlaceholders(array(
+        'gallery.name' => $galleryName,
+        'gallery.description' => $galleryDescription,
+    ));
     return $output;
 }
 return '';
