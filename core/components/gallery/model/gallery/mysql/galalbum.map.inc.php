@@ -14,6 +14,7 @@ $xpdo_meta_map['galAlbum']= array (
     'rank' => 0,
     'active' => 0,
     'prominent' => 0,
+    'watermark' => '',
   ),
   'fieldMeta' => 
   array (
@@ -75,6 +76,14 @@ $xpdo_meta_map['galAlbum']= array (
       'attributes' => 'unsigned',
       'null' => false,
       'default' => 0,
+    ),
+    'watermark' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
     ),
   ),
   'aggregates' => 

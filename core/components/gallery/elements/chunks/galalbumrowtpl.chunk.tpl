@@ -1,0 +1,1 @@
+<li><a href="[[~[[*id]]]]?album=[[+id]]">[[+name]]</a></li>

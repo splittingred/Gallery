@@ -29,6 +29,7 @@ GAL.view.AlbumItems = function(config) {
 };
 Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     templates: {}
+    ,windows: {}
     
     ,onSort: function(o) {
         MODx.Ajax.request({
@@ -47,13 +48,32 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         });
     }
     
+    ,updateItem: function(btn,e) {
+        var node = this.cm.activeNode;
+        var data = this.lookup[node.id];
+        if (!data) return false;
+        
+        var r = data;
+        if (!this.windows.updateItem) {
+            this.windows.updateItem = MODx.load({
+                xtype: 'gal-window-item-update'
+                ,listeners: {
+                    'success': {fn:function() { this.run(); },scope:this}
+                }
+            });
+        }
+        this.windows.updateItem.fp.getForm().reset();
+        this.windows.updateItem.setValues(r);
+        this.windows.updateItem.show(e.target);
+    }
+    
     ,deleteItem: function(btn,e) {
         var node = this.cm.activeNode;
         var data = this.lookup[node.id];
         if (!data) return false;
         
         MODx.msg.confirm({
-            text: 'Are you sure you want to delete this item entirely? This is irreversible.'
+            text: _('gallery.item_delete_confirm')
             ,url: this.config.url
             ,params: {
                 action: 'mgr/item/remove'
@@ -107,7 +127,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     ,formatData: function(data) {
         var formatSize = function(data){
             if(data.size < 1024) {
-                return data.size + " bytes";
+                return data.size + ' '+_('gallery.bytes');
             } else {
                 return (Math.round(((data.size*10) / 1024))/10) + " KB";
             }
@@ -139,35 +159,14 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
                 ,'<div class="details-info">'
                     ,'<h4>{name}</h4><br />'
                     ,'<p>{description}</p><br />'
-                    ,'<b>'+'File Name'+':</b><span>{filename}</span>'
-                    ,'<b>'+'File Size'+':</b><span>{filesize}</span>'
-                    //,'<span>{downloads} '+_('downloads')+'</span>'                    
-                    ,'<b>'+'Tags'+':</b><span>{tags}</span>'
-                    //,'<b>'+_('license')+':</b><span>{license}</span>'
+                    ,'<b>'+_('gallery.file_name')+':</b><span>{filename}</span>'
+                    ,'<b>'+_('gallery.file_size')+':</b><span>{filesize}</span>'                    
+                    ,'<b>'+_('gallery.tags')+':</b><span>{tags}</span>'
                 ,'</div>'
             ,'</tpl>'
             ,'</div>'
         );
         this.templates.details.compile(); 
-    }
-    ,download: function(id) {
-        var data = this.lookup['gal-item-'+id];
-        if (!data) return false;
-        /* do download */
-        MODx.Ajax.request({
-            url: this.config.url
-            ,params: {
-                action: 'download'
-                ,info: data.location+'::'+data.signature
-                ,provider: MODx.provider || 1
-            }
-            ,scope: this
-            ,listeners: {
-                'success': {fn:function(r) {
-                    this.run();
-                },scope:this}
-            }
-        });
     }
     ,showScreenshot: function(id) {
         var data = this.lookup['gal-item-'+id];
@@ -199,3 +198,53 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     }
 });
 Ext.reg('gal-view-album-items',GAL.view.AlbumItems);
+
+
+
+GAL.window.UpdateItem = function(config) {
+    config = config || {};
+    this.ident = config.ident || 'gupdit'+Ext.id();
+    Ext.applyIf(config,{
+        title: _('gallery.item_update')
+        ,id: this.ident
+        ,height: 150
+        ,width: 475
+        ,url: GAL.config.connector_url
+        ,action: 'mgr/item/update'
+        ,fileUpload: true
+        ,fields: [{
+            xtype: 'hidden'
+            ,name: 'id'
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('name')
+            ,name: 'name'
+            ,id: 'gal-'+this.ident+'-name'
+            ,width: 300
+        },{
+            xtype: 'textarea'
+            ,fieldLabel: _('description')
+            ,name: 'description'
+            ,id: 'gal-'+this.ident+'-description'
+            ,width: 300
+        },{
+            xtype: 'checkbox'
+            ,fieldLabel: _('gallery.active')
+            ,name: 'active'
+            ,description: ''
+            ,id: 'gal-'+this.ident+'-active'
+            ,checked: true
+            ,inputValue: 1
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('gallery.tags')
+            ,description: _('gallery.comma_separated_list')
+            ,name: 'tags'
+            ,id: 'gal-'+this.ident+'-tags'
+            ,width: 300
+        }]
+    });
+    GAL.window.UpdateItem.superclass.constructor.call(this,config);
+};
+Ext.extend(GAL.window.UpdateItem,MODx.Window);
+Ext.reg('gal-window-item-update',GAL.window.UpdateItem);

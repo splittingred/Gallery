@@ -57,16 +57,18 @@ foreach ($items as $item) {
 
     $itemArray['menu'] = array();
     $itemArray['menu'][] = array(
-        'text' => 'Update Item',
-        'handler' => 'this.updateAlbum',
+        'text' => $modx->lexicon('gallery.item_update'),
+        'handler' => 'this.updateItem',
     );
     $itemArray['menu'][] = '-';
+    /*
     $itemArray['menu'][] = array(
         'text' => 'Remove Item From Album',
         'handler' => 'this.removeItemFromAlbum',
     );
+    */
     $itemArray['menu'][] = array(
-        'text' => 'Delete Item',
+        'text' => $modx->lexicon('gallery.item_delete'),
         'handler' => 'this.deleteItem',
     );
 

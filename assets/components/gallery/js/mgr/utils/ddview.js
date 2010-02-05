@@ -10,7 +10,6 @@ MODx.DataView.dropZone = function(view, config){
         ddGroup = null;
     }
     MODx.DataView.dropZone.superclass.constructor.call(this, view.getEl(), { containerScroll: true/*, ddGroup: dd */});
-    //this.setDroppable(ddGroup);
 };
 Ext.extend(MODx.DataView.dropZone, Ext.dd.DropZone,{
     getTargetFromEvent: function(e) {

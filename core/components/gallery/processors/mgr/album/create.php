@@ -3,7 +3,7 @@
  * @package gallery
  * @subpackage processors
  */
-if (empty($_POST['name'])) $modx->error->addField('name','Please enter a valid name.');
+if (empty($_POST['name'])) $modx->error->addField('name',$modx->lexicon('gallery.album_err_ns_name'));
 $_POST['prominent'] = !empty($_POST['prominent']) ? 1 : 0;
 
 if ($modx->error->hasError()) {
@@ -12,6 +12,10 @@ if ($modx->error->hasError()) {
 
 $album = $modx->newObject('galAlbum');
 $album->fromArray($_POST);
+$album->set('createdby',$modx->user->get('id'));
+
+$total = $modx->getCount('galAlbum');
+$album->set('rank',$total);
 
 if ($album->save() == false) {
     return $modx->error->failure($modx->lexicon('gallery.album_err_save'));

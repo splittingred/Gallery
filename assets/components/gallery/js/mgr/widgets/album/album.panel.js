@@ -8,7 +8,7 @@ GAL.panel.Album = function(config) {
         ,border: false
         ,baseCls: 'modx-formpanel'
         ,items: [{
-            html: '<h2>'+_('album')+'</h2>'
+            html: '<h2>'+_('gallery.album')+'</h2>'
             ,border: false
             ,id: 'gal-album-header'
             ,cls: 'modx-page-header'
@@ -40,32 +40,30 @@ GAL.panel.Album = function(config) {
                     ,width: 400
                 },{
                     xtype: 'checkbox'
-                    ,fieldLabel: 'Active'
-                    ,description: 'If false, this album will not be viewable.'
+                    ,fieldLabel: _('gallery.active')
+                    ,description: _('gallery.active_desc')
                     ,name: 'active'
                     ,inputValue: true
                 },{
                     xtype: 'checkbox'
-                    ,fieldLabel: 'Prominent'
-                    ,description: ''
+                    ,fieldLabel: _('gallery.prominent')
+                    ,description: _('gallery.prominent_desc')
                     ,name: 'prominent'
                     ,inputValue: true
-                }]
-            },{
-                title: 'Items'
-                ,layout: 'form'
-                ,items: [{
+                },{
+                    html: '<hr />',border: false
+                },{
                     xtype: 'gal-panel-album-items'
                     ,album: config.album
                 }]
-            },{
+            }/*,{
                 title: 'Context Access'
                 ,layout: 'form'
                 ,items: [{
                     html: '<p>Manage the Contexts that have access to this album.</p><br />'
                     ,border: false
                 }]
-            }]
+            }*/]
         }]
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
@@ -88,7 +86,7 @@ Ext.extend(GAL.panel.Album,MODx.FormPanel,{
                 'success': {fn:function(r) {
                     this.getForm().setValues(r.object);
 
-                    Ext.getCmp('gal-album-header').getEl().update('<h2>'+'Album'+': '+r.object.name+'</h2>');
+                    Ext.getCmp('gal-album-header').getEl().update('<h2>'+_('gallery.album')+': '+r.object.name+'</h2>');
                 },scope:this}
             }
         });
@@ -163,7 +161,7 @@ GAL.panel.AlbumItems = function(config) {
             ,border: false
             ,items: [{
                 xtype: 'button'
-                ,text: 'Upload Item'
+                ,text: _('gallery.item_upload')
                 ,handler: this.uploadItem
                 ,scope: this
             },this.view]
@@ -212,7 +210,7 @@ GAL.window.UploadItem = function(config) {
     config = config || {};
     this.ident = config.ident || 'gupit'+Ext.id();
     Ext.applyIf(config,{
-        title: 'Upload Item'
+        title: _('gallery.item_upload')
         ,id: this.ident
         ,height: 150
         ,width: 475
@@ -225,7 +223,7 @@ GAL.window.UploadItem = function(config) {
         },{
             xtype: 'textfield'
             ,inputType: 'file'
-            ,fieldLabel: 'File'
+            ,fieldLabel: _('gallery.file')
             ,name: 'file'
             ,id: 'gal-'+this.ident+'-file'
         },{
@@ -242,12 +240,18 @@ GAL.window.UploadItem = function(config) {
             ,width: 300
         },{
             xtype: 'checkbox'
-            ,fieldLabel: 'Active'
+            ,fieldLabel: _('gallery.active')
             ,name: 'active'
             ,description: ''
             ,id: 'gal-'+this.ident+'-active'
             ,checked: true
             ,inputValue: 1
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('gallery.tags')
+            ,description: _('gallery.comma_separated_list')
+            ,name: 'tags'
+            ,id: 'gal-'+this.ident+'-tags'
         }]
     });
     GAL.window.UploadItem.superclass.constructor.call(this,config);

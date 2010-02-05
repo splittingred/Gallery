@@ -7,8 +7,6 @@
  */
 $modx->regClientCSS($gallery->config['cssUrl'].'mgr.css');
 $modx->regClientStartupScript($gallery->config['jsUrl'].'mgr/gallery.js');
-$modx->regClientStartupScript($gallery->config['jsUrl'].'mgr/combos.js');
-$modx->regClientStartupScript($gallery->config['jsUrl'].'mgr/windows.js');
 $modx->regClientStartupHTMLBlock('<script type="text/javascript">
 Ext.onReady(function() {
     GAL.config = '.$modx->toJSON($gallery->config).';

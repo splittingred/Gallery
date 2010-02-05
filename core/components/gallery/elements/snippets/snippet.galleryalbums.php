@@ -1,0 +1,45 @@
+<?php
+/**
+ * @package gallery
+ */
+$gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/gallery/',$scriptProperties);
+if (!($gallery instanceof Gallery)) return '';
+
+/* setup default properties */
+$rowTpl = $modx->getOption('rowTpl',$scriptProperties,'galAlbumRowTpl');
+$showInactive = $modx->getOption('showInactive',$scriptProperties,false);
+$prominentOnly = $modx->getOption('prominentOnly',$scriptProperties,true);
+$toPlaceholder = $modx->getOption('toPlaceholder',$scriptProperties,false);
+$sort = $modx->getOption('sort',$scriptProperties,'createdon');
+$dir = $modx->getOption('dir',$scriptProperties,'DESC');
+$limit = $modx->getOption('limit',$scriptProperties,10);
+$start = $modx->getOption('start',$scriptProperties,0);
+
+/* build query */
+$c = $modx->newQuery('galAlbum');
+if (!$showInactive) {
+    $c->where(array(
+        'active' => true,
+    ));
+}
+if ($prominentOnly) {
+    $c->where(array(
+        'prominent' => true,
+    ));
+}
+$c->sortby($sort,$dir);
+$c->limit($limit,$start);
+$albums = $modx->getCollection('galAlbum',$c);
+
+/* iterate */
+$output = '';
+foreach ($albums as $album) {
+    $albumArray = $album->toArray();
+    $output .= $gallery->getChunk($rowTpl,$albumArray);
+}
+
+if ($toPlaceholder) {
+    $modx->setPlaceholder($toPlaceholder,$output);
+    return '';
+}
+return $output;

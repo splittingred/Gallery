@@ -16,20 +16,20 @@ GAL.grid.Albums = function(config) {
             ,dataIndex: 'id'
             ,width: 70
         },{
-            header: 'Name'
+            header: _('name')
             ,dataIndex: 'name'
             ,width: 200
         },{
-            header: 'Description'
+            header: _('description')
             ,dataIndex: 'description'
             ,width: 250
         },{
-            header: 'Items'
+            header: _('gallery.items')
             ,dataIndex: 'items'
             ,width: 70
         }]
         ,tbar: [{
-            text: 'Create Album'
+            text: _('gallery.album_create')
             ,handler: this.createAlbum
             ,scope: this
         }]
@@ -61,7 +61,8 @@ Ext.extend(GAL.grid.Albums,MODx.grid.Grid,{
         if (!this.menu.record) return false;
         
         MODx.msg.confirm({
-            text: 'Are you sure you want to remove this album? Any items that are not in any other albums will also be removed.'
+            title: _('gallery.album_remove')
+            ,text: _('gallery.album_remove_confirm')
             ,url: this.config.url
             ,params: {
                 action: 'mgr/album/remove'
@@ -82,7 +83,7 @@ GAL.window.CreateAlbum = function(config) {
     config = config || {};
     this.ident = config.ident || 'gcalb'+Ext.id();
     Ext.applyIf(config,{
-        title: 'Create Album'
+        title: _('gallery.album_create')
         ,id: this.ident
         ,height: 150
         ,width: 475
@@ -102,9 +103,9 @@ GAL.window.CreateAlbum = function(config) {
             ,width: 300
         },{
             xtype: 'checkbox'
-            ,fieldLabel: 'Prominent'
+            ,fieldLabel: _('gallery.prominent')
+            ,description: _('gallery.prominent_desc')
             ,name: 'prominent'
-            ,description: 'If true, this album will normally be displayable in front-end album listing.'
             ,id: 'dis-'+this.ident+'-prominent'
             ,checked: true
             ,inputValue: 1

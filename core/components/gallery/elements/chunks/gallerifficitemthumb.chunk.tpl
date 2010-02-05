@@ -4,9 +4,12 @@
     </a>
     <div class="caption">
         <div class="download">
-            <a href="[[+image]]">Download Original</a>
+            <a href="[[+image]]">[[%gallery.download_original? &namespace=`gallery` &topic=`galleriffic`]]</a>
         </div>
         <div class="image-title">[[+name]]</div>
-        <div class="image-desc">[[+description]]</div>
+        <div class="image-desc">
+            [[+description]]
+            [[+tags:notempty=`<br /><em>[[%gallery.tags]]:</em> [[+tags]]`]]
+        </div>
     </div>
 </li>

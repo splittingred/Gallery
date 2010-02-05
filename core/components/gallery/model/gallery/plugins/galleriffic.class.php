@@ -10,6 +10,8 @@ require_once dirname(__FILE__).'/galleryplugin.class.php';
  */
 class Galleriffic extends GalleryPlugin {
     public function load() {
+        $this->modx->lexicon->load('gallery:galleriffic');
+
         $this->config = array_merge(array(
             'delay' => 2500,
             'numThumbs' => 15,
@@ -24,12 +26,12 @@ class Galleriffic extends GalleryPlugin {
             'loadingContainerSel' => '#gal-gaff-loading',
             'renderSSControls' => true,
             'renderNavControls' => true,
-            'playLinkText' => 'Play Sideshow',
-            'pauseLinkText' => 'Pause Slideshow',
-            'prevLinkText' => '&lsaquo; Previous Photo',
-            'nextLinkText' => 'Next Photo &rsaquo;',
-            'nextPageLinkText' => 'Next &rsaquo;',
-            'prevPageLinkText' => '&lsaquo; Prev',
+            'playLinkText' => $this->modx->lexicon('gallery.slideshow_play'),
+            'pauseLinkText' => $this->modx->lexicon('gallery.slideshow_pause'),
+            'prevLinkText' => '&lsaquo; '.$this->modx->lexicon('gallery.photo_previous'),
+            'nextLinkText' => $this->modx->lexicon('gallery.photo_next').' &rsaquo;',
+            'nextPageLinkText' => $this->modx->lexicon('gallery.next').' &rsaquo;',
+            'prevPageLinkText' => '&lsaquo; '.$this->modx->lexicon('gallery.next'),
             'enableHistory' => false,
             'autoStart' => false,
             'syncTransitions' => true,

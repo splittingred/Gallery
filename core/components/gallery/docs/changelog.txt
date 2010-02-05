@@ -2,5 +2,7 @@ Changelog for Gallery.
 
 Gallery 0.1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- i18ned the code, filled out mgr UI functionality
+- Added check when removing album to delete items not in any other albums
 - Lots of dev work, got basics mostly functional
 - Initial commit

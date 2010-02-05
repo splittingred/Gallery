@@ -74,6 +74,21 @@ class galItem extends xPDOSimpleObject {
         return $uploaded;
     }
 
+    public function save($cacheFlag= null) {
+        if ($this->isNew() && !$this->get('createdon')) {
+            $this->set('createdon', strftime('%Y-%m-%d %H:%M:%S'));
+        }
+        if ($this->isNew() && !$this->get('createdby')) {
+            if (!empty($this->xpdo->user) && $this->xpdo->user instanceof modUser) {
+                if ($this->xpdo->user->isAuthenticated()) {
+                    $this->set('createdby',$this->xpdo->user->get('id'));
+                }
+            }
+        }
+        $saved= parent :: save($cacheFlag);
+        return $saved;
+    }
+
     public function remove(array $ancestors = array()) {
         $filename = $this->get('filename');
         if (!empty($filename)) {

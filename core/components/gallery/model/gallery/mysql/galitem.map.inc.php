@@ -8,6 +8,7 @@ $xpdo_meta_map['galItem']= array (
   'fields' => 
   array (
     'name' => '',
+    'filename' => '',
     'description' => '',
     'mediatype' => 'image',
     'createdon' => NULL,
@@ -16,7 +17,6 @@ $xpdo_meta_map['galItem']= array (
     'duration' => '',
     'streamer' => '',
     'watermark_pos' => 'tl',
-    'filename' => '',
   ),
   'fieldMeta' => 
   array (
@@ -24,6 +24,14 @@ $xpdo_meta_map['galItem']= array (
     array (
       'dbtype' => 'varchar',
       'precision' => '100',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'filename' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
@@ -90,14 +98,6 @@ $xpdo_meta_map['galItem']= array (
       'phptype' => 'string',
       'null' => false,
       'default' => 'tl',
-    ),
-    'filename' => 
-    array (
-      'dbtype' => 'varchar',
-      'precision' => '255',
-      'phptype' => 'string',
-      'null' => false,
-      'default' => '',
     ),
   ),
   'aggregates' => 

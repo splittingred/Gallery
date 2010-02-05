@@ -17,7 +17,7 @@ GAL.page.UpdateAlbum = function(config) {
                 ,ctrl: true
             }]
         },'-',{
-            text: 'Back'
+            text: _('gallery.back')
             ,id: 'gal-btn-back'
             ,handler: function() {
                 location.href = '?a='+MODx.request.a+'&view=index';

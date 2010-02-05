@@ -17,7 +17,7 @@ GAL.panel.Home = function(config) {
             ,items: [{
                 title: 'Albums'
                 ,items: [{
-                    html: '<p>Manage your albums.</p><br />'
+                    html: '<p>'+_('gallery.intro_msg')+'</p><br />'
                     ,border: false
                 },{
                     xtype: 'gal-grid-albums'

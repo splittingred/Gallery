@@ -5,7 +5,6 @@
 $gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/gallery/',$scriptProperties);
 if (!($gallery instanceof Gallery)) return '';
 
-$modx->setLogTarget('ECHO');
 /* setup default properties */
 $album = $modx->getOption('album',$scriptProperties,false);
 $plugin = $modx->getOption('plugin',$scriptProperties,'');
@@ -17,8 +16,21 @@ $sortAlias = $modx->getOption('sortAlias',$scriptProperties,'galItem');
 if ($sort == 'rank') $sortAlias = 'AlbumItems';
 $dir = $modx->getOption('dir',$scriptProperties,'ASC');
 
+/* check for REQUEST vars if property set */
+if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,false)) {
+    $album = $modx->getOption('album',$_REQUEST,$album);
+}
+if ($modx->getOption('checkForRequestTagVar',$scriptProperties,false)) {
+    $album = $modx->getOption('tag',$_REQUEST,$tag);
+}
+
 /* build query */
 $c = $modx->newQuery('galItem');
+$c->select('
+    `galItem`.*,
+    (SELECT GROUP_CONCAT(`TagsJoin`.`tag`) FROM '.$modx->getTableName('galTag').' AS `TagsJoin`
+     WHERE `TagsJoin`.`item` = `galItem`.`id`) AS `tags`
+');
 $c->innerJoin('galAlbumItem','AlbumItems');
 $c->innerJoin('galAlbum','Album','`AlbumItems`.`album` = `Album`.`id`');
 

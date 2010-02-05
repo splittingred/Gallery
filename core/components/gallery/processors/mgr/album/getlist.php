@@ -12,8 +12,12 @@ $sort = $modx->getOption('sort',$_REQUEST,'name');
 $dir = $modx->getOption('dir',$_REQUEST,'ASC');
 
 $c = $modx->newQuery('galAlbum');
-
 $count = $modx->getCount('galAlbum',$c);
+$c->select('
+    `galAlbum`.*,
+    (SELECT COUNT(*) FROM '.$modx->getTableName('galAlbumItem').' AS `AlbumItem`
+     WHERE `AlbumItem`.`album` = `galAlbum`.`id`) AS `items`
+');
 
 if ($isLimit) $c->limit($limit,$start);
 $albums = $modx->getCollection('galAlbum',$c);
@@ -24,12 +28,12 @@ foreach ($albums as $album) {
 
     $albumArray['menu'] = array();
     $albumArray['menu'][] = array(
-        'text' => 'Update Album',
+        'text' => $modx->lexicon('gallery.album_update'),
         'handler' => 'this.updateAlbum',
     );
     $albumArray['menu'][] = '-';
     $albumArray['menu'][] = array(
-        'text' => 'Remove Album',
+        'text' => $modx->lexicon('gallery.album_remove'),
         'handler' => 'this.removeAlbum',
     );
 

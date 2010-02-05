@@ -33,6 +33,7 @@
         <field key="rank" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" />
         <field key="active" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
         <field key="prominent" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
+        <field key="watermark" dbtype="varchar" precision="255" phptype="string" null="false" default="" /> 
         
         <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign" />
         <composite alias="AlbumItems" class="galAlbumItem" local="id" foreign="album" cardinality="many" owner="local" />
