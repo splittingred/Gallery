@@ -144,7 +144,7 @@ class Gallery {
     public function getChunk($name,array $properties = array()) {
         $chunk = null;
         if (!isset($this->chunks[$name])) {
-            /*$chunk = $this->modx->getObject('modChunk',array('name' => $name),true);*/
+            $chunk = $this->modx->getObject('modChunk',array('name' => $name),true);
             if (empty($chunk)) {
                 $chunk = $this->_getTplChunk($name);
                 if ($chunk == false) return false;

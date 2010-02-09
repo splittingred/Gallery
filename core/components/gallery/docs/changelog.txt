@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 0.1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Fixed bug in Gallery class that prohibited using tpls (!)
 - Added copyright info to Gallery
 - Fixed various bugs found in test install
 - Setup build script for initial alpha release
