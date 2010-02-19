@@ -54,6 +54,7 @@ GAL.panel.Album = function(config) {
                     html: '<hr />',border: false
                 },{
                     xtype: 'gal-panel-album-items'
+                    ,cls: 'modx-pb-view-ct'
                     ,album: config.album
                 }]
             }/*,{
