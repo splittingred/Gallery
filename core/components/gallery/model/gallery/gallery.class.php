@@ -59,7 +59,7 @@ class Gallery {
             @mkdir($this->modx->getOption('core_path').'cache/phpthumb/',0755);
         }
 
-        $this->modx->addPackage('gallery',$this->config['modelPath'],'gallery_');
+        $this->modx->addPackage('gallery',$this->config['modelPath']);
         if ($this->modx->getOption('gallery.debug',$this->config,true)) {
             $this->startDebugTimer();
         }

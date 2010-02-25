@@ -30,7 +30,7 @@ if ($object->xpdo) {
         case xPDOTransport::ACTION_INSTALL:
             $modx =& $object->xpdo;
             $modelPath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/';
-            $modx->addPackage('gallery',$modelPath,'gallery_');
+            $modx->addPackage('gallery',$modelPath);
 
             $manager = $modx->getManager();
 

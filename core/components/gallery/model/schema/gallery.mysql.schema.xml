@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model package="gallery" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" tablePrefix="gallery_">    
+<model package="gallery" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM">    
     <!--
         An image or video
     -->
