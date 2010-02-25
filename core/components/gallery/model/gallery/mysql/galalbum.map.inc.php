@@ -4,9 +4,10 @@
  */
 $xpdo_meta_map['galAlbum']= array (
   'package' => 'gallery',
-  'table' => 'albums',
+  'table' => 'gallery_albums',
   'fields' => 
   array (
+    'parent' => 0,
     'name' => '',
     'description' => '',
     'createdon' => NULL,
@@ -18,6 +19,16 @@ $xpdo_meta_map['galAlbum']= array (
   ),
   'fieldMeta' => 
   array (
+    'parent' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'phptype' => 'integer',
+      'attributes' => 'unsigned',
+      'null' => false,
+      'default' => 0,
+      'index' => 'index',
+    ),
     'name' => 
     array (
       'dbtype' => 'varchar',
@@ -88,6 +99,14 @@ $xpdo_meta_map['galAlbum']= array (
   ),
   'aggregates' => 
   array (
+    'Parent' => 
+    array (
+      'class' => 'galAlbum',
+      'local' => 'parent',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
     'CreatedBy' => 
     array (
       'class' => 'modUser',
@@ -112,6 +131,14 @@ $xpdo_meta_map['galAlbum']= array (
       'class' => 'galAlbumContext',
       'local' => 'id',
       'foreign' => 'album',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'Children' => 
+    array (
+      'class' => 'galAlbum',
+      'local' => 'id',
+      'foreign' => 'parent',
       'cardinality' => 'many',
       'owner' => 'local',
     ),

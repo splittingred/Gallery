@@ -20,14 +20,22 @@
  * @package gallery
  */
 /**
- * Loads the home page.
+ * Resolve changes to db model
  *
  * @package gallery
- * @subpackage controllers
+ * @subpackage build
  */
-$modx->regClientStartupScript($gallery->config['jsUrl'].'mgr/widgets/album/album.tree.js');
-$modx->regClientStartupScript($gallery->config['jsUrl'].'mgr/widgets/home.panel.js');
-$modx->regClientStartupScript($gallery->config['jsUrl'].'mgr/sections/home.js');
-$output = '<div id="gal-panel-home-div"></div>';
+if ($object->xpdo) {
+    switch ($options[xPDOTransport::PACKAGE_ACTION]) {
+        case xPDOTransport::ACTION_INSTALL:
+        case xPDOTransport::ACTION_UPGRADE:
+            $modx =& $object->xpdo;
+            $modelPath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/';
+            $modx->addPackage('gallery',$modelPath);
 
-return $output;
+            $modx->exec("ALTER TABLE {$modx->getTableName('galAlbum')} ADD `parent` int(10) unsigned NOT NULL default '0' AFTER `id`");
+            $modx->exec("ALTER TABLE {$modx->getTableName('galAlbum')} ADD INDEX `parent` (`parent`)");
+            break;
+    }
+}
+return true;

@@ -67,6 +67,7 @@ if (!empty($album)) {
     $c->where(array(
         'Album.'.$albumField => $album->get($albumField),
     ));
+    $galleryId = $album->get('id');
     $galleryName = $album->get('name');
     $galleryDescription = $album->get('description');
     unset($albumWhere,$albumField);
@@ -77,6 +78,7 @@ if (!empty($tag)) { /* pull by tag */
         'Tags.tag' => $tag,
     ));
     if (empty($album)) {
+        $galleryId = 0;
         $galleryName = $tag;
         $galleryDescription = '';
     }
@@ -141,11 +143,13 @@ $toPlaceholder = $modx->getOption('toPlaceholder',$scriptProperties,false);
 if (!empty($toPlaceholder)) {
     $modx->toPlaceholders(array(
         $toPlaceholder => $output,
+        $toPlaceholder.'.id' => $galleryId,
         $toPlaceholder.'.name' => $galleryName,
         $toPlaceholder.'.description' => $galleryDescription,
     ));
 } else {
     $modx->toPlaceholders(array(
+        'gallery.id' => $galleryId,
         'gallery.name' => $galleryName,
         'gallery.description' => $galleryDescription,
     ));

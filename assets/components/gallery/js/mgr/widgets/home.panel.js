@@ -20,9 +20,7 @@ GAL.panel.Home = function(config) {
                     html: '<p>'+_('gallery.intro_msg')+'</p><br />'
                     ,border: false
                 },{
-                    xtype: 'gal-grid-albums'
-                    ,preventRender: true
-                    ,width: '97%'
+                    xtype: 'gal-tree-album'
                 }]
             }]
         }]

@@ -60,8 +60,10 @@ $_lang['gallery.item_update'] = 'Update Item';
 $_lang['gallery.item_upload'] = 'Upload Item';
 $_lang['gallery.items'] = 'Items';
 $_lang['gallery.menu_desc'] = 'A dynamic gallery system.';
+$_lang['gallery.parent'] = 'Parent';
 $_lang['gallery.prominent'] = 'Prominent';
 $_lang['gallery.prominent_desc'] = 'Making an Album non-prominent can be used to hide Albums from your Album listing, should you want a private album, or to create non-listed albums.';
+$_lang['gallery.refresh'] = 'Refresh';
 $_lang['gallery.tags'] = 'Tags';
 
 

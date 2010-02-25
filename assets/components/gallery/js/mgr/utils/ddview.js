@@ -13,7 +13,7 @@ MODx.DataView.dropZone = function(view, config){
 };
 Ext.extend(MODx.DataView.dropZone, Ext.dd.DropZone,{
     getTargetFromEvent: function(e) {
-        return e.getTarget('.thumb-wrap');
+        return e.getTarget('.modx-pb-thumb-wrap');
     }
     
     ,onNodeEnter : function(target, dd, e, data) {
@@ -47,7 +47,7 @@ MODx.DataView.dragZone = function(view,config) {
 };
 Ext.extend(MODx.DataView.dragZone,Ext.dd.DragZone,{
     getDragData : function(e){
-        var target = e.getTarget('.thumb-wrap');
+        var target = e.getTarget('.modx-pb-thumb-wrap');
         if(target){
             var view = this.view;
             if(!view.isSelected(target)){

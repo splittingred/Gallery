@@ -2,6 +2,8 @@ Changelog for Gallery.
 
 Gallery 0.1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Added parent support to galAlbums, GalleryAlbums snippet
+- Fixed drag/drop reordering capability in albums
 - Fixed bug with gallery tables prefix
 - Fixed bug in items view related to recent SVN changes
 - Fixed bug in Gallery class that prohibited using tpls (!)

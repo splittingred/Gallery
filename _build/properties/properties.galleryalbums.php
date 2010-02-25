@@ -82,6 +82,20 @@ $properties = array(
         'options' => '',
         'value' => true,
     ),
+    array(
+        'name' => 'parent',
+        'desc' => 'Grab only the albums with a parent album with this ID.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '0',
+    ),
+    array(
+        'name' => 'showAll',
+        'desc' => 'If true, will show all albums regardless of their parent.',
+        'type' => 'combo-boolean',
+        'options' => '',
+        'value' => true,
+    ),
 /*
     array(
         'name' => '',

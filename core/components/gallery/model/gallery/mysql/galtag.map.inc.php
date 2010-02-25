@@ -4,7 +4,7 @@
  */
 $xpdo_meta_map['galTag']= array (
   'package' => 'gallery',
-  'table' => 'tags',
+  'table' => 'gallery_tags',
   'fields' => 
   array (
     'item' => 0,

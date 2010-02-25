@@ -4,7 +4,7 @@
  */
 $xpdo_meta_map['galAlbumItem']= array (
   'package' => 'gallery',
-  'table' => 'album_items',
+  'table' => 'gallery_album_items',
   'fields' => 
   array (
     'item' => 0,

@@ -3,7 +3,7 @@
     <!--
         An image or video
     -->
-    <object class="galItem" table="items" extends="xPDOSimpleObject">
+    <object class="galItem" table="gallery_items" extends="xPDOSimpleObject">
         <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
         <field key="filename" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="description" dbtype="text" phptype="text" null="false" default="" />
@@ -25,7 +25,8 @@
     <!--
         A collection of items
     -->
-    <object class="galAlbum" table="albums" extends="xPDOSimpleObject">
+    <object class="galAlbum" table="gallery_albums" extends="xPDOSimpleObject">
+        <field key="parent" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
         <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="index" />
         <field key="description" dbtype="text" phptype="string" null="false" default="" />
         <field key="createdon" dbtype="datetime" phptype="datetime" null="true" />
@@ -35,15 +36,17 @@
         <field key="prominent" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
         <field key="watermark" dbtype="varchar" precision="255" phptype="string" null="false" default="" /> 
         
+        <aggregate alias="Parent" class="galAlbum" local="parent" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign" />
         <composite alias="AlbumItems" class="galAlbumItem" local="id" foreign="album" cardinality="many" owner="local" />
         <composite alias="Contexts" class="galAlbumContext" local="id" foreign="album" cardinality="many" owner="local" />
+        <composite alias="Children" class="galAlbum" local="id" foreign="parent" cardinality="many" owner="local" />
     </object>
     
     <!--
         Many to many relationship between items and albums
     -->
-    <object class="galAlbumItem" table="album_items" extends="xPDOSimpleObject">
+    <object class="galAlbumItem" table="gallery_album_items" extends="xPDOSimpleObject">
         <field key="item" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
         <field key="album" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
         <field key="rank" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
@@ -55,7 +58,7 @@
     <!--
         One to many relationship on context access for each album
     -->
-    <object class="galAlbumContext" table="album_contexts" extends="xPDOSimpleObject">
+    <object class="galAlbumContext" table="gallery_album_contexts" extends="xPDOSimpleObject">
         <field key="album" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
         <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="web" index="index" />
         
@@ -66,7 +69,7 @@
     <!--
         Tags for items
     -->
-    <object class="galTag" table="tags" extends="xPDOSimpleObject">
+    <object class="galTag" table="gallery_tags" extends="xPDOSimpleObject">
         <field key="item" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
         <field key="tag" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="index" />
         

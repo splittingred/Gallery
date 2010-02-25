@@ -36,6 +36,8 @@ $sort = $modx->getOption('sort',$scriptProperties,'createdon');
 $dir = $modx->getOption('dir',$scriptProperties,'DESC');
 $limit = $modx->getOption('limit',$scriptProperties,10);
 $start = $modx->getOption('start',$scriptProperties,0);
+$parent = $modx->getOption('parent',$scriptProperties,0);
+$showAll = $modx->getOption('showAll',$scriptProperties,false);
 
 /* build query */
 $c = $modx->newQuery('galAlbum');
@@ -47,6 +49,11 @@ if (!$showInactive) {
 if ($prominentOnly) {
     $c->where(array(
         'prominent' => true,
+    ));
+}
+if (empty($showAll)) {
+    $c->where(array(
+        'parent' => $parent,
     ));
 }
 $c->sortby($sort,$dir);

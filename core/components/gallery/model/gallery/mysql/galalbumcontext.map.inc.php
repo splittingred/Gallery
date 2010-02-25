@@ -4,7 +4,7 @@
  */
 $xpdo_meta_map['galAlbumContext']= array (
   'package' => 'gallery',
-  'table' => 'album_contexts',
+  'table' => 'gallery_album_contexts',
   'fields' => 
   array (
     'album' => 0,
