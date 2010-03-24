@@ -34,7 +34,7 @@ set_time_limit(0);
 define('PKG_NAME','Gallery');
 define('PKG_NAME_LOWER','gallery');
 define('PKG_VERSION','0.1');
-define('PKG_RELEASE','alpha5');
+define('PKG_RELEASE','beta1');
 
 /* override with your own defines here (see build.config.sample.php) */
 require_once dirname(__FILE__) . '/build.config.php';
@@ -177,9 +177,6 @@ $vehicle= $builder->createVehicle($menu,array (
 $modx->log(modX::LOG_LEVEL_INFO,'Adding in PHP resolvers...');
 $vehicle->resolve('php',array(
     'source' => $sources['resolvers'] . 'resolve.tables.php',
-));
-$vehicle->resolve('php',array(
-    'source' => $sources['resolvers'] . 'resolve.resources.php',
 ));
 $vehicle->resolve('php',array(
     'source' => $sources['resolvers'] . 'resolve.phpthumb.php',

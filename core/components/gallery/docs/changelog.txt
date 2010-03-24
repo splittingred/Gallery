@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 0.1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Fixed bug that occurs if Gallery is used where FURLs are off
 - Added parent support to galAlbums, GalleryAlbums snippet
 - Fixed drag/drop reordering capability in albums
 - Fixed bug with gallery tables prefix

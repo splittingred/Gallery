@@ -17,7 +17,7 @@ GAL.tree.Album = function(config) {
         ,sortAction: 'mgr/album/sort'
         ,rootVisible: false
     })
-    GAL.tree.Album.superclass.constructor.call(this,config);
+    GAL.tree.Album.superclass.constructor.call(this,config);    
 };
 Ext.extend(GAL.tree.Album,MODx.tree.Tree,{
     windows: {}

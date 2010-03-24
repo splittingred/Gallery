@@ -34,7 +34,7 @@ class Gallery {
         $assetsUrl = $this->modx->getOption('gallery.assets_url',$config,$this->modx->getOption('assets_url').'components/discuss/');
 
         $connectorId = $this->modx->getOption('gallery.connector_resource',$config,1);
-        $connectorUrl = $this->modx->makeUrl($connectorId);
+        $connectorUrl = $assetsUrl.'connector.php';
 
         $this->config = array_merge(array(
             'assetsUrl' => $assetsUrl,
