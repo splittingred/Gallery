@@ -34,7 +34,7 @@ set_time_limit(0);
 define('PKG_NAME','Gallery');
 define('PKG_NAME_LOWER','gallery');
 define('PKG_VERSION','0.1');
-define('PKG_RELEASE','beta1');
+define('PKG_RELEASE','beta2');
 
 /* override with your own defines here (see build.config.sample.php) */
 require_once dirname(__FILE__) . '/build.config.php';
@@ -152,10 +152,6 @@ foreach ($settings as $setting) {
     $builder->putVehicle($vehicle);
 }
 unset($settings,$setting,$attributes);
-
-/* load lexicon strings */
-$modx->log(modX::LOG_LEVEL_INFO,'Packaging in lexicon...');
-$builder->buildLexicon($sources['lexicon']);
 
 /* load menu */
 $modx->log(modX::LOG_LEVEL_INFO,'Packaging in menu...');
