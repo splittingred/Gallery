@@ -30,7 +30,7 @@ if (empty($_POST['id'])) return $modx->error->failure($modx->lexicon('gallery.it
 $item = $modx->getObject('galItem',$_POST['id']);
 if (empty($item)) return $modx->error->failure($modx->lexicon('gallery.item_err_nf'));
 
-
+$_POST['active'] = !empty($_POST['active']) ? 1 : 0;
 $item->fromArray($_POST);
 
 /* remove item */
