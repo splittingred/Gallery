@@ -2,7 +2,7 @@
 /**
  * Gallery
  *
- * Copyright 2010 by Shaun McCormick <shaun@collabpad.com>
+ * Copyright 2010 by Shaun McCormick <shaun@modxcms.com>
  *
  * Gallery is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -38,6 +38,7 @@ $limit = $modx->getOption('limit',$scriptProperties,10);
 $start = $modx->getOption('start',$scriptProperties,0);
 $parent = $modx->getOption('parent',$scriptProperties,0);
 $showAll = $modx->getOption('showAll',$scriptProperties,false);
+$albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
 
 /* build query */
 $c = $modx->newQuery('galAlbum');
@@ -64,6 +65,7 @@ $albums = $modx->getCollection('galAlbum',$c);
 $output = '';
 foreach ($albums as $album) {
     $albumArray = $album->toArray();
+    $albumArray['albumRequestVar'] = $albumRequestVar;
     $output .= $gallery->getChunk($rowTpl,$albumArray);
 }
 

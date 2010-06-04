@@ -2,7 +2,7 @@
 /**
  * Gallery
  *
- * Copyright 2010 by Shaun McCormick <shaun@collabpad.com>
+ * Copyright 2010 by Shaun McCormick <shaun@modxcms.com>
  *
  * Gallery is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -29,11 +29,9 @@ class Gallery {
     function __construct(modX &$modx,array $config = array()) {
         $this->modx =& $modx;
 
-        $corePath = $this->modx->getOption('gallery.core_path',$config,$this->modx->getOption('core_path').'components/discuss/');
-        $assetsPath = $this->modx->getOption('gallery.assets_path',$config,$this->modx->getOption('assets_path').'components/discuss/');
-        $assetsUrl = $this->modx->getOption('gallery.assets_url',$config,$this->modx->getOption('assets_url').'components/discuss/');
-
-        $connectorId = $this->modx->getOption('gallery.connector_resource',$config,1);
+        $corePath = $this->modx->getOption('gallery.core_path',$config,$this->modx->getOption('core_path').'components/gallery/');
+        $assetsPath = $this->modx->getOption('gallery.assets_path',$config,$this->modx->getOption('assets_path').'components/gallery/');
+        $assetsUrl = $this->modx->getOption('gallery.assets_url',$config,$this->modx->getOption('assets_url').'components/gallery/');
         $connectorUrl = $assetsUrl.'connector.php';
 
         $this->config = array_merge(array(

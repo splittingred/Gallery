@@ -2,7 +2,7 @@
 /**
  * Gallery Connector
  *
- * Copyright 2010 by Shaun McCormick <shaun@collabpad.com>
+ * Copyright 2010 by Shaun McCormick <shaun@modxcms.com>
  *
  * This file is part of Gallery.
  *

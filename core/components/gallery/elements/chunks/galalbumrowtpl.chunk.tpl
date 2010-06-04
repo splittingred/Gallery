@@ -1,1 +1,1 @@
-<li><a href="[[~[[*id]]]]?album=[[+id]]">[[+name]]</a></li>
+<li><a href="[[~[[*id]]]]?[[+albumRequestVar]]=[[+id]]">[[+name]]</a></li>

@@ -162,7 +162,8 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
                         ,'<tpl if="!active"><span class="red">'+_('gallery.inactive')+'</span></tpl>'
                     ,'</span>'
                     ,'<h4>{shortName}</h4><br />'
-                    ,'<tpl if="description"><p>{description}</p><br /></tpl>'                    
+                    ,'<tpl if="description"><p>{description}</p><br /></tpl>'
+                    ,'<b>'+_('id')+':</b><span>{id}</span>'
                     ,'<b>'+_('gallery.file_name')+':</b><span>{filename}</span>'
                     ,'<b>'+_('gallery.file_size')+':</b><span>{filesize}</span>'                    
                     ,'<tpl if="tags"><b>'+_('gallery.tags')+':</b><span>{tags}</span></tpl>'
@@ -217,8 +218,10 @@ GAL.window.UpdateItem = function(config) {
         ,action: 'mgr/item/update'
         ,fileUpload: true
         ,fields: [{
-            xtype: 'hidden'
+            xtype: 'statictextfield'
             ,name: 'id'
+            ,fieldLabel: _('id')
+            ,submitValue: true
         },{
             xtype: 'textfield'
             ,fieldLabel: _('name')

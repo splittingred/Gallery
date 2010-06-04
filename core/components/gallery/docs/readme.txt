@@ -3,7 +3,7 @@
 --------------------
 Version: 0.1
 Since: February 3rd, 2010
-Author: Shaun McCormick <shaun@collabpad.com>
+Author: Shaun McCormick <shaun@modxcms.com>
 
 A Gallery system for your photos and videos.
 

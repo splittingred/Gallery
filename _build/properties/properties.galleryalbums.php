@@ -2,7 +2,7 @@
 /**
  * Gallery
  *
- * Copyright 2010 by Shaun McCormick <shaun@collabpad.com>
+ * Copyright 2010 by Shaun McCormick <shaun@modxcms.com>
  *
  * Gallery is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -95,6 +95,13 @@ $properties = array(
         'type' => 'combo-boolean',
         'options' => '',
         'value' => true,
+    ),
+    array(
+        'name' => 'albumRequestVar',
+        'desc' => 'If checkForRequestAlbumVar is set to true, will look for a REQUEST var with this name to select the album.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 'galAlbum',
     ),
 /*
     array(

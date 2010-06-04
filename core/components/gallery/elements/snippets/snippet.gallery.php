@@ -2,7 +2,7 @@
 /**
  * Gallery
  *
- * Copyright 2010 by Shaun McCormick <shaun@collabpad.com>
+ * Copyright 2010 by Shaun McCormick <shaun@modxcms.com>
  *
  * Gallery is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -38,19 +38,23 @@ $sortAlias = $modx->getOption('sortAlias',$scriptProperties,'galItem');
 if ($sort == 'rank') $sortAlias = 'AlbumItems';
 $dir = $modx->getOption('dir',$scriptProperties,'ASC');
 $showInactive = $modx->getOption('showInactive',$scriptProperties,false);
+$linkToImage = $modx->getOption('linkToImage',$scriptProperties,false);
+$imageGetParam = $modx->getOption('imageGetParam',$scriptProperties,'galItem');
+$albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
+$tagRequestVar = $modx->getOption('tagRequestVar',$scriptProperties,'galTag');
 
 /* check for REQUEST vars if property set */
-if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,false)) {
-    $album = $modx->getOption('album',$_REQUEST,$album);
+if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,true)) {
+    if (!empty($_REQUEST[$albumRequestVar])) $album = $_REQUEST[$albumRequestVar];
 }
-if ($modx->getOption('checkForRequestTagVar',$scriptProperties,false)) {
-    $tag = $modx->getOption('tag',$_REQUEST,$tag);
+if ($modx->getOption('checkForRequestTagVar',$scriptProperties,true)) {
+    if (!empty($_REQUEST[$tagRequestVar])) $tag = $_REQUEST[$tagRequestVar];
 }
 
 /* build query */
 $c = $modx->newQuery('galItem');
+$c->select(array('galItem.*'));
 $c->select('
-    `galItem`.*,
     (SELECT GROUP_CONCAT(`TagsJoin`.`tag`) FROM '.$modx->getTableName('galTag').' AS `TagsJoin`
      WHERE `TagsJoin`.`item` = `galItem`.`id`) AS `tags`
 ');
@@ -125,6 +129,11 @@ foreach ($items as $item) {
         'h' => $modx->getOption('imageHeight',$scriptProperties,500),
         'zc' => 0,
     ));
+    $itemArray['album'] = $album->get('id');
+    $itemArray['linkToImage'] = $linkToImage;
+    $itemArray['imageGetParam'] = $imageGetParam;
+    $itemArray['albumRequestVar'] = $albumRequestVar;
+    $itemArray['tagRequestVar'] = $tagRequestVar;
 
     $output .= $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
 }

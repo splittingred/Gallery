@@ -14,7 +14,7 @@ GAL.panel.Album = function(config) {
             ,cls: 'modx-page-header'
         },{
             xtype: 'modx-tabs'
-            ,bodyStyle: 'padding: 1em'
+            ,bodyStyle: 'padding: 10px'
             ,defaults: { border: false ,autoHeight: true }
             ,border: true
             ,activeItem: 0

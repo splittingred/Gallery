@@ -2,7 +2,7 @@
 /**
  * Gallery
  *
- * Copyright 2010 by Shaun McCormick <shaun@collabpad.com>
+ * Copyright 2010 by Shaun McCormick <shaun@modxcms.com>
  *
  * Gallery is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -83,6 +83,20 @@ $properties = array(
         'value' => '100',
     ),
     array(
+        'name' => 'linkToImage',
+        'desc' => 'If true, will link directly to the image. If false, will append ',
+        'type' => 'combo-boolean',
+        'options' => '',
+        'value' => '',
+    ),
+    array(
+        'name' => 'imageGetParam',
+        'desc' => 'The GET param to use when not linking directly to an image. Make sure this matches the getParam property in the GalleryItem snippet call.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 'galItem',
+    ),
+    array(
         'name' => 'imageWidth',
         'desc' => 'If being used by a plugin, the width of the currently on-display image.',
         'type' => 'textfield',
@@ -136,14 +150,28 @@ $properties = array(
         'desc' => 'If true, if a REQUEST var of "album" is found, will use that as the album property for the snippet.',
         'type' => 'combo-boolean',
         'options' => '',
-        'value' => false,
+        'value' => true,
+    ),
+    array(
+        'name' => 'albumRequestVar',
+        'desc' => 'If checkForRequestAlbumVar is set to true, will look for a REQUEST var with this name to select the album.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 'galAlbum',
     ),
     array(
         'name' => 'checkForRequestTagVar',
         'desc' => 'If true, if a REQUEST var of "tag" is found, will use that as the tag property for the snippet.',
         'type' => 'combo-boolean',
         'options' => '',
-        'value' => false,
+        'value' => true,
+    ),
+    array(
+        'name' => 'tagRequestVar',
+        'desc' => 'If checkForRequestTagVar is set to true, will look for a REQUEST var with this name to select the tag.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 'galTag',
     ),
     array(
         'name' => 'useCss',

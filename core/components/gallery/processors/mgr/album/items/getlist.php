@@ -2,7 +2,7 @@
 /**
  * Gallery
  *
- * Copyright 2010 by Shaun McCormick <shaun@collabpad.com>
+ * Copyright 2010 by Shaun McCormick <shaun@modxcms.com>
  *
  * Gallery is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -39,17 +39,16 @@ $c->innerJoin('galAlbumItem','AlbumItems','`galItem`.`id` = `AlbumItems`.`item` 
 $c->innerJoin('galAlbum','Album','`Album`.`id` = `AlbumItems`.`album`');
 $count = $modx->getCount('galItem',$c);
 
-$modx->setLogTarget('ECHO');
 $c->leftJoin('galTag','Tags');
-$c->select('
-    `galItem`.*,
-    `AlbumItems`.`rank` AS `rank`,
-    `Album`.`id` AS `album`,
-    (
-        SELECT GROUP_CONCAT(`Tags`.`tag`) FROM '.$modx->getTableName('galTag').' AS `Tags`
-        WHERE `Tags`.`item` = `galItem`.`id`
-    ) AS `tags`
-');
+$c->select(array(
+    'galItem.*',
+    'AlbumItems.rank',
+));
+$c->select('`Album`.`id` AS `album`');
+$c->select('(
+    SELECT GROUP_CONCAT(`Tags`.`tag`) FROM '.$modx->getTableName('galTag').' AS `Tags`
+    WHERE `Tags`.`item` = `galItem`.`id`
+) AS `tags`');
 
 if ($isLimit) $c->limit($limit,$start);
 $c->sortby('rank','ASC');
