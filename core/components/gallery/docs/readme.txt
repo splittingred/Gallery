@@ -1,9 +1,18 @@
 --------------------
 3PC: Gallery
 --------------------
-Version: 0.1
-Since: February 3rd, 2010
+Version: 0.1.0
+Since: June 4th, 2010
 Author: Shaun McCormick <shaun@modxcms.com>
+
+--------------------
+New since 0.1.0-rc1:
+
+- Added GalleryItem snippet
+- Better integration between GalleryAlbums, Gallery, and GalleryItem snippet calls
+- Now can use them all on the same page to browse galleries
+
+--------------------
 
 A Gallery system for your photos and videos.
 
