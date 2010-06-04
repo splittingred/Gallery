@@ -58,7 +58,7 @@ if (empty($showAll)) {
     ));
 }
 $c->sortby($sort,$dir);
-$c->limit($limit,$start);
+if ($limit > 0) { $c->limit($limit,$start); }
 $albums = $modx->getCollection('galAlbum',$c);
 
 /* iterate */
