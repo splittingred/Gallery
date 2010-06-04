@@ -54,4 +54,15 @@ $properties = include $sources['build'].'properties/properties.galleryalbums.php
 $snippets[1]->setProperties($properties);
 unset($properties);
 
+$snippets[2]= $modx->newObject('modSnippet');
+$snippets[2]->fromArray(array(
+    'id' => 2,
+    'name' => 'GalleryItem',
+    'description' => '',
+    'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/snippet.galleryitem.php'),
+),'',true,true);
+$properties = include $sources['build'].'properties/properties.galleryitem.php';
+$snippets[2]->setProperties($properties);
+unset($properties);
+
 return $snippets;

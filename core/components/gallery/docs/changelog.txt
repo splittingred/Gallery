@@ -1,7 +1,10 @@
 Changelog for Gallery.
 
-Gallery 0.1 ($LastChangedRevision$, $LastChangedDate$)
+Gallery 0.1.0
 ====================================
+- More properly integrated system, so that albums can easily be toggled between
+- Added GalleryItem snippet
+- Added parameters to adjust the get params for how albums are selected
 - Fixed bug with setting inactive state on images
 - Optimizing for Revo RC-2
 - Fixed bug that occurs if Gallery is used where FURLs are off

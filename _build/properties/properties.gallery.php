@@ -62,6 +62,13 @@ $properties = array(
         'value' => '',
     ),
     array(
+        'name' => 'itemCls',
+        'desc' => 'The CSS class for each thumbnail.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 'gal-item',
+    ),
+    array(
         'name' => 'toPlaceholder',
         'desc' => 'If set, will set the output to a placeholder of this value, and the snippet call will output nothing.',
         'type' => 'textfield',

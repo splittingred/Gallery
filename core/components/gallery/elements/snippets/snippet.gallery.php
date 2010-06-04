@@ -42,6 +42,7 @@ $linkToImage = $modx->getOption('linkToImage',$scriptProperties,false);
 $imageGetParam = $modx->getOption('imageGetParam',$scriptProperties,'galItem');
 $albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
 $tagRequestVar = $modx->getOption('tagRequestVar',$scriptProperties,'galTag');
+$itemCls = $modx->getOption('itemCls',$scriptProperties,'gal-item');
 
 /* check for REQUEST vars if property set */
 if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,true)) {
@@ -117,6 +118,7 @@ if (!empty($plugin)) {
 $output = '';
 foreach ($items as $item) {
     $itemArray = $item->toArray();
+    $itemArray['cls'] = $itemCls;
     $itemArray['filename'] = basename($item->get('filename'));
     $itemArray['filesize'] = $item->get('filesize');
     $itemArray['thumbnail'] = $item->get('thumbnail',array(
