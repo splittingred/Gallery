@@ -99,7 +99,7 @@ if (!$showInactive) {
 }
 
 $c->sortby($sortAlias.'.'.$sort,$dir);
-if (!empty($limit)) $c->where($limit,$start);
+if (!empty($limit)) $c->limit($limit,$start);
 $items = $modx->getCollection('galItem',$c);
 
 /* load plugins */
