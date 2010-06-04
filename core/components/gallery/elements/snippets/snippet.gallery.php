@@ -132,7 +132,8 @@ foreach ($items as $item) {
         'h' => $modx->getOption('imageHeight',$scriptProperties,500),
         'zc' => 0,
     ));
-    $itemArray['album'] = $album->get('id');
+    if (!empty($album)) $itemArray['album'] = $album->get('id');
+    if (!empty($tag)) $itemArray['tag'] = $tag;
     $itemArray['linkToImage'] = $linkToImage;
     $itemArray['imageGetParam'] = $imageGetParam;
     $itemArray['albumRequestVar'] = $albumRequestVar;
