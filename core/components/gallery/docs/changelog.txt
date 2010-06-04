@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 0.1.0
 ====================================
+- Made it so Gallery snippet can be called without pointing to anything
 - More properly integrated system, so that albums can easily be toggled between
 - Added GalleryItem snippet
 - Added parameters to adjust the get params for how albums are selected

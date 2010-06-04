@@ -51,6 +51,7 @@ if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,true)) {
 if ($modx->getOption('checkForRequestTagVar',$scriptProperties,true)) {
     if (!empty($_REQUEST[$tagRequestVar])) $tag = $_REQUEST[$tagRequestVar];
 }
+if (empty($album) && empty($tag)) return '';
 
 /* build query */
 $c = $modx->newQuery('galItem');
