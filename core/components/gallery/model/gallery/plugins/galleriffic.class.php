@@ -64,6 +64,15 @@ class Galleriffic extends GalleryPlugin {
             'maxPagesToShow',
             'defaultTransitionDuration',
         ));
+        $this->toBoolean($this->config,array(
+            'enableTopPager',
+            'enableBottomPager',
+            'renderSSControls',
+            'renderNavControls',
+            'enableHistory',
+            'autoStart',
+            'syncTransitions',
+        ));
 
         $this->renderCssJs();
     }
