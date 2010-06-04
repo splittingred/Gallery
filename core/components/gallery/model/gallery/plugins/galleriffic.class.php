@@ -57,6 +57,14 @@ class Galleriffic extends GalleryPlugin {
             'onMouseOutOpacity' => '0.67',
         ),$this->config);
 
+        $this->toInt($this->config,array(
+            'delay',
+            'numThumbs',
+            'preloadAhead',
+            'maxPagesToShow',
+            'defaultTransitionDuration',
+        ));
+
         $this->renderCssJs();
     }
 
