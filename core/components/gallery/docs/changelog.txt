@@ -1,5 +1,10 @@
 Changelog for Gallery.
 
+Gallery 0.1.1
+====================================
+- Added "image_absolute" placeholder to thumbTpl in Gallery snippet
+- Fixed possible issues with phpthumb and caching
+
 Gallery 0.1.0
 ====================================
 - Added in batch upload

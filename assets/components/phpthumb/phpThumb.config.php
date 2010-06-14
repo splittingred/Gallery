@@ -51,10 +51,10 @@ $PHPTHUMB_CONFIG['cache_directory_depth'] = 4; // If this larger than zero, cach
 //   based on last-access date and/or number of files and/or total filesize.
 
 //$PHPTHUMB_CONFIG['cache_maxage'] = null;            // never delete cached thumbnails based on last-access time
-$PHPTHUMB_CONFIG['cache_maxage'] = 86400 * 30;        // delete cached thumbnails that haven't been accessed in more than [30 days] (value is maximum time since last access in seconds to avoid deletion)
+$PHPTHUMB_CONFIG['cache_maxage'] = 86400 * 14;        // delete cached thumbnails that haven't been accessed in more than [14 days] (value is maximum time since last access in seconds to avoid deletion)
 
 //$PHPTHUMB_CONFIG['cache_maxsize'] = null;           // never delete cached thumbnails based on byte size of cache directory
-$PHPTHUMB_CONFIG['cache_maxsize'] = 10 * 1024 * 1024; // delete least-recently-accessed cached thumbnails when more than [10MB] of cached files are present (value is maximum bytesize of all cached files)
+$PHPTHUMB_CONFIG['cache_maxsize'] = 4 * 1024 * 1024; // delete least-recently-accessed cached thumbnails when more than [4MB] of cached files are present (value is maximum bytesize of all cached files)
 
 //$PHPTHUMB_CONFIG['cache_maxfiles'] = null;          // never delete cached thumbnails based on number of cached files
 $PHPTHUMB_CONFIG['cache_maxfiles'] = 200;             // delete least-recently-accessed cached thumbnails when more than [200] cached files are present (value is maximum number of cached files to keep)

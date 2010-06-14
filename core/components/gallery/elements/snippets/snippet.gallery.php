@@ -121,16 +121,17 @@ foreach ($items as $item) {
     $itemArray = $item->toArray();
     $itemArray['cls'] = $itemCls;
     $itemArray['filename'] = basename($item->get('filename'));
+    $itemArray['image_absolute'] = $modx->getOption('gallery.files_url').$item->get('filename');
     $itemArray['filesize'] = $item->get('filesize');
     $itemArray['thumbnail'] = $item->get('thumbnail',array(
-        'w' => $modx->getOption('thumbWidth',$scriptProperties,100),
-        'h' => $modx->getOption('thumbHeight',$scriptProperties,100),
-        'zc' => 1,
+        'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),
+        'h' => (int)$modx->getOption('thumbHeight',$scriptProperties,100),
+        'zc' => (boolean)$modx->getOption('thumbZoomCrop',$scriptProperties,true),
     ));
     $itemArray['image'] = $item->get('thumbnail',array(
-        'w' => $modx->getOption('imageWidth',$scriptProperties,500),
-        'h' => $modx->getOption('imageHeight',$scriptProperties,500),
-        'zc' => 0,
+        'w' => (int)$modx->getOption('imageWidth',$scriptProperties,500),
+        'h' => (int)$modx->getOption('imageHeight',$scriptProperties,500),
+        'zc' => (boolean)$modx->getOption('imageZoomCrop',$scriptProperties,false),
     ));
     if (!empty($album)) $itemArray['album'] = $album->get('id');
     if (!empty($tag)) $itemArray['tag'] = $tag;
