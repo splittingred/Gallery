@@ -80,12 +80,6 @@ foreach ($items as $item) {
         'handler' => 'this.updateItem',
     );
     $itemArray['menu'][] = '-';
-    /*
-    $itemArray['menu'][] = array(
-        'text' => 'Remove Item From Album',
-        'handler' => 'this.removeItemFromAlbum',
-    );
-    */
     $itemArray['menu'][] = array(
         'text' => $modx->lexicon('gallery.item_delete'),
         'handler' => 'this.deleteItem',

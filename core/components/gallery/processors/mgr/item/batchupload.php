@@ -1,0 +1,146 @@
+<?php
+/**
+ * Gallery
+ *
+ * Copyright 2010 by Shaun McCormick <shaun@modxcms.com>
+ *
+ * Gallery is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * Gallery is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Gallery; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * @package gallery
+ */
+/**
+ * Upload an item into an album
+ *
+ * @package gallery
+ */
+
+/* validate form */
+$album = $modx->getOption('album',$_POST,false);
+if (empty($album)) return $modx->error->failure($modx->lexicon('gallery.album_err_ns'));
+
+$_POST['active'] = !empty($_POST['active']) ? 1 : 0;
+
+if (empty($_POST['directory'])) $modx->error->addField('directory',$modx->lexicon('gallery.directory_err_ns'));
+$directory = str_replace(array(
+    '{base_path}',
+    '{assets_path}',
+    '{core_path}',
+),array(
+    $modx->getOption('base_path',null,MODX_BASE_PATH),
+    $modx->getOption('assets_path',null,MODX_ASSETS_PATH),
+    $modx->getOption('core_path',null,MODX_CORE_PATH),
+),$_POST['directory']);
+
+if (empty($directory) || !is_dir($directory)) $modx->error->addField('directory',$modx->lexicon('gallery.directory_err_nf'));
+
+if ($modx->error->hasError()) {
+    return $modx->error->failure();
+}
+
+
+/* get sanitized base path and current path */
+$modx->getService('fileHandler','modFileHandler');
+$fullpath = $modx->fileHandler->sanitizePath($directory);
+
+
+$dateFolder = date('Y').'/'.date('m').'/';
+$targetDir = $modx->getOption('gallery.files_path').$dateFolder;
+
+$cacheManager = $modx->getCacheManager();
+/* if directory doesnt exist, create it */
+if (!file_exists($targetDir) || !is_dir($targetDir)) {
+    if (!$cacheManager->writeTree($targetDir)) {
+       $modx->log(modX::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$targetDir);
+       return $modx->error->failure('Could not create directory: '.$targetDir);
+    }
+}
+/* make sure directory is readable/writable */
+if (!is_readable($targetDir) || !is_writable($targetDir)) {
+    $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
+    return $modx->error->failure('Could not write to directory: '.$targetDir);
+}
+
+$imagesExts = array('jpg','jpeg','png','gif');
+/* iterate */
+$images = array();
+$errors = array();
+foreach (new DirectoryIterator($fullpath) as $file) {
+    if (in_array($file,array('.','..','.svn','_notes'))) continue;
+    if (!$file->isReadable() || $file->isDir()) continue;
+
+    $fileName = $file->getFilename();
+    $filePathName = $file->getPathname();
+
+    $fileExtension = pathinfo($filePathName,PATHINFO_EXTENSION);
+    if (!in_array($fileExtension,$imagesExts)) continue;
+
+    /* create item */
+    $item = $modx->newObject('galItem');
+    $item->set('name',$fileName);
+    $item->set('createdby',$modx->user->get('id'));
+    $item->set('mediatype','image');
+    $item->set('active',$_POST['active']);
+
+    /* upload the file */
+    $fileNameLower = strtolower($fileName);
+    $location = strtr($targetDir.'/'.$fileNameLower,'\\','/');
+    $location = str_replace('//','/',$location);
+    if (@file_exists($location.$fileNameLower)) {
+        @unlink($location.$fileNameLower);
+    }
+    if (!@copy($filePathName,$location)) {
+        $errors[] = 'An error occurred while trying to move the file: '.$fileNameLower.' to '.$location;
+        continue;
+    } else {
+        $item->set('filename',$dateFolder.$fileNameLower);
+    }
+
+    if (!$item->save()) {
+        $errors[] = $modx->lexicon('gallery.item_err_save');
+        continue;
+    }
+
+    /* get count of items in album */
+    $total = $modx->getCount('galAlbumItem',array('album' => $_POST['album']));
+
+    /* associate with album */
+    $albumItem = $modx->newObject('galAlbumItem');
+    $albumItem->set('album',$_POST['album']);
+    $albumItem->set('item',$item->get('id'));
+    $albumItem->set('rank',$total);
+    $albumItem->save();
+
+    /* save tags */
+    if (isset($_POST['tags'])) {
+        $tagNames = explode(',',$_POST['tags']);
+        foreach ($tagNames as $tagName) {
+            $tagName = trim($tagName);
+            if (empty($tagName)) continue;
+
+            $tag = $modx->newObject('galTag');
+            $tag->set('item',$item->get('id'));
+            $tag->set('tag',$tagName);
+            $tag->save();
+        }
+    }
+
+    $images[] = $fileName;
+}
+
+if (!empty($errors)) {
+    return $modx->error->failure(implode(',',$errors));
+}
+
+/* output to browser */
+return $modx->error->success('',$images);

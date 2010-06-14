@@ -8,10 +8,8 @@
 $nodes = array();
 
 $c = $modx->newQuery('galAlbum');
-$c->select('
-    `galAlbum`.*,
-    `Parent`.`name` AS `parent_name`
-');
+$c->select(array('galAlbum.*'));
+$c->select('`Parent`.`name` AS `parent_name`');
 $c->leftJoin('galAlbum','Parent');
 $c->where(array(
     'parent' => $id,
@@ -26,7 +24,7 @@ foreach ($albums as $album) {
     $albumArray['text'] = $album->get('name').' ('.$album->get('id').')';
     $albumArray['leaf'] = false;
     $albumArray['parent'] = 0;
-    $albumArray['cls'] = 'icon-tiff';
+    $albumArray['cls'] = 'icon-tiff'.($album->get('active') ? '' : ' gal-item-inactive');
     $albumArray['classKey'] = 'galAlbum';
 
     $albumArray['menu'] = array('items' => array());

@@ -14,6 +14,7 @@ GAL.view.AlbumItems = function(config) {
         ,loadingText: _('loading')
         ,tpl: this.templates.thumb
         ,enableDD: true
+        ,multiSelect: true
         ,listeners: {
             'dblclick': {fn: this.onDblClick ,scope:this }
         }
@@ -83,6 +84,29 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
                 'success': {fn:function(r) { this.run(); },scope:this}
             }
         });
+    }
+
+    ,deleteMultiple: function(btn,e) {
+        var recs = this.getSelectedRecords();
+        if (!recs) return false;
+
+        var ids = '';
+        for (var i=0;i<recs.length;i++) {
+            ids += ','+recs[i].id;
+        }
+
+        MODx.msg.confirm({
+            text: _('gallery.item_delete_multiple_confirm')
+            ,url: this.config.url
+            ,params: {
+                action: 'mgr/item/removeMultiple'
+                ,ids: ids.substr(1)
+            }
+            ,listeners: {
+                'success': {fn:function(r) { this.run(); },scope:this}
+            }
+        });
+        return true;
     }
     
     ,run: function(p) {
@@ -200,6 +224,37 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         this.ssWin.center();
         this.ssWin.setTitle(data.name);
         Ext.get('gal-item-ss').update('<img src="'+data.image+'" alt="" onclick="Ext.getCmp(\'gal-album-items-view\').ssWin.hide();" />');
+    }
+
+    ,_showContextMenu: function(v,i,n,e) {
+        e.preventDefault();
+        var data = this.lookup[n.id];
+        var m = this.cm;
+        m.removeAll();
+        var ct = this.getSelectionCount();
+        if (ct == 1) {
+            m.add({
+                text: _('gallery.item_update')
+                ,handler: this.updateItem
+                ,scope: this
+            });
+            m.add('-');
+            m.add({
+                text: _('gallery.item_delete')
+                ,handler: this.deleteItem
+                ,scope: this
+            });
+            m.show(n,'tl-c?');
+        } else if (ct > 1) {
+            m.add({
+                text: _('gallery.item_delete_multiple')
+                ,handler: this.deleteMultiple
+                ,scope: this
+            });
+            m.show(n,'tl-c?');
+        }
+
+        m.activeNode = n;
     }
 });
 Ext.reg('gal-view-album-items',GAL.view.AlbumItems);

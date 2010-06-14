@@ -142,17 +142,7 @@ GAL.panel.AlbumItems = function(config) {
         ,closeAction: 'hide'
         ,border: false
         ,autoScroll: true
-        ,items: [/*{
-            id: this.ident+'-album-tree'
-            ,cls: 'album-tree'
-            ,region: 'west'
-            ,width: '25%'
-            ,items: [{
-                xtype: 'gal-album-tree'
-            }]
-            ,autoScroll: true
-            ,border: false
-        },*/{
+        ,items: [{
             id: 'gal-album-items-ct'
             ,cls: 'browser-view'
             ,region: 'center'
@@ -161,10 +151,18 @@ GAL.panel.AlbumItems = function(config) {
             ,autoScroll: true
             ,border: false
             ,items: [{
-                xtype: 'button'
-                ,text: _('gallery.item_upload')
-                ,handler: this.uploadItem
-                ,scope: this
+                xtype: 'toolbar'
+                ,items: [{
+                    xtype: 'button'
+                    ,text: _('gallery.item_upload')
+                    ,handler: this.uploadItem
+                    ,scope: this
+                },'-',{
+                    xtype: 'button'
+                    ,text: _('gallery.batch_upload')
+                    ,handler: this.batchUpload
+                    ,scope: this
+                }]
             },this.view]
             ,bbar: [this.view.pagingBar]
         },{
@@ -202,6 +200,25 @@ Ext.extend(GAL.panel.AlbumItems,MODx.Panel,{
         this.windows.uploadItem.fp.getForm().reset();
         this.windows.uploadItem.setValues(r);
         this.windows.uploadItem.show(e.target);
+    }
+
+    ,batchUpload: function(btn,e) {
+        var r = {
+            album: this.config.album
+            ,active: true
+        };
+        if (!this.windows.batchUpload) {
+            this.windows.batchUpload = MODx.load({
+                xtype: 'gal-window-batch-upload'
+                ,listeners: {
+                    'success': {fn:function() { this.view.run(); },scope:this}
+                }
+            });
+        } else {
+            this.windows.batchUpload.fp.getForm().reset();
+        }
+        this.windows.batchUpload.setValues(r);
+        this.windows.batchUpload.show(e.target);
     }
 });
 Ext.reg('gal-panel-album-items',GAL.panel.AlbumItems);
@@ -260,3 +277,49 @@ GAL.window.UploadItem = function(config) {
 };
 Ext.extend(GAL.window.UploadItem,MODx.Window);
 Ext.reg('gal-window-item-upload',GAL.window.UploadItem);
+
+GAL.window.BatchUpload = function(config) {
+    config = config || {};
+    this.ident = config.ident || 'gupbu'+Ext.id();
+    Ext.applyIf(config,{
+        title: _('gallery.batch_upload')
+        ,id: this.ident
+        ,height: 150
+        ,width: 475
+        ,url: GAL.config.connector_url
+        ,action: 'mgr/item/batchupload'
+        ,fileUpload: true
+        ,fields: [{
+            xtype: 'hidden'
+            ,name: 'album'
+        },{
+            html: _('gallery.batch_upload_intro')
+            ,border: false
+        },MODx.PanelSpacer,{
+            xtype: 'textfield'
+            ,fieldLabel: _('gallery.directory')
+            ,name: 'directory'
+            ,id: 'gal-'+this.ident+'-directory'
+            ,width: 300
+            ,value: '{assets_path}images/'
+        },{
+            xtype: 'checkbox'
+            ,fieldLabel: _('gallery.active')
+            ,name: 'active'
+            ,description: ''
+            ,id: 'gal-'+this.ident+'-active'
+            ,checked: true
+            ,inputValue: 1
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('gallery.tags')
+            ,description: _('gallery.batch_upload_tags')
+            ,name: 'tags'
+            ,id: 'gal-'+this.ident+'-tags'
+            ,width: 300
+        }]
+    });
+    GAL.window.BatchUpload.superclass.constructor.call(this,config);
+};
+Ext.extend(GAL.window.BatchUpload,MODx.Window);
+Ext.reg('gal-window-batch-upload',GAL.window.BatchUpload);
