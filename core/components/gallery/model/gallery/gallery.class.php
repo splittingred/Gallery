@@ -70,13 +70,6 @@ class Gallery {
      * @param string $ctx The context to load. Defaults to web.
      */
     public function initialize($ctx = 'web') {
-
-/*
-        $this->modx->getService('hooks','gallery.galHooks',$this->config['modelPath'],array(
-            'gallery' => &$this,
-        ));
-        */
-
         switch ($ctx) {
             case 'mgr':
                 if (!$this->modx->loadClass('gallery.request.GalControllerRequest',$this->config['modelPath'],true,true)) {
