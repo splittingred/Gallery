@@ -181,7 +181,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
             ,'<tpl for=".">'
                 ,'<div class="modx-pb-detail-thumb"><img src="{thumbnail}" alt="" width="80" height="60" onclick="Ext.getCmp(\'gal-album-items-view\').showScreenshot(\'{id}\'); return false;" /></div>'
                 ,'<div class="modx-pb-details-info">'
-                    ,'<span style="float: right;">'
+                    ,'<span class="gal-detail-active">'
                         ,'<tpl if="active"><span class="green">'+_('gallery.active')+'</span></tpl>'
                         ,'<tpl if="!active"><span class="red">'+_('gallery.inactive')+'</span></tpl>'
                     ,'</span>'

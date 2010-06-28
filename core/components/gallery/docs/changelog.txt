@@ -1,5 +1,9 @@
 Changelog for Gallery.
 
+Gallery 0.1.2
+====================================
+- Added in Russian translation
+
 Gallery 0.1.1
 ====================================
 - Added "image_absolute" placeholder to thumbTpl in Gallery snippet

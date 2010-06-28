@@ -38,6 +38,7 @@ $_lang['gallery.album_err_save'] = 'An error occurred while trying to save the a
 $_lang['gallery.album_remove'] = 'Remove Album';
 $_lang['gallery.album_remove_confirm'] = 'Are you sure you want to remove this album? Any items that are not in any other albums will also be removed.';
 $_lang['gallery.album_update'] = 'Update Album';
+$_lang['gallery.albums'] = 'Albums';
 $_lang['gallery.back'] = 'Back';
 $_lang['gallery.batch_upload'] = 'Batch Upload';
 $_lang['gallery.batch_upload_intro'] = '<p>Specify a directory on the filesystem to scan for images. You can use {base_path}, {core_path}, or {assets_path} as placeholders.</p>';

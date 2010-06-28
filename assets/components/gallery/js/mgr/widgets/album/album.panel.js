@@ -113,7 +113,7 @@ GAL.panel.AlbumItems = function(config) {
         ,onSelect: {fn:function() { }, scope: this}
         ,containerScroll: true
         ,ident: this.ident
-        ,style:'overflow:auto; border-top: 1px solid #d4d4d4; margin-top: 4px;'
+        ,cls: 'gal-view-album-items'
         ,album: config.album
     });
     this.view.pagingBar = new Ext.PagingToolbar({

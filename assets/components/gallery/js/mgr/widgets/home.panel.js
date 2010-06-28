@@ -9,13 +9,13 @@ GAL.panel.Home = function(config) {
             ,cls: 'modx-page-header'
         },{
             xtype: 'modx-tabs'
-            ,bodyStyle: 'padding: 1em'
+            ,bodyStyle: 'padding: 10px'
             ,defaults: { border: false ,autoHeight: true }
             ,border: true
             ,activeItem: 0
             ,hideMode: 'offsets'
             ,items: [{
-                title: 'Albums'
+                title: _('gallery.albums')
                 ,items: [{
                     html: '<p>'+_('gallery.intro_msg')+'</p><br />'
                     ,border: false
