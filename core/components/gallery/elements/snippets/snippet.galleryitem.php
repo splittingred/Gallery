@@ -73,7 +73,8 @@ $itemArray['image'] = $item->get('thumbnail',array(
 
 /* get albums */
 $c = $modx->newQuery('galAlbum');
-$c->innerJoin('galAlbumItem','AlbumItems','`AlbumItems`.`album` = `galAlbum`.`id` AND `AlbumItems`.`item` = '.$item->get('id'));
+$c->innerJoin('galAlbumItem','AlbumItems',$modx->getSelectColumns('galAlbumItem','AlbumItems','',array('album')).' = '.$modx->getSelectColumns('galAlbum','galAlbum','',array('id'))
+    .' AND '.$modx->getSelectColumns('galAlbumItem','AlbumItems','',array('item')).' = '.$item->get('id'));
 $c->sortby('AlbumItems.rank','ASC');
 $albums = $modx->getCollection('galAlbum',$c);
 $itemArray['albums'] = '';

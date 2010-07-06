@@ -54,14 +54,18 @@ if ($modx->getOption('checkForRequestTagVar',$scriptProperties,true)) {
 if (empty($album) && empty($tag)) return '';
 
 /* build query */
+$tagc = $modx->newQuery('galTag');
+$tagc->setClassAlias('TagsJoin');
+$tagc->select('GROUP_CONCAT('.$modx->getSelectColumns('galTag','TagsJoin','',array('tag')).')');
+$tagc->where($modx->getSelectColumns('galTag','TagsJoin','',array('item')).' = '.$modx->getSelectColumns('galItem','galItem','',array('id')));
+$tagc->prepare();
+$tagSql = $tagc->toSql();
+
 $c = $modx->newQuery('galItem');
 $c->select(array('galItem.*'));
-$c->select('
-    (SELECT GROUP_CONCAT(`TagsJoin`.`tag`) FROM '.$modx->getTableName('galTag').' AS `TagsJoin`
-     WHERE `TagsJoin`.`item` = `galItem`.`id`) AS `tags`
-');
+$c->select('('.$tagSql.') AS `tags`');
 $c->innerJoin('galAlbumItem','AlbumItems');
-$c->innerJoin('galAlbum','Album','`AlbumItems`.`album` = `Album`.`id`');
+$c->innerJoin('galAlbum','Album',$modx->getSelectColumns('galAlbumItem','AlbumItems','',array('album')).' = '.$modx->getSelectColumns('galAlbum','Album','',array('id')));
 
 /* pull by album */
 if (!empty($album)) {
@@ -139,6 +143,7 @@ foreach ($items as $item) {
     $itemArray['imageGetParam'] = $imageGetParam;
     $itemArray['albumRequestVar'] = $albumRequestVar;
     $itemArray['tagRequestVar'] = $tagRequestVar;
+    $itemArray['tag'] = '';
 
     $output .= $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
 }
@@ -162,10 +167,11 @@ if (!empty($toPlaceholder)) {
         $toPlaceholder.'.description' => $galleryDescription,
     ));
 } else {
+    $placeholderPrefix = $modx->getOption('placeholderPrefix',$scriptProperties,'gallery.');
     $modx->toPlaceholders(array(
-        'gallery.id' => $galleryId,
-        'gallery.name' => $galleryName,
-        'gallery.description' => $galleryDescription,
+        $placeholderPrefix.'id' => $galleryId,
+        $placeholderPrefix.'name' => $galleryName,
+        $placeholderPrefix.'description' => $galleryDescription,
     ));
     return $output;
 }

@@ -2,6 +2,8 @@ Changelog for Gallery.
 
 Gallery 0.1.2
 ====================================
+- Fixed bug with request parameter generation in URLs
+- Abstracted SQL in snippets
 - Added in Russian translation
 
 Gallery 0.1.1
