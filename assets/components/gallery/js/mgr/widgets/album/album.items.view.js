@@ -4,11 +4,11 @@ GAL.view.AlbumItems = function(config) {
     this._initTemplates();
     Ext.applyIf(config,{
         url: GAL.config.connector_url
-        ,fields: ['id','name','description','mediatype','createdon','createdby','filename','filesize','thumbnail','image','image_width','image_height','tags','active','rank','menu']
+        ,fields: ['id','name','description','mediatype','createdon','createdby','filename','filesize','thumbnail','image','image_width','image_height','tags','active','rank','absoluteImage','relativeImage','menu']
         ,ident: 'galbit'
         ,id: 'gal-album-items-view'
         ,baseParams: {
-            action: 'mgr/album/items/getList'
+            action: 'mgr/item/getList'
             ,album: config.album
         }
         ,loadingText: _('loading')
@@ -22,9 +22,7 @@ GAL.view.AlbumItems = function(config) {
     });
     GAL.view.AlbumItems.superclass.constructor.call(this,config);
     this.on('selectionchange',this.showDetails,this,{buffer: 100});
-    this.addEvents({
-        'sort': true
-    });
+    this.addEvents('sort','select');
     this.on('sort',this.onSort,this);
     
 };
@@ -36,7 +34,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'mgr/album/items/sort'
+                action: 'mgr/item/sort'
                 ,album: this.config.album
                 ,source: o.source.id
                 ,target: o.target.id
@@ -47,6 +45,12 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
                 },scope:this}
             }
         });
+    }
+
+    ,onDblClick: function(d) {
+        var node = this.getSelectedNodes()[0];
+        var data = this.lookup[node.id];
+        this.fireEvent('select',data);
     }
     
     ,updateItem: function(btn,e) {

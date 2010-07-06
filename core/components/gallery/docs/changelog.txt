@@ -1,5 +1,9 @@
 Changelog for Gallery.
 
+Gallery 1.0.0
+=============
+- Added Gallery custom TV input, output and properties types
+
 Gallery 0.1.2
 ====================================
 - Fixed bug with request parameter generation in URLs

@@ -1,24 +1,21 @@
 <div id="tv{$tv->id}-form"></div>
+<div id="tv{$tv->id}-preview">
+{if $item}
+<div class="gal-tv-preview" style="margin-top: 5px;">
+    <img src="{$connectors_url}system/phpthumb.php?h=200&src={$item->url}" alt="{$item->name}" style="float: left; margin-right: 10px;" />
+    <span style="font-weight: bold;">{$item->name}</span><br />
+    <p>{$item->description}</p>
+</div>
+{/if}
+</div>
 
 {literal}
 <script type="text/javascript">
 // <![CDATA[
-var oc = {'change':{fn:function(){Ext.getCmp('modx-panel-resource').markDirty();},scope:this}};
 MODx.load({
-    xtype: 'panel'
-    ,layout: 'fit'
-    ,autoHeight: true
-    ,labelWidth: 150
-    ,border: false
-    ,items: [{
-        xtype: 'textfield'
-        ,name: 'tv{/literal}{$tv->id}{literal}'
-        ,id: 'tv{/literal}{$tv->id}{literal}'
-        ,value: '{/literal}{$tv->value}{literal}'
-        ,width: 300
-        ,listeners: oc
-    }]
-    ,renderTo: 'tv{/literal}{$tv->id}{literal}-form'
+    xtype: 'gal-panel-tv'
+    ,tv: '{/literal}{$tv->id}{literal}'
+    ,tvValue: '{/literal}{$tv->value}{literal}'
 });
 // ]]>
 </script>
