@@ -51,7 +51,7 @@ Ext.extend(GAL.tree.Album,MODx.tree.Tree,{
     
     ,updateAlbum: function(btn,e) {
         var id = this.cm.activeNode ? this.cm.activeNode.attributes.pk : 0;
-        location.href = '?a='+MODx.request.a+'&album='+id+'&action=album/update';
+        location.href = '?a='+GAL.action+'&album='+id+'&action=album/update';
     }
     
     ,removeAlbum: function(btn,e) {

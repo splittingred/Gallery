@@ -1,22 +1,15 @@
 <div id="tv{$tv->id}-form"></div>
-<div id="tv{$tv->id}-preview">
-{if $item}
-<div class="gal-tv-preview" style="margin-top: 5px;">
-    <img src="{$connectors_url}system/phpthumb.php?h=200&src={$item->url}" alt="{$item->name}" style="float: left; margin-right: 10px;" />
-    <span style="font-weight: bold;">{$item->name}</span><br />
-    <p>{$item->description}</p>
-</div>
-{/if}
-</div>
+<input type="hidden" id="tv{$tv->id}" name="tv{$tv->id}" value="{$itemjson|escape}" />
 
 {literal}
 <script type="text/javascript">
 // <![CDATA[
-MODx.load({
+MODx.load({{/literal}
     xtype: 'gal-panel-tv'
-    ,tv: '{/literal}{$tv->id}{literal}'
-    ,tvValue: '{/literal}{$tv->value}{literal}'
-});
+    ,tv: '{$tv->id}'
+    ,tvValue: '{$tv->value}'
+    {if $itemjson},data: {$itemjson}{/if}
+{literal}});
 // ]]>
 </script>
 {/literal}

@@ -32,6 +32,7 @@ Ext.onReady(function() {
     GAL.config = '.$modx->toJSON($gallery->config).';
     GAL.config.connector_url = "'.$gallery->config['connectorUrl'].'";
     GAL.request = '.$modx->toJSON($_GET).';
+    GAL.action = "'.(!empty($_REQUEST['a']) ? $_REQUEST['a'] : 0).'";
 });
 </script>');
 

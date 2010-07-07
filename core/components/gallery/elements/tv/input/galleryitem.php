@@ -4,7 +4,7 @@
  * @subpackage processors.element.tv.renders.mgr.input
  */
 $modx =& $this->xpdo;
-$modx->lexicon->load('tv_widget');
+$modx->lexicon->load('tv_widget','gallery:default');
 $modx->smarty->assign('base_url',$this->xpdo->getOption('base_url'));
 
 $modx->setLogTarget('ECHO');
@@ -12,11 +12,16 @@ $corePath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_pat
 $modx->addPackage('gallery',$corePath.'model/');
 
 if (!empty($this->value)) {
-    $item = $modx->getObject('galItem',$this->value);
-    if ($item) {
-        $item->url = $item->get('absoluteImage');
-        $modx->smarty->assign('item',$item);
-        $modx->smarty->assign('connectors_url',$modx->getOption('connectors_url',null,MODX_CONNECTORS_URL));
+    $data = $modx->fromJSON($this->value);
+    if (is_array($data)) {
+        $item = $modx->getObject('galItem',$data['id']);
+        if ($item) {
+            $item->getSize();
+            $itemArray = $item->toArray('',true,true);
+            $itemArray['url'] = $item->get('absoluteImage');
+            $js = $modx->toJSON($data);
+            $modx->smarty->assign('itemjson',$js);
+        }
     }
 }
 

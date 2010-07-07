@@ -7,10 +7,12 @@ $corePath = $this->xpdo->getOption('gallery.core_path',null,$this->xpdo->getOpti
 $this->xpdo->addPackage('gallery',$corePath.'model/');
 
 if (!empty($value)) {
-    $item = $this->xpdo->getObject('galItem',$value);
+    $data = $this->xpdo->fromJSON($value);
+
+    $item = $this->xpdo->getObject('galItem',$data['id']);
     if ($item) {
-        $url = $item->get('image');
-        $value = '<img src="'.$url.'" alt="'.$item->get('name').'" />';
+        $url = $item->get('image').'&w='.$data['image_width'].'&h='.$data['image_height'];
+        $value = '<img src="'.$url.'" alt="'.$data['description'].'" title="'.$data['name'].'" />';
     }
 }
 return $value;

@@ -137,4 +137,14 @@ class galItem extends xPDOSimpleObject {
 
         return round($bytes, $precision) . ' ' . $units[$pow];
     }
+
+    public function getSize() {
+        $imagePath = $this->get('image_path');
+        $size = @getimagesize($imagePath);
+        if (is_array($size)) {
+            $this->set('image_width',$size[0]);
+            $this->set('image_height',$size[1]);
+            $this->set('image_type',$size[2]);
+        }
+    }
 }

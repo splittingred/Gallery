@@ -17,10 +17,22 @@ switch ($modx->event->name) {
         $gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/gallery/',$scriptProperties);
         if (!($gallery instanceof Gallery)) return '';
 
+        /* assign gallery lang to JS */
+        $modx->lexicon->load('gallery:default');
+        $_lang_topics = $modx->smarty->get_template_vars('_lang_topics');
+        $_lang_topics .= ',gallery:default';
+        $modx->smarty->assign('_lang_topics',$_lang_topics);
+
+        /* get gallery action */
+        $action = $modx->getObject('modAction',array(
+            'namespace' => 'gallery',
+            'controller' => 'index',
+        ));
         $modx->regClientStartupHTMLBlock('<script type="text/javascript">
         Ext.onReady(function() {
             GAL.config = {};
             GAL.config.connector_url = "'.$gallery->config['connectorUrl'].'";
+            GAL.action = "'.($action ? $action->get('id') : 0).'";
         });
         </script>');
         $modx->regClientStartupScript($gallery->config['assetsUrl'].'js/mgr/gallery.js');
