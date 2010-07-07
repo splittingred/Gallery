@@ -1,5 +1,5 @@
 <div id="tv{$tv->id}-form"></div>
-<input type="hidden" id="tv{$tv->id}" name="tv{$tv->id}" value="{$itemjson|escape}" />
+<input type="hidden" id="tv{$tv->id}" name="tv{$tv->id}" value="{if $itemjson}{$itemjson|escape}{else}{literal}{}{/literal}{/if}" />
 
 {literal}
 <script type="text/javascript">

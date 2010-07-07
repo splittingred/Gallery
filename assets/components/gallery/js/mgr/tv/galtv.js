@@ -20,15 +20,16 @@ Ext.override(Ext.slider.Thumb, {
 
 GAL.TV = function(config) {
     config = config || {};
+    config.data = config.data || {};
     this.previewTpl = new Ext.XTemplate('<tpl for=".">'
-        ,'<div class="gal-tv-preview">'
+        ,'<div class="gal-tv-preview x-panel-body x-panel-body-noheader">'
         //'+MODx.config.connectors_url+'system/phpthumb.php?h=200&src=
         ,'<img src="{url}" alt="{name}" id="tv'+config.tv+'-image" style="width: {image_width}px; height: {image_height}px" />'
         ,'</div>'
         ,'</tpl>');
     this.previewTpl.compile();
     var item;
-    if (config.data) {
+    if (config.data.id) {
         item = this.previewTpl.applyTemplate(config.data);
     }
     Ext.applyIf(config,{
@@ -47,18 +48,36 @@ GAL.TV = function(config) {
             columnWidth: .4
             ,bodyStyle: 'padding: 10px;'
             ,items: [{
-                xtype: 'button'
-                ,text: _('gallery.choose_item')
-                ,tv: config.tv
-                ,handler: this.loadBrowser
-                ,scope: this
+                    layout: 'column'
+                    ,border: false
+                    ,items: [{
+                        columnWidth: .5
+                        ,border: false
+                        ,items: [{
+                            xtype: 'button'
+                            ,text: _('gallery.choose_item')
+                            ,tv: config.tv
+                            ,handler: this.loadBrowser
+                            ,scope: this
+                        }]
+                    },{
+                        columnWidth: .5
+                        ,border: false
+                        ,items: [{
+                            xtype: 'button'
+                            ,text: 'Clear Image'
+                            ,tv: config.tv
+                            ,handler: this.clearImage
+                            ,scope: this
+                        }]
+                    }]
             },{
                 html: '<br />' ,border: false
             },{
                 html: item || '&nbsp;'
                 ,id: 'tv'+config.tv+'-preview'
-                ,border: false
-                ,height: 400
+                ,border: true
+                ,height: 200
             }]
         },{
             columnWidth: .6
@@ -68,35 +87,41 @@ GAL.TV = function(config) {
                 xtype: 'hidden'
                 ,name: 'orig_width'
                 ,value: config.data.orig_width
+                ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'hidden'
                 ,name: 'orig_height'
                 ,value: config.data.orig_height
+                ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'textfield'
                 ,name: 'name'
                 ,fieldLabel: _('gallery.title')
                 ,value: config.data.name || ''
+                ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'textfield'
                 ,name: 'description'
                 ,fieldLabel: _('gallery.alt_text')
                 ,value: config.data.description || ''
+                ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'textfield'
                 ,name: 'image_width'
                 ,fieldLabel: _('gallery.width')
                 ,value: config.data.image_width
+                ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'textfield'
                 ,name: 'image_height'
                 ,fieldLabel: _('gallery.height')
                 ,value: config.data.image_height
+                ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'slider'
@@ -105,6 +130,7 @@ GAL.TV = function(config) {
                 ,maxValue: 100
                 ,increment: 5
                 ,value: config.data.slider || 100
+                ,anchor: '97%'
                 ,listeners: {
                     'drag': {fn:this.resizeImage,scope:this}
                     ,'changecomplete': {fn:this.resizeImage,scope:this}
@@ -167,89 +193,51 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
                 xtype: 'gal-browser'
                 ,rootVisible: this.config.rootVisible || false
                 ,listeners: {
-                    'select': {fn: function(data) {
-                        data.url = data.absoluteImage;
-
-                        this.fireEvent('select',data);
-                        data.orig_width = data.image_width;
-                        data.orig_height = data.image_height;
-                        data.title = data.description;
-                        var f = this.getForm();
-                        
-                        f.setValues(data);
-
-                        var fld = Ext.get('tv'+this.config.tv);
-                        var js = Ext.decode(fld.dom.value);
-                        js = data;
-                        fld.dom.value = Ext.encode(js);
-
-                        Ext.getCmp('tv'+this.config.tv+'-slider').setValue(100);
-
-                        var p = Ext.get('tv'+this.config.tv+'-preview');
-                        if (p) {
-                            this.previewTpl.overwrite(p,data);
-                        }
-                        Ext.getCmp('modx-panel-resource').markDirty();
-                    },scope:this}
+                    'select': {fn: this.selectImage,scope:this}
                 }
             });
         }
         this.browser.show(btn);
     }
+    ,selectImage: function(data) {
+        data.url = data.absoluteImage;
+
+        this.fireEvent('select',data);
+        data.orig_width = data.image_width;
+        data.orig_height = data.image_height;
+        data.title = data.description;
+        var f = this.getForm();
+
+        f.setValues(data);
+
+        var fld = Ext.get('tv'+this.config.tv);
+        var js = Ext.decode(fld.dom.value);
+        js = data || {};
+        fld.dom.value = Ext.encode(js);
+
+        Ext.getCmp('tv'+this.config.tv+'-slider').setValue(100);
+
+        var p = Ext.get('tv'+this.config.tv+'-preview');
+        if (p) {
+            this.previewTpl.overwrite(p,data);
+        }
+        Ext.getCmp('modx-panel-resource').markDirty();
+    }
+    ,clearImage: function() {
+        var fld = Ext.get('tv'+this.config.tv);
+        fld.dom.value = Ext.encode({});
+        Ext.get('tv'+this.config.tv+'-preview').update('&nbsp;');
+        var f = this.getForm();
+        f.reset();
+        f.setValues({
+            name: ''
+            ,description: ''
+            ,image_width: 0
+            ,image_height: 0
+            ,slider: 100
+        });
+        Ext.getCmp('modx-panel-resource').markDirty();
+    }
 });
 Ext.reg('gal-panel-tv',GAL.TV);
 
-
-GAL.combo.Browser = function(config) {
-    config = config || {};
-    Ext.applyIf(config,{
-        width: 300
-        ,editable: false
-        ,typeAhead: false
-        ,triggerAction: 'all'
-        ,listeners: {
-            'change': {fn:function(){Ext.getCmp('modx-panel-resource').markDirty();},scope:this}
-        }
-    });
-    GAL.combo.Browser.superclass.constructor.call(this,config);
-    this.config = config;
-};
-Ext.extend(GAL.combo.Browser,Ext.form.TriggerField,{
-    browser: null
-
-    ,onTriggerClick : function(){
-        if (this.disabled){
-            return false;
-        }
-
-        if (this.browser === null) {
-            this.browser = MODx.load({
-                xtype: 'gal-browser'
-                ,prependPath: this.config.prependPath || null
-                ,prependUrl: this.config.prependUrl || null
-                ,hideFiles: this.config.hideFiles || false
-                ,rootVisible: this.config.rootVisible || false
-                ,listeners: {
-                    'select': {fn: function(data) {
-                        data.url = MODx.config.connectors_url+'system/phpthumb.php?h='+200+'&src='+data.absoluteImage;
-                        this.setValue(data.id);
-                        this.fireEvent('select',data);
-
-                        var p = Ext.get('tv'+this.config.tv+'-preview');
-                        if (p) {
-                            this.previewTpl.overwrite(p,data);
-                        }
-                        Ext.getCmp('modx-panel-resource').markDirty();
-                    },scope:this}
-                }
-            });
-        }
-        this.browser.show();
-        return true;
-    }
-
-    ,onDestroy: function(){
-        GAL.combo.Browser.superclass.onDestroy.call(this);
-    }
-});
-Ext.reg('gal-combo-browser',GAL.combo.Browser);
