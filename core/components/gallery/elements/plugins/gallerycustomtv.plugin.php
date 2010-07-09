@@ -1,5 +1,7 @@
 <?php
 /**
+ * Handles plugin events for Gallery's Custom TV
+ * 
  * @package gallery
  */
 $corePath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/');
@@ -18,10 +20,7 @@ switch ($modx->event->name) {
         if (!($gallery instanceof Gallery)) return '';
 
         /* assign gallery lang to JS */
-        $modx->lexicon->load('gallery:default');
-        $_lang_topics = $modx->smarty->get_template_vars('_lang_topics');
-        $_lang_topics .= ',gallery:default';
-        $modx->smarty->assign('_lang_topics',$_lang_topics);
+        $modx->response->addLangTopic('gallery:default');
 
         /* get gallery action */
         $action = $modx->getObject('modAction',array(
