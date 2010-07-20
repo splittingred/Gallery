@@ -20,7 +20,7 @@ switch ($modx->event->name) {
         if (!($gallery instanceof Gallery)) return '';
 
         /* assign gallery lang to JS */
-        $modx->response->addLangTopic('gallery:default');
+        $modx->response->addLangTopic('gallery:tv');
 
         /* get gallery action */
         $action = $modx->getObject('modAction',array(
@@ -39,6 +39,7 @@ switch ($modx->event->name) {
         $modx->regClientStartupScript($gallery->config['assetsUrl'].'js/mgr/widgets/album/album.tree.js');
         $modx->regClientStartupScript($gallery->config['assetsUrl'].'js/mgr/tv/gal.browser.js');
         $modx->regClientStartupScript($gallery->config['assetsUrl'].'js/mgr/tv/galtv.js');
+        $modx->regClientCSS($gallery->config['cssUrl'].'mgr.css');
         break;
 }
 return;

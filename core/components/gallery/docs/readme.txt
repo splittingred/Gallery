@@ -3,7 +3,7 @@
 --------------------
 Version: 0.1.0
 Since: June 4th, 2010
-Author: Shaun McCormick <shaun@modxcms.com>
+Author: Shaun McCormick <shaun@modx.com>
 
 --------------------
 New since 0.1.0-rc1:

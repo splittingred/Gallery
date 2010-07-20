@@ -49,7 +49,7 @@ GAL.BrowserWindow = function(config) {
         ,tbar: []
     });
     Ext.applyIf(config,{
-        title: 'Gallery Browser'
+        title: _('gallery.browser')
         ,cls: 'modx-pb-win'
         ,layout: 'border'
         ,minWidth: 500

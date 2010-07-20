@@ -20,7 +20,20 @@
  * @package gallery
  */
 /**
+ * Custom TV English Lexicon Entries for Gallery
+ *
  * @package gallery
+ * @subpackage lexicon
  */
-require_once (strtr(realpath(dirname(dirname(__FILE__))), '\\', '/') . '/galitem.class.php');
-class galItem_mysql extends galItem {}
+$_lang['gallery.active'] = 'Active';
+$_lang['gallery.alt_text'] = 'Alt Text';
+$_lang['gallery.browser'] = 'Gallery Browser';
+$_lang['gallery.choose_item'] = 'Choose an Image';
+$_lang['gallery.clear_image'] = 'Clear Image';
+$_lang['gallery.file_name'] = 'File Name';
+$_lang['gallery.file_size'] = 'File Size';
+$_lang['gallery.height'] = 'Height';
+$_lang['gallery.inactive'] = 'Inactive';
+$_lang['gallery.tags'] = 'Tags';
+$_lang['gallery.title'] = 'Title';
+$_lang['gallery.width'] = 'Width';

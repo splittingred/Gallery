@@ -2,7 +2,7 @@
 /**
  * Gallery
  *
- * Copyright 2010 by Shaun McCormick <shaun@modxcms.com>
+ * Copyright 2010 by Shaun McCormick <shaun@modx.com>
  *
  * Gallery is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -39,13 +39,11 @@ $_lang['gallery.album_remove'] = 'Remove Album';
 $_lang['gallery.album_remove_confirm'] = 'Are you sure you want to remove this album? Any items that are not in any other albums will also be removed.';
 $_lang['gallery.album_update'] = 'Update Album';
 $_lang['gallery.albums'] = 'Albums';
-$_lang['gallery.alt_text'] = 'Alt Text';
 $_lang['gallery.back'] = 'Back';
 $_lang['gallery.batch_upload'] = 'Batch Upload';
 $_lang['gallery.batch_upload_intro'] = '<p>Specify a directory on the filesystem to scan for images. You can use {base_path}, {core_path}, or {assets_path} as placeholders.</p>';
 $_lang['gallery.batch_upload_tags'] = 'Tags to assign to any items batch uploaded, in comma-separated list format.';
 $_lang['gallery.bytes'] = 'bytes';
-$_lang['gallery.choose_item'] = 'Choose an Image';
 $_lang['gallery.comma_separated_list'] = 'Comma-separated list';
 $_lang['gallery.directory'] = 'Directory';
 $_lang['gallery.directory_desc'] = 'The directory to scan for images.';

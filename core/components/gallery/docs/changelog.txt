@@ -3,6 +3,7 @@ Changelog for Gallery.
 Gallery 1.0.0
 =============
 - Added Gallery custom TV input, output and properties types
+- Updated copyright information
 
 Gallery 0.1.2
 ====================================

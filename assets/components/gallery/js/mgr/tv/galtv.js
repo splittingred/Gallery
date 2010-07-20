@@ -65,7 +65,7 @@ GAL.TV = function(config) {
                         ,border: false
                         ,items: [{
                             xtype: 'button'
-                            ,text: 'Clear Image'
+                            ,text: _('gallery.clear_image')
                             ,tv: config.tv
                             ,handler: this.clearImage
                             ,scope: this
