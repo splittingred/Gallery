@@ -63,12 +63,14 @@ $itemArray['filesize'] = $item->get('filesize');
 $itemArray['thumbnail'] = $item->get('thumbnail',array(
     'w' => $modx->getOption('thumbWidth',$scriptProperties,100),
     'h' => $modx->getOption('thumbHeight',$scriptProperties,100),
-    'zc' => $modx->getOption('thumbZoomCrop',$scriptProperties,1),
+    'zc' => $modx->getOption('thumbZoomCrop',$scriptProperties,0),
+    'far' => $modx->getOption('thumbFar',$scriptProperties,'C'),
 ));
 $itemArray['image'] = $item->get('thumbnail',array(
     'w' => $modx->getOption('imageWidth',$scriptProperties,500),
     'h' => $modx->getOption('imageHeight',$scriptProperties,500),
     'zc' => $modx->getOption('imageZoomCrop',$scriptProperties,0),
+    'far' => $modx->getOption('imageFar',$scriptProperties,false),
 ));
 
 /* get albums */

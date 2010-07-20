@@ -122,7 +122,14 @@ $properties = array(
         'desc' => 'Whether or not to use zoom cropping for the thumbnail.',
         'type' => 'combo-boolean',
         'options' => '',
-        'value' => 1,
+        'value' => true,
+    ),
+    array(
+        'name' => 'thumbFar',
+        'desc' => 'The "far" value for phpThumb for the thumbnail, for aspect ratio zooming.',
+        'type' => 'combo-boolean',
+        'options' => '',
+        'value' => 'C',
     ),
     array(
         'name' => 'imageWidth',
@@ -144,5 +151,12 @@ $properties = array(
         'type' => 'combo-boolean',
         'options' => '',
         'value' => 0,
+    ),
+    array(
+        'name' => 'imageFar',
+        'desc' => 'The "far" value for phpThumb for the image, for aspect ratio zooming.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '',
     ),
 );

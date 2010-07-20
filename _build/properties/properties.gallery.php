@@ -97,6 +97,13 @@ $properties = array(
         'value' => true,
     ),
     array(
+        'name' => 'thumbFar',
+        'desc' => 'The "far" value for phpThumb for the thumbnail, for aspect ratio zooming.',
+        'type' => 'combo-boolean',
+        'options' => '',
+        'value' => 'C',
+    ),
+    array(
         'name' => 'linkToImage',
         'desc' => 'If true, will link directly to the image. If false, will append ',
         'type' => 'combo-boolean',
@@ -130,6 +137,13 @@ $properties = array(
         'type' => 'combo-boolean',
         'options' => '',
         'value' => false,
+    ),
+    array(
+        'name' => 'imageFar',
+        'desc' => 'The "far" value for phpThumb for the image, for aspect ratio zooming.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '',
     ),
     array(
         'name' => 'sort',

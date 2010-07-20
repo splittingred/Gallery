@@ -68,7 +68,8 @@ foreach ($items as $item) {
     $c = array();
     $c['h'] = 100;
     $c['w'] = 100;
-    $c['zc'] = 'C';
+    $c['zc'] = '0';
+    $c['far'] = 'C';
     $itemArray['thumbnail'] = $item->get('thumbnail',$c);
     $itemArray['image'] = $item->get('image');
     $itemArray['relativeImage'] = $item->get('relativeImage');
