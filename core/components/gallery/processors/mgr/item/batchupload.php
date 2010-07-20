@@ -71,7 +71,9 @@ if (!is_readable($targetDir) || !is_writable($targetDir)) {
     return $modx->error->failure('Could not write to directory: '.$targetDir);
 }
 
-$imagesExts = array('jpg','jpeg','png','gif');
+$imagesExts = array('jpg','jpeg','png','gif','bmp');
+$use_multibyte = $modx->getOption('use_multibyte',null,false);
+$encoding = $modx->getOption('modx_charset',null,'UTF-8');
 /* iterate */
 $images = array();
 $errors = array();
@@ -83,6 +85,7 @@ foreach (new DirectoryIterator($fullpath) as $file) {
     $filePathName = $file->getPathname();
 
     $fileExtension = pathinfo($filePathName,PATHINFO_EXTENSION);
+    $fileExtension = $use_multibyte ? mb_strtolower($fileExtension,$encoding) : strtolower($fileExtension);
     if (!in_array($fileExtension,$imagesExts)) continue;
 
     /* create item */
