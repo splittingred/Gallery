@@ -93,14 +93,36 @@ if (!is_array($chunks)) {
     $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($chunks).' chunks.');
 }
 
-/* add plugins */
-$plugins = include $sources['data'].'transport.plugins.php';
-if (!is_array($plugins)) {
-    $modx->log(modX::LOG_LEVEL_ERROR,'Could not package in plugins.');
-} else {
-    $category->addMany($plugins);
-    $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($plugins).' plugins.');
+/* add tv plugin */
+$plugin= $modx->newObject('modPlugin');
+$plugin->fromArray(array(
+    'id' => 1,
+    'name' => 'GalleryCustomTV',
+    'description' => '',
+    'plugincode' => file_get_contents($sources['plugins'] . 'gallerycustomtv.plugin.php'),
+),'',true,true);
+$events = include $sources['data'].'events/events.gallerycustomtv.php';
+if (is_array($events) && !empty($events)) {
+    $modx->log(modX::LOG_LEVEL_INFO,'Added '.count($events).' events to GalleryCustomTV plugin.');
+    $plugin->addMany($events);
 }
+unset($events);
+$attributes = array (
+    xPDOTransport::PRESERVE_KEYS => false,
+    xPDOTransport::UPDATE_OBJECT => true,
+    xPDOTransport::UNIQUE_KEY => 'name',
+    xPDOTransport::RELATED_OBJECTS => true,
+    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
+        'PluginEvents' => array(
+            xPDOTransport::PRESERVE_KEYS => true,
+            xPDOTransport::UPDATE_OBJECT => false,
+            xPDOTransport::UNIQUE_KEY => array('pluginid','event'),
+        ),
+    ),
+);
+$vehicle = $builder->createVehicle($plugin, $attributes);
+$builder->putVehicle($vehicle);
+unset($vehicle,$attributes,$plugin);
 
 /* create category vehicle */
 $attr = array(
@@ -125,11 +147,6 @@ $attr = array(
                     xPDOTransport::UPDATE_OBJECT => true,
                     xPDOTransport::UNIQUE_KEY => 'name',
                 ),
-                'Plugins' => array(
-                    xPDOTransport::PRESERVE_KEYS => false,
-                    xPDOTransport::UPDATE_OBJECT => true,
-                    xPDOTransport::UNIQUE_KEY => 'name',
-                ),
             ),
         ),
         'Snippets' => array(
@@ -138,11 +155,6 @@ $attr = array(
             xPDOTransport::UNIQUE_KEY => 'name',
         ),
         'Chunks' => array (
-            xPDOTransport::PRESERVE_KEYS => false,
-            xPDOTransport::UPDATE_OBJECT => true,
-            xPDOTransport::UNIQUE_KEY => 'name',
-        ),
-        'Plugins' => array (
             xPDOTransport::PRESERVE_KEYS => false,
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'name',

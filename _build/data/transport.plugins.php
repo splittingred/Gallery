@@ -25,18 +25,4 @@
  */
 $plugins = array();
 
-$plugins[0]= $modx->newObject('modPlugin');
-$plugins[0]->fromArray(array(
-    'id' => 0,
-    'name' => 'GalleryCustomTV',
-    'description' => '',
-    'plugincode' => file_get_contents($sources['plugins'] . 'gallerycustomtv.plugin.php'),
-),'',true,true);
-$events = include $sources['data'].'events/events.gallerycustomtv.php';
-if (is_array($events) && !empty($events)) {
-    $modx->log(modX::LOG_LEVEL_INFO,'Added '.count($events).' events to GalleryCustomTV plugin.');
-    $plugins[0]->addMany($events);
-}
-unset($events);
-
 return $plugins;
