@@ -39,7 +39,11 @@ if (!empty($this->value)) {
         if ($item) {
             $item->getSize();
             $itemArray = $item->toArray('',true,true);
-            $itemArray['url'] = $item->get('absoluteImage');
+            $pt = $item->getPhpThumbUrl();
+            $data['src'] = $item->get('absoluteImage');
+            $data['rotate'] = !empty($data['rotate']) ? $data['rotate'] : 0;
+            $data['watermark-text'] = !empty($data['watermark-text']) ? $data['watermark-text'] : '';
+            $data['watermark-text-position'] = !empty($data['watermark-text-position']) ? $data['watermark-text-position'] : 'BL';
             $js = $modx->toJSON($data);
             $modx->smarty->assign('itemjson',$js);
         }

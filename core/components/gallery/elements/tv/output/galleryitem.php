@@ -33,7 +33,32 @@ if (!empty($value)) {
 
     $item = $modx->getObject('galItem',$data['id']);
     if ($item) {
-        $url = $item->get('image').'&w='.$data['image_width'].'&h='.$data['image_height'];
+        /* get filters */
+        $filtersArray = array();
+        if (!empty($data['rotate'])) {
+            $filtersArray['rot'] = (string)$data['rotate'];
+        }
+        if (!empty($data['watermark-text'])) {
+            $filtersArray['wmt'] = (string)$data['watermark-text'].'|5|'.$data['watermark-text-position'].'|ffffff|||5|||100|0';
+        }
+        $filters = '';
+        foreach ($filtersArray as $filter => $val) {
+            $filters .= '&fltr[]='.$filter.'|'.$val;
+        }
+
+        /* get any other params */
+        $other = !empty($data['other']) ? $data['other'] : '';
+        if (!empty($other)) {
+            if (substr($other,0,1) != '&') {
+                $other = '&'.$other;
+            }
+        }
+        $url = $item->get('image',array(
+            'w' => $data['image_width'],
+            'h' => $data['image_height'],
+            'f' => 'png',
+        )).$filters.$other;
+
         $value = '<img src="'.$url.'" alt="'.$data['description'].'" title="'.$data['name'].'" />';
     }
 }

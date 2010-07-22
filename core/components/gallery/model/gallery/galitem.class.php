@@ -34,7 +34,10 @@ class galItem extends xPDOSimpleObject {
                 $value = str_replace('&','&amp;',$url);
                 break;
             case 'image':
-                $value = $this->getPhpThumbUrl().'?src='.MODX_URL_SCHEME.MODX_HTTP_HOST.$this->xpdo->getOption('gallery.files_url').$this->get('filename');
+                if (empty($format)) $format = array();
+                $format['src'] = MODX_URL_SCHEME.MODX_HTTP_HOST.$this->xpdo->getOption('gallery.files_url').$this->get('filename');
+
+                $value = $this->getPhpThumbUrl().'?'.http_build_query($format);
                 break;
             case 'absoluteImage':
                 $value = MODX_URL_SCHEME.MODX_HTTP_HOST.$this->xpdo->getOption('gallery.files_url').$this->get('filename');
