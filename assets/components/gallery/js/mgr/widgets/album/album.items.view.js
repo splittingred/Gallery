@@ -4,7 +4,7 @@ GAL.view.AlbumItems = function(config) {
     this._initTemplates();
     Ext.applyIf(config,{
         url: GAL.config.connector_url
-        ,fields: ['id','name','description','mediatype','createdon','createdby','filename','filesize','thumbnail','image','image_width','image_height','tags','active','rank','absoluteImage','relativeImage','menu']
+        ,fields: ['id','album','name','description','mediatype','createdon','createdby','filename','filesize','thumbnail','image','image_width','image_height','tags','active','rank','absoluteImage','relativeImage','menu']
         ,ident: 'galbit'
         ,id: 'gal-album-items-view'
         ,baseParams: {
@@ -120,12 +120,11 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     
     ,run: function(p) {
         var v = {};
-        Ext.applyIf(v,this.store.baseParams);
-        Ext.applyIf(v,p);
+        Ext.apply(v,this.store.baseParams);
+        Ext.apply(v,p);
         this.pagingBar.changePage(1);
-        this.store.load({
-            params: v
-        });
+        this.store.baseParams = v;
+        this.store.load();
     }
         
     ,sortBy: function(sel) {

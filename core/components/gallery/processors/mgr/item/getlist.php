@@ -57,6 +57,7 @@ $items = $modx->getCollection('galItem',$c);
 $list = array();
 foreach ($items as $item) {
     $itemArray = $item->toArray();
+    $itemArray['album'] = $album;
     $itemArray['filename'] = basename($item->get('filename'));
     $imagePath = $item->get('image_path');
     $size = @getimagesize($imagePath);

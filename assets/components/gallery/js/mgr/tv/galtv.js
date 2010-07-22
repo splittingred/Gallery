@@ -23,10 +23,8 @@ GAL.TV = function(config) {
     config.data = config.data || {};
     this.phpthumb = MODx.config.url_scheme+MODx.config.http_host+MODx.config['gallery.phpthumb_url']+'phpThumb.php';
     this.previewTpl = new Ext.XTemplate('<tpl for=".">'
-        ,'<div class="gal-tv-preview x-panel-body x-panel-body-noheader x-panel-body-noborder">'
         ,'<img src="'+this.phpthumb+'?src={src}&h={image_height}&w={image_width}&zc=0&far=C&fltr[]=rot|{rotate}&{other}" '
         ,' alt="{name}" id="tv'+config.tv+'-image" style="width: {image_width}px; height: {image_height}px" />'
-        ,'</div>'
         ,'</tpl>');
     this.previewTpl.compile();
     var item;
@@ -76,10 +74,14 @@ GAL.TV = function(config) {
             },{
                 html: '<br />' ,border: false
             },{
-                html: item || '&nbsp;'
-                ,id: 'tv'+config.tv+'-preview'
-                ,border: true
-                ,height: 200
+                id: 'tv'+config.tv+'-preview-ct'
+                ,html: '<div class="gal-tv-preview x-panel-body x-panel-body-noheader x-panel-body-noborder" id="tv'+config.tv+'-image-panel" style="height: auto; overflow: auto;">'
+                    +'<div class="gal-crop-wrapper" id="tv'+config.tv+'-crop-wrapper" style="overflow: visible; width: '+config.data.image_width+'px; height: '+config.data.image_height+'px; position: absolute;"></div>'
+                    +'<div id="tv'+config.tv+'-preview" style="height: auto; overflow: visible;">'+item+'</div>'
+                    +'</div>'
+                ,border: false
+                ,autoScroll: true
+                ,autoHeight: true
             }]
         },{
             columnWidth: .6
@@ -87,6 +89,10 @@ GAL.TV = function(config) {
             ,bodyStyle: 'padding: 45px 10px 10px;'
             ,border: false
             ,items: [{
+                xtype: 'hidden'
+                ,name: 'album'
+                ,value: config.data.album
+            },{
                 xtype: 'hidden'
                 ,name: 'src'
                 ,value: config.data.src
@@ -138,7 +144,11 @@ GAL.TV = function(config) {
                 ,value: config.data.slider || 100
                 ,anchor: '97%'
                 ,listeners: {
-                    'changecomplete': {fn:function(sl,e) { this.resizeImage(sl,e,'sizer'); },scope:this}
+                    'changecomplete': {fn:function(sl,e) {
+                        this.resetCropValues();
+                        this.disableCrop();
+                        this.resizeImage(sl,e,'sizer');
+                    },scope:this}
                 }
                 ,plugins: [new Ext.slider.Tip({
                     getText: function(thumb){
@@ -216,15 +226,166 @@ GAL.TV = function(config) {
                     ,listeners: {'select':this.syncHidden,scope:this}
                 }]
             },{
+                xtype: 'fieldset'
+                ,collapsible: false
+                ,collapsed: true
+                ,checkboxToggle: true
+                ,autoHeight: true
+                ,title: 'Crop Options'
+                ,id: 'tv'+config.tv+'-crop-opt'
+                ,checkboxName: 'cropMode'
+                ,onCheckClick: this.loadCropMode.createDelegate(this)
+                ,items: [{
+                    xtype: 'hidden'
+                    ,name: 'cropCoords'
+                    ,value: config.data.cropCoords || '{}'
+                },{
+                    xtype: 'statictextfield'
+                    ,name: 'cropTop'
+                    ,fieldLabel: _('gallery.crop_top')
+                    ,value: config.data.cropTop || 0
+                    ,allowBlank: true
+                    ,anchor: '97%'
+                },{
+                    xtype: 'statictextfield'
+                    ,name: 'cropRight'
+                    ,fieldLabel: _('gallery.crop_right')
+                    ,value: config.data.cropRight || 0
+                    ,allowBlank: true
+                    ,anchor: '97%'
+                },{
+                    xtype: 'statictextfield'
+                    ,name: 'cropBottom'
+                    ,fieldLabel: _('gallery.crop_bottom')
+                    ,value: config.data.cropBottom || 0
+                    ,allowBlank: true
+                    ,anchor: '97%'
+                },{
+                    xtype: 'statictextfield'
+                    ,name: 'cropLeft'
+                    ,fieldLabel: _('gallery.crop_left')
+                    ,value: config.data.cropLeft || 0
+                    ,allowBlank: true
+                    ,anchor: '97%'
+                }]
+            },{
                 html: '&nbsp;' ,border: false
             }]
         }]
         ,renderTo: 'tv'+config.tv+'-form'
     });
     GAL.TV.superclass.constructor.call(this,config);
+    if (config.data.cropCoords && config.data.cropCoords != '' && config.data.cropCoords != '{}') {
+        Ext.getCmp('tv'+config.tv+'-crop-opt').expand();
+        this.loadCropMode();
+    }
 };
 Ext.extend(GAL.TV,MODx.FormPanel,{
     browser: null
+    ,inCropMode: false
+
+    ,loadCropMode: function() {
+        var v = this.getForm().getValues().cropMode;
+        
+        if (v == 'on') { this.enableCrop(); } else { this.disableCrop();};
+    }
+
+    ,disableCrop: function() {
+        if (this.resizable) {
+            this.resizable.el.hide();
+        }
+        Ext.getCmp('tv'+this.config.tv+'-crop-opt').collapse();
+        this.resetCropValues();
+        //this.cropMask.hide();
+    }
+    ,enableCrop: function() {
+        Ext.getCmp('tv'+this.config.tv+'-crop-opt').expand();
+        this.loadCropper();
+        var img = Ext.get('tv'+this.config.tv+'-image');
+        this.imageBox = img.getBox();
+        if (this.resizable) {
+            this.resizable.resizeTo(img.getWidth(),img.getHeight());
+        }
+    }
+
+    ,loadCropper: function() {
+        if (this.inCropMode) {
+            this.resizable.el.show();
+            //this.cropMask.show(Ext.get('tv'+this.config.tv+'-image'));
+            return;
+        }
+        var cw = Ext.get('tv'+this.config.tv+'-crop-wrapper');
+        var img = Ext.get('tv'+this.config.tv+'-image');
+        this.resizable = new Ext.Resizable(cw, {
+            wrap: true
+            ,minWidth: 0
+            ,minHeight: 0
+            ,dynamic: false
+            ,transparent: false
+            ,handles: 'all'
+            ,draggable: false
+            ,pinned: false
+            ,style: 'overflow: visible;'
+            ,constrainTo: 'tv'+this.config.tv+'-image'
+        });
+        this.imageBox = img.getBox();
+        this.resizable.on('resize',this.onCrop,this);
+        this.resizable.getEl().setStyle('border','1px solid black');
+        cw.select("div[id]").each(function(div)    {
+            if (div.hasClass("x-resizable-handle")) div.setOpacity(.75);
+        });
+        //this.cropMask = new Ext.Spotlight({animate: true});
+        //this.cropMask.maskEl = this.resizable.getEl();
+        //this.cropMask.show(img);
+        this.inCropMode = true;
+    }
+
+    ,onCrop: function(res,w,h,e) {
+        var cropBox = this.resizable.el.getBox();
+        var imageBox = this.imageBox;
+        //console.log(this.imageBox);
+        //console.log(this.cropBox);
+
+        var x1 = cropBox.x - imageBox.x;
+        var y1 = cropBox.y - imageBox.y;
+        var x2 = x1 + cropBox.width;
+        var y2 = y1 + cropBox.height;
+
+        var rr = imageBox.width - x2;
+        var rb = imageBox.height - y2;
+
+        this.cropCoords = {
+            left: x1
+            ,right: x2
+            ,top: y1
+            ,bottom: y2
+            ,relRight: rr > 0 ? rr : 0
+            ,relBottom: rb > 0 ? rb : 0
+        };
+        var f = this.getForm();
+        f.findField('cropCoords').setValue(this.cropCoords);
+        f.findField('cropTop').setValue(this.cropCoords.top);
+        f.findField('cropRight').setValue(this.cropCoords.relRight);
+        f.findField('cropBottom').setValue(this.cropCoords.relBottom);
+        f.findField('cropLeft').setValue(this.cropCoords.left);
+    }
+
+    ,resetCropValues: function() {
+        var f = this.getForm();
+        f.findField('cropCoords').setValue('');
+        f.findField('cropTop').setValue(0);
+        f.findField('cropRight').setValue(0);
+        f.findField('cropBottom').setValue(0);
+        f.findField('cropLeft').setValue(0);
+        this.setHiddenField({
+            cropCoords: ''
+            ,cropTop: 0
+            ,cropRight: 0
+            ,cropBottom: 0
+            ,cropLeft: 0
+        });
+    }
+
     ,syncHidden: function(tf,nv,nm) {
         var v = tf.getValue();
         
@@ -275,15 +436,19 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
         }
     }
     ,loadBrowser: function(btn,e) {
+        var alb = this.config.data.album || 0;
         if (this.browser === null) {
             this.browser = MODx.load({
                 xtype: 'gal-browser'
+                ,album: alb
                 ,rootVisible: this.config.rootVisible || false
                 ,listeners: {
                     'select': {fn: this.selectImage,scope:this}
                 }
             });
         }
+        this.browser.win.view.store.setBaseParam('album',alb);
+        this.browser.win.view.store.load();
         this.browser.show(btn);
     }
     ,selectImage: function(data) {
@@ -297,19 +462,23 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
         data['watermark-text'] = '';
         data['watermark-text-position'] = 'BL';
         data['other'] = '';
+        data['rotate'] = 0;
         var f = this.getForm();
+        this.resetCropValues();
 
         f.setValues(data);
-
-        var fld = Ext.get('tv'+this.config.tv);
-        var js = Ext.decode(fld.dom.value);
-        js = data || {};
-        fld.dom.value = Ext.encode(js);
-
+        this.setHiddenField(data);
         Ext.getCmp('tv'+this.config.tv+'-sizer').setValue(100);
 
         this.updateImage(data);
         Ext.getCmp('modx-panel-resource').markDirty();
+    }
+
+    ,setHiddenField: function(data) {
+        var fld = Ext.get('tv'+this.config.tv);
+        var js = Ext.decode(fld.dom.value);
+        js = Ext.apply(js,data);
+        fld.dom.value = Ext.encode(js);
     }
 
     ,updateImage: function(vs) {
@@ -337,9 +506,27 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
             ,'watermark-text': ''
             ,'watermark-text-position': 'BL'
             ,other : ''
+            ,cropCoords: ''
+            ,cropTop: 0
+            ,cropRight: 0
+            ,cropBottom: 0
+            ,cropLeft: 0
         });
         Ext.getCmp('modx-panel-resource').markDirty();
     }
 });
 Ext.reg('gal-panel-tv',GAL.TV);
 
+
+
+Ext.Spotlight.prototype.createElements = function(){
+    /** changed, as we do not want to hide the whole body, but just the containing panel */
+    var bd = this.maskEl;
+
+    this.right = bd.createChild({cls:'x-spotlight'});
+    this.left = bd.createChild({cls:'x-spotlight'});
+    this.top = bd.createChild({cls:'x-spotlight'});
+    this.bottom = bd.createChild({cls:'x-spotlight'});
+
+    this.all = new Ext.CompositeElement([this.right, this.left, this.top, this.bottom]);
+};

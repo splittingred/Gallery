@@ -34,6 +34,8 @@ switch ($modx->event->name) {
             GAL.action = "'.($action ? $action->get('id') : 0).'";
         });
         </script>');
+        $modx->regClientStartupScript($gallery->config['assetsUrl'].'js/mgr/tv/Spotlight.js');
+        //$modx->regClientStartupScript($gallery->config['assetsUrl'].'js/mgr/tv/Ext.ux.ImageCropper.js');
         $modx->regClientStartupScript($gallery->config['assetsUrl'].'js/mgr/gallery.js');
         $modx->regClientStartupScript($gallery->config['assetsUrl'].'js/mgr/widgets/album/album.items.view.js');
         $modx->regClientStartupScript($gallery->config['assetsUrl'].'js/mgr/widgets/album/album.tree.js');
