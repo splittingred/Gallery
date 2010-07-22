@@ -66,10 +66,10 @@ foreach ($items as $item) {
         $itemArray['image_type'] = $size[2];
     }
     $c = array();
-    $c['h'] = 100;
-    $c['w'] = 100;
-    $c['zc'] = '0';
-    $c['far'] = 'C';
+    $c['h'] = $modx->getOption('gallery.backend_thumb_height',null,60);
+    $c['w'] = $modx->getOption('gallery.backend_thumb_width',null,80);
+    $c['zc'] = $modx->getOption('gallery.backend_thumb_zoomcrop',null,1);
+    $c['far'] = $modx->getOption('gallery.backend_thumb_far',null,'C');
     $itemArray['thumbnail'] = $item->get('thumbnail',$c);
     $itemArray['image'] = $item->get('image');
     $itemArray['relativeImage'] = $item->get('relativeImage');

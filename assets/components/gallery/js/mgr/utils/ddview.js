@@ -70,7 +70,7 @@ Ext.extend(MODx.DataView.dragZone,Ext.dd.DragZone,{
                     }
                 }
                 var count = document.createElement('div'); // selected image count
-                count.innerHTML = i + ' images selected';
+                count.innerHTML = _('gallery.images_selected',{ count: i });
                 div.appendChild(count);
                 
                 dragData.ddel = div;

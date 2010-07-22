@@ -115,6 +115,8 @@ GAL.panel.AlbumItems = function(config) {
         ,ident: this.ident
         ,cls: 'gal-view-album-items'
         ,album: config.album
+        ,inPanel: true
+        ,style: 'overflow: auto;'
     });
     this.view.pagingBar = new Ext.PagingToolbar({
         pageSize: 24
@@ -183,6 +185,24 @@ GAL.panel.AlbumItems = function(config) {
 };
 Ext.extend(GAL.panel.AlbumItems,MODx.Panel,{
     windows: {}
+
+    ,handleSort: function(o) {
+        var s = this.view.store;
+        console.log(o);
+        return;
+        var origRec = s.getAt(o.sourceId);
+        var lastRec = s.getAt(o.targetId);
+
+        MODx.Ajax.request({
+            url: this.config.url
+            ,params: {
+                action: 'item/sort'
+                ,album: this.config.album
+                ,source: o.sourceIndex
+                ,target: o.targetIndex
+            }
+        });
+    }
     
     ,uploadItem: function(btn,e) {
         var r = {
@@ -301,7 +321,7 @@ GAL.window.BatchUpload = function(config) {
             ,name: 'directory'
             ,id: 'gal-'+this.ident+'-directory'
             ,width: 300
-            ,value: '{assets_path}images/'
+            ,value: MODx.config['gallery.default_batch_upload_path'] || '{assets_path}images/'
         },{
             xtype: 'checkbox'
             ,fieldLabel: _('gallery.active')

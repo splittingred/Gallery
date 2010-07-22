@@ -17,3 +17,8 @@
     border-top: 1px solid #d4d4d4;
     margin-top: 4px;
 }
+
+.gal-item-thumb {
+    border: 1px solid #ddd;
+    padding: 5px 5px 3px;
+}

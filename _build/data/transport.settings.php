@@ -27,6 +27,51 @@
  */
 $settings = array();
 
+$settings['gallery.backend_thumb_far']= $modx->newObject('modSystemSetting');
+$settings['gallery.backend_thumb_far']->fromArray(array(
+    'key' => 'gallery.backend_thumb_far',
+    'value' => 'C',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'backend',
+),'',true,true);
+
+$settings['gallery.backend_thumb_height']= $modx->newObject('modSystemSetting');
+$settings['gallery.backend_thumb_height']->fromArray(array(
+    'key' => 'gallery.backend_thumb_height',
+    'value' => '100',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'backend',
+),'',true,true);
+
+$settings['gallery.backend_thumb_width']= $modx->newObject('modSystemSetting');
+$settings['gallery.backend_thumb_width']->fromArray(array(
+    'key' => 'gallery.backend_thumb_width',
+    'value' => '100',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'backend',
+),'',true,true);
+
+$settings['gallery.backend_thumb_zoomcrop']= $modx->newObject('modSystemSetting');
+$settings['gallery.backend_thumb_zoomcrop']->fromArray(array(
+    'key' => 'gallery.backend_thumb_zoomcrop',
+    'value' => 1,
+    'xtype' => 'combo-boolean',
+    'namespace' => 'gallery',
+    'area' => 'backend',
+),'',true,true);
+
+$settings['gallery.default_batch_upload_path']= $modx->newObject('modSystemSetting');
+$settings['gallery.default_batch_upload_path']->fromArray(array(
+    'key' => 'gallery.default_batch_upload_path',
+    'value' => '{assets_path}images/',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'backend',
+),'',true,true);
+
 /*
 $settings['gallery.']= $modx->newObject('modSystemSetting');
 $settings['gallery.']->fromArray(array(

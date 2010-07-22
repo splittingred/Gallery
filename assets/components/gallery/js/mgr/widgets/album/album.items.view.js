@@ -15,16 +15,14 @@ GAL.view.AlbumItems = function(config) {
         ,tpl: this.templates.thumb
         ,enableDD: true
         ,multiSelect: true
-        ,listeners: {
-            'dblclick': {fn: this.onDblClick ,scope:this }
-        }
+        ,listeners: {}
         ,prepareData: this.formatData.createDelegate(this)
     });
     GAL.view.AlbumItems.superclass.constructor.call(this,config);
     this.on('selectionchange',this.showDetails,this,{buffer: 100});
     this.addEvents('sort','select');
     this.on('sort',this.onSort,this);
-    
+    this.on('dblclick',this.onDblClick,this);
 };
 Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     templates: {}
@@ -47,10 +45,17 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         });
     }
 
-    ,onDblClick: function(d) {
+    ,onDblClick: function(d,idx,n) {
         var node = this.getSelectedNodes()[0];
-        var data = this.lookup[node.id];
-        this.fireEvent('select',data);
+        if (!node) return false;
+        
+        if (this.config.inPanel) {
+            this.cm.activeNode = node;
+            this.updateItem(node,n);
+        } else {
+            var data = this.lookup[node.id];
+            this.fireEvent('select',data);
+        }
     }
     
     ,updateItem: function(btn,e) {
@@ -170,8 +175,8 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         this.templates.thumb = new Ext.XTemplate(
             '<tpl for=".">'
                 ,'<div class="modx-pb-thumb-wrap <tpl if="!active">gal-item-inactive</tpl>" id="gal-item-{id}">'
-                    ,'<div class="modx-pb-thumb">'
-                        ,'<img src="{thumbnail}" title="{name}" width="90" height="90" />'
+                    ,'<div class="gal-item-thumb">'
+                        ,'<img src="{thumbnail}" title="{name}" />'
                     ,'</div>'
                     ,'<span>{shortName}</span>'              
                 ,'</div>'
@@ -183,7 +188,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         this.templates.details = new Ext.XTemplate(
             '<div class="details">'
             ,'<tpl for=".">'
-                ,'<div class="modx-pb-detail-thumb"><img src="{thumbnail}" alt="" width="80" height="60" onclick="Ext.getCmp(\'gal-album-items-view\').showScreenshot(\'{id}\'); return false;" /></div>'
+                ,'<div class="modx-pb-detail-thumb"><img src="{thumbnail}" alt="{shortName}" onclick="Ext.getCmp(\'gal-album-items-view\').showScreenshot(\'{id}\'); return false;" /></div>'
                 ,'<div class="modx-pb-details-info">'
                     ,'<span class="gal-detail-active">'
                         ,'<tpl if="active"><span class="green">'+_('gallery.active')+'</span></tpl>'

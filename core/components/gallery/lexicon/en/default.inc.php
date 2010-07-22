@@ -53,6 +53,7 @@ $_lang['gallery.file'] = 'File';
 $_lang['gallery.file_name'] = 'File Name';
 $_lang['gallery.file_size'] = 'File Size';
 $_lang['gallery.height'] = 'Height';
+$_lang['gallery.images_selected'] = '[[+count]] images selected.';
 $_lang['gallery.inactive'] = 'Inactive';
 $_lang['gallery.intro_msg'] = 'Here you can manage your albums. Right-click on an album to view more options.';
 $_lang['gallery.item_delete'] = 'Delete Item';
@@ -80,3 +81,19 @@ $_lang['gallery.title'] = 'Title';
 $_lang['gallery.width'] = 'Width';
 
 
+$_lang['area_backend'] = 'Backend';
+
+$_lang['setting_gallery.backend_thumb_far'] = 'Backend Thumbnail Aspect Ratio';
+$_lang['setting_gallery.backend_thumb_far_desc'] = 'The phpThumb FAR (aspect ratio) setting for thumbnails when managing them in the backend.';
+
+$_lang['setting_gallery.backend_thumb_height'] = 'Backend Thumbnail Height';
+$_lang['setting_gallery.backend_thumb_height_desc'] = 'The height in pixels for thumbnails when managing them in the backend.';
+
+$_lang['setting_gallery.backend_thumb_width'] = 'Backend Thumbnail Width';
+$_lang['setting_gallery.backend_thumb_width_desc'] = 'The width in pixels for thumbnails when managing them in the backend.';
+
+$_lang['setting_gallery.backend_thumb_zoomcrop'] = 'Backend Thumbnail Zoomcrop';
+$_lang['setting_gallery.backend_thumb_zoomcrop_desc'] = 'Whether or not to use zoomcrop for thumbnails when managing them in the backend.';
+
+$_lang['setting_gallery.default_batch_upload_path'] = 'Default Batch Upload Path';
+$_lang['setting_gallery.default_batch_upload_path_desc'] = 'The default value to use for the path when using batch upload.';
