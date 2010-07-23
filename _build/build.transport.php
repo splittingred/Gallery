@@ -31,15 +31,13 @@ $mtime = $mtime[1] + $mtime[0];
 $tstart = $mtime;
 set_time_limit(0);
 
+/* define package */
 define('PKG_NAME','Gallery');
 define('PKG_NAME_LOWER','gallery');
-define('PKG_VERSION','0.2.0');
+define('PKG_VERSION','1.0.0');
 define('PKG_RELEASE','rc1');
 
-/* override with your own defines here (see build.config.sample.php) */
-require_once dirname(__FILE__) . '/build.config.php';
-require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
-
+/* define sources */
 $root = dirname(dirname(__FILE__)).'/';
 $sources = array(
     'root' => $root,
@@ -57,6 +55,11 @@ $sources = array(
     'source_phpthumb' => $root.'assets/components/phpthumb',
 );
 unset($root);
+
+/* override with your own defines here (see build.config.sample.php) */
+require_once $sources['build'] . '/build.config.php';
+require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
+require_once $sources['build'] . '/includes/functions.php';
 
 $modx= new modX();
 $modx->initialize('mgr');
@@ -99,7 +102,7 @@ $plugin->fromArray(array(
     'id' => 1,
     'name' => 'GalleryCustomTV',
     'description' => '',
-    'plugincode' => file_get_contents($sources['plugins'] . 'gallerycustomtv.plugin.php'),
+    'plugincode' => getSnippetContent($sources['plugins'] . 'gallerycustomtv.plugin.php'),
 ),'',true,true);
 $events = include $sources['data'].'events/events.gallerycustomtv.php';
 if (is_array($events) && !empty($events)) {
