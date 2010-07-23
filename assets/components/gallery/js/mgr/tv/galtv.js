@@ -231,7 +231,7 @@ GAL.TV = function(config) {
                 ,collapsed: true
                 ,checkboxToggle: true
                 ,autoHeight: true
-                ,title: 'Crop Options'
+                ,title: _('gallery.crop_enable')
                 ,id: 'tv'+config.tv+'-crop-opt'
                 ,checkboxName: 'cropMode'
                 ,onCheckClick: this.loadCropMode.createDelegate(this)
@@ -246,6 +246,7 @@ GAL.TV = function(config) {
                     ,value: config.data.cropTop || 0
                     ,allowBlank: true
                     ,anchor: '97%'
+                    ,submitValue: true
                 },{
                     xtype: 'statictextfield'
                     ,name: 'cropRight'
@@ -253,6 +254,7 @@ GAL.TV = function(config) {
                     ,value: config.data.cropRight || 0
                     ,allowBlank: true
                     ,anchor: '97%'
+                    ,submitValue: true
                 },{
                     xtype: 'statictextfield'
                     ,name: 'cropBottom'
@@ -260,6 +262,7 @@ GAL.TV = function(config) {
                     ,value: config.data.cropBottom || 0
                     ,allowBlank: true
                     ,anchor: '97%'
+                    ,submitValue: true
                 },{
                     xtype: 'statictextfield'
                     ,name: 'cropLeft'
@@ -267,6 +270,7 @@ GAL.TV = function(config) {
                     ,value: config.data.cropLeft || 0
                     ,allowBlank: true
                     ,anchor: '97%'
+                    ,submitValue: true
                 }]
             },{
                 html: '&nbsp;' ,border: false
@@ -275,19 +279,20 @@ GAL.TV = function(config) {
         ,renderTo: 'tv'+config.tv+'-form'
     });
     GAL.TV.superclass.constructor.call(this,config);
-    if (config.data.cropCoords && config.data.cropCoords != '' && config.data.cropCoords != '{}') {
-        Ext.getCmp('tv'+config.tv+'-crop-opt').expand();
-        this.loadCropMode();
+    if (config.data.cropCoords && config.data.cropMode == 'on') {
+        this.enableCrop();
     }
 };
 Ext.extend(GAL.TV,MODx.FormPanel,{
     browser: null
     ,inCropMode: false
 
-    ,loadCropMode: function() {
-        var v = this.getForm().getValues().cropMode;
+    ,loadCropMode: function(v) {
+        v = this.getForm().getValues().cropMode;
         
-        if (v == 'on') { this.enableCrop(); } else { this.disableCrop();};
+        if (v == 'on') { 
+            this.enableCrop();
+        } else {this.disableCrop();}
     }
 
     ,disableCrop: function() {
@@ -303,19 +308,20 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
         this.loadCropper();
         var img = Ext.get('tv'+this.config.tv+'-image');
         this.imageBox = img.getBox();
-        if (this.resizable) {
-            this.resizable.resizeTo(img.getWidth(),img.getHeight());
-        }
     }
 
     ,loadCropper: function() {
         if (this.inCropMode) {
             this.resizable.el.show();
+
+            var cd = this.getForm().getValues() || this.config.data;
+            this.resizable.resize4(cd.cropTop,cd.cropRight,cd.cropBottom,cd.cropLeft);
             //this.cropMask.show(Ext.get('tv'+this.config.tv+'-image'));
             return;
         }
         var cw = Ext.get('tv'+this.config.tv+'-crop-wrapper');
         var img = Ext.get('tv'+this.config.tv+'-image');
+        this.imageBox = img.getBox();
         this.resizable = new Ext.Resizable(cw, {
             wrap: true
             ,minWidth: 0
@@ -327,11 +333,30 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
             ,pinned: false
             ,style: 'overflow: visible;'
             ,constrainTo: 'tv'+this.config.tv+'-image'
+            ,resize4 : function(t,r,b,l) {
+                var imgBox = Ext.get('tv'+this.tv+'-image').getBox();
+                var w = imgBox.width-(parseInt(r)+parseInt(l));
+                var h = imgBox.height-(parseInt(b)+parseInt(t));
+
+                this.el.setBox({
+                    x: imgBox.x+parseInt(l)
+                    ,y: imgBox.y+parseInt(t)
+                    ,width: w
+                    ,height: h
+                },false,true);
+                this.updateChildSize();
+            }
+            ,tv: this.config.tv
+            ,imgBox: this.imageBox
+            ,img: Ext.get('tv'+this.config.tv+'-image')
         });
-        this.imageBox = img.getBox();
+        if (!this.inCropMode) {
+            var cd = this.config.data;
+            this.resizable.resize4(cd.cropTop,cd.cropRight,cd.cropBottom,cd.cropLeft);
+        }
         this.resizable.on('resize',this.onCrop,this);
         this.resizable.getEl().setStyle('border','1px solid black');
-        cw.select("div[id]").each(function(div)    {
+        cw.select("div[id]").each(function(div) {
             if (div.hasClass("x-resizable-handle")) div.setOpacity(.75);
         });
         //this.cropMask = new Ext.Spotlight({animate: true});
@@ -341,10 +366,8 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
     }
 
     ,onCrop: function(res,w,h,e) {
-        var cropBox = this.resizable.el.getBox();
-        var imageBox = this.imageBox;
-        //console.log(this.imageBox);
-        //console.log(this.cropBox);
+        var cropBox = res.el.getBox();
+        var imageBox = Ext.get('tv'+this.tv+'-image').getBox();
 
         var x1 = cropBox.x - imageBox.x;
         var y1 = cropBox.y - imageBox.y;
@@ -355,19 +378,24 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
         var rb = imageBox.height - y2;
 
         this.cropCoords = {
-            left: x1
-            ,right: x2
-            ,top: y1
-            ,bottom: y2
+            left: x1 > 0 ? x1 : 0
+            ,right: x2 > 0 ? x2 : 0
+            ,top: y1 > 0 ? y1 : 0
+            ,bottom: y2 > 0 ? y2 : 0
             ,relRight: rr > 0 ? rr : 0
             ,relBottom: rb > 0 ? rb : 0
+            ,on: true
         };
         var f = this.getForm();
-        f.findField('cropCoords').setValue(this.cropCoords);
-        f.findField('cropTop').setValue(this.cropCoords.top);
-        f.findField('cropRight').setValue(this.cropCoords.relRight);
-        f.findField('cropBottom').setValue(this.cropCoords.relBottom);
-        f.findField('cropLeft').setValue(this.cropCoords.left);
+        var vs = {
+            cropCoords: this.cropCoords
+            ,cropTop: this.cropCoords.top
+            ,cropRight: this.cropCoords.relRight
+            ,cropBottom: this.cropCoords.relBottom
+            ,cropLeft: this.cropCoords.left
+        };
+        f.setValues(vs);
+        this.setHiddenField(vs);
     }
 
     ,resetCropValues: function() {
@@ -395,12 +423,10 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
             v = v.value;
         }
         var n = tf.getName ? tf.getName() : nm;
-        var fld = Ext.get('tv'+this.config.tv);
-        var js = Ext.decode(fld.dom.value);
 
-        js[n] = ''+v;
-        fld.dom.value = Ext.encode(js);
-        Ext.getCmp('modx-panel-resource').markDirty();
+        var vzs = {};
+        vzs[n] = v+'';
+        this.setHiddenField(vzs);
 
         var vs = this.getForm().getValues();
         this.updateImage(vs);
@@ -434,6 +460,7 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
             vs.image_width = nw;
             this.updateImage(vs);
         }
+        this.resetCropValues();
     }
     ,loadBrowser: function(btn,e) {
         var alb = this.config.data.album || 0;
@@ -464,13 +491,13 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
         data['other'] = '';
         data['rotate'] = 0;
         var f = this.getForm();
-        this.resetCropValues();
 
         f.setValues(data);
         this.setHiddenField(data);
         Ext.getCmp('tv'+this.config.tv+'-sizer').setValue(100);
 
         this.updateImage(data);
+        this.disableCrop();
         Ext.getCmp('modx-panel-resource').markDirty();
     }
 
@@ -479,6 +506,7 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
         var js = Ext.decode(fld.dom.value);
         js = Ext.apply(js,data);
         fld.dom.value = Ext.encode(js);
+        Ext.getCmp('modx-panel-resource').markDirty();
     }
 
     ,updateImage: function(vs) {
@@ -488,6 +516,10 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
         if (p) {
             this.previewTpl.overwrite(p,vs);
         }
+
+        var img = Ext.get('tv'+this.config.tv+'-image');
+        this.imageBox = img.getBox();
+        if (this.resizer) {this.resizer.imgBox = this.imageBox;}
         return true;
     }
     ,clearImage: function() {
@@ -511,7 +543,9 @@ Ext.extend(GAL.TV,MODx.FormPanel,{
             ,cropRight: 0
             ,cropBottom: 0
             ,cropLeft: 0
+            ,cropMode: 0
         });
+        this.disableCrop();
         Ext.getCmp('modx-panel-resource').markDirty();
     }
 });

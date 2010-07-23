@@ -41,6 +41,10 @@ if (!empty($value)) {
         if (!empty($data['watermark-text'])) {
             $filtersArray['wmt'] = (string)$data['watermark-text'].'|5|'.$data['watermark-text-position'].'|ffffff|||5|||100|0';
         }
+        /* crop */
+        if (!empty($data['cropCoords'])) {
+            $filtersArray['crop'] = $data['cropLeft'].'|'.$data['cropRight'].'|'.$data['cropTop'].'|'.$data['cropBottom'];
+        }
         $filters = '';
         foreach ($filtersArray as $filter => $val) {
             $filters .= '&fltr[]='.$filter.'|'.$val;
@@ -53,6 +57,8 @@ if (!empty($value)) {
                 $other = '&'.$other;
             }
         }
+
+
         $url = $item->get('image',array(
             'w' => $data['image_width'],
             'h' => $data['image_height'],

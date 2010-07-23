@@ -31,6 +31,7 @@ $_lang['gallery.browser'] = 'Gallery Browser';
 $_lang['gallery.choose_item'] = 'Choose an Image';
 $_lang['gallery.clear_image'] = 'Clear Image';
 $_lang['gallery.crop_bottom'] = 'Crop Bottom';
+$_lang['gallery.crop_enable'] = 'Enable Cropping';
 $_lang['gallery.crop_left'] = 'Crop Left';
 $_lang['gallery.crop_right'] = 'Crop Right';
 $_lang['gallery.crop_top'] = 'Crop Top';
