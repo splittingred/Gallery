@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 1.0.0
 =============
+- Added cropping support to custom TV, fixed bugs
 - Added rotating, watermark and other options to custom TV
 - Added a few settings for customizing backend mgr UX, including default batch upload path
 - Fixed bug with sorting items in album

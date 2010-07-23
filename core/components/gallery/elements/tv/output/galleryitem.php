@@ -28,8 +28,9 @@
 $corePath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/');
 $modx->addPackage('gallery',$corePath.'model/');
 
-if (!empty($value)) {
+if (!empty($value) && $value != '{}') {
     $data = $modx->fromJSON($value);
+    if (empty($data)) return '';
 
     $item = $modx->getObject('galItem',$data['id']);
     if ($item) {
@@ -38,6 +39,7 @@ if (!empty($value)) {
         if (!empty($data['rotate'])) {
             $filtersArray['rot'] = (string)$data['rotate'];
         }
+        /* text watermark */
         if (!empty($data['watermark-text'])) {
             $filtersArray['wmt'] = (string)$data['watermark-text'].'|5|'.$data['watermark-text-position'].'|ffffff|||5|||100|0';
         }
@@ -58,7 +60,6 @@ if (!empty($value)) {
             }
         }
 
-
         $url = $item->get('image',array(
             'w' => $data['image_width'],
             'h' => $data['image_height'],
@@ -67,5 +68,7 @@ if (!empty($value)) {
 
         $value = '<img src="'.$url.'" alt="'.$data['description'].'" title="'.$data['name'].'" />';
     }
+} else { /* if empty dont return json, return blank */
+    $value = '';
 }
 return $value;

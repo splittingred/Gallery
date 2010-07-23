@@ -28,7 +28,6 @@
 $modx->lexicon->load('tv_widget','gallery:default');
 $modx->smarty->assign('base_url',$this->xpdo->getOption('base_url'));
 
-$modx->setLogTarget('ECHO');
 $corePath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/');
 $modx->addPackage('gallery',$corePath.'model/');
 
