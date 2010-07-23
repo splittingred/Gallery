@@ -27,7 +27,7 @@ GAL.BrowserWindow = function(config) {
     this.view = MODx.load({
         xtype: 'gal-view-album-items'
         ,cls: 'modx-pb-view-ct'
-        ,album: config.album
+        ,album: config.album || 0
         ,listeners: {'select':{fn:this.onSelect,scope:this}}
     });
     this.view.pagingBar = new Ext.PagingToolbar({

@@ -34,15 +34,16 @@ $modx->addPackage('gallery',$corePath.'model/');
 if (!empty($this->value)) {
     $data = $modx->fromJSON($this->value);
     if (is_array($data)) {
-        $item = $modx->getObject('galItem',$data['id']);
+        $item = $modx->getObject('galItem',$data['gal_id']);
         if ($item) {
             $item->getSize();
-            $itemArray = $item->toArray('',true,true);
+            $data = array_merge($item->toArray('gal_',true,true),$data);
             $pt = $item->getPhpThumbUrl();
-            $data['src'] = $item->get('absoluteImage');
-            $data['rotate'] = !empty($data['rotate']) ? $data['rotate'] : 0;
-            $data['watermark-text'] = !empty($data['watermark-text']) ? $data['watermark-text'] : '';
-            $data['watermark-text-position'] = !empty($data['watermark-text-position']) ? $data['watermark-text-position'] : 'BL';
+            $data['gal_id'] = $item->get('id');
+            $data['gal_src'] = $item->get('absoluteImage');
+            $data['gal_rotate'] = !empty($data['gal_rotate']) ? $data['gal_rotate'] : 0;
+            $data['gal_watermark-text'] = !empty($data['gal_watermark-text']) ? $data['gal_watermark-text'] : '';
+            $data['gal_watermark-text-position'] = !empty($data['gal_watermark-text-position']) ? $data['gal_watermark-text-position'] : 'BL';
             $js = $modx->toJSON($data);
             $modx->smarty->assign('itemjson',$js);
         }

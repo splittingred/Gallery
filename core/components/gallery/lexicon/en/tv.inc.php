@@ -29,6 +29,7 @@ $_lang['gallery.active'] = 'Active';
 $_lang['gallery.alt_text'] = 'Alt Text';
 $_lang['gallery.browser'] = 'Gallery Browser';
 $_lang['gallery.choose_item'] = 'Choose an Image';
+$_lang['gallery.class'] = 'CSS Classes';
 $_lang['gallery.clear_image'] = 'Clear Image';
 $_lang['gallery.crop_bottom'] = 'Crop Bottom';
 $_lang['gallery.crop_enable'] = 'Enable Cropping';

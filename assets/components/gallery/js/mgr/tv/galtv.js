@@ -20,13 +20,13 @@ Ext.override(Ext.slider.Thumb, {
 
 GAL.TV = function(config) {
     config = config || {};
-    config.data = config.data || {src:false};
+    config.data = config.data || {gal_src:false};
 
     this.phpthumb = MODx.config.url_scheme+MODx.config.http_host+MODx.config['gallery.phpthumb_url']+'phpThumb.php';
     this.previewTpl = new Ext.XTemplate('<tpl for=".">'
-        ,'<tpl if="src">'
-            ,'<img src="'+this.phpthumb+'?src={src}&h={image_height}&w={image_width}&zc=0&far=C&fltr[]=rot|{rotate}&{other}" '
-            ,' alt="{name}" id="tv'+config.tv+'-image" style="width: {image_width}px; height: {image_height}px" />'
+        ,'<tpl if="gal_src">'
+            ,'<img src="'+this.phpthumb+'?src={gal_src}&h={gal_image_height}&w={gal_image_width}&zc=0&far=C&fltr[]=rot|{gal_rotate}&{gal_other}" '
+            ,' alt="{gal_name}" class="{gal_class}" id="tv'+config.tv+'-image" style="width: {gal_image_width}px; height: {gal_image_height}px" />'
         ,'</tpl>'
         ,'</tpl>');
     this.previewTpl.compile();
@@ -76,8 +76,8 @@ GAL.TV = function(config) {
                 html: '<br />' ,border: false
             },{
                 id: 'tv'+config.tv+'-preview-ct'
-                ,html: '<div class="gal-tv-preview x-panel-body x-panel-body-noheader x-panel-body-noborder" id="tv'+config.tv+'-image-panel" style="height: auto; overflow: auto;">'
-                    +'<div class="gal-crop-wrapper" id="tv'+config.tv+'-crop-wrapper" style="overflow: visible; width: '+config.data.image_width+'px; height: '+config.data.image_height+'px; position: absolute;"></div>'
+                ,html: '<div class="gal_tv-preview x-panel-body x-panel-body-noheader x-panel-body-noborder" id="tv'+config.tv+'-image-panel" style="height: auto; overflow: auto;">'
+                    +'<div class="gal-crop-wrapper" id="tv'+config.tv+'-crop-wrapper" style="overflow: visible; width: '+config.data['gal_image_width']+'px; height: '+config.data['gal_image_height']+'px; position: absolute;"></div>'
                     +'<div id="tv'+config.tv+'-preview" style="height: auto; overflow: visible;">'+item+'</div>'
                     +'</div>'
                 ,border: false
@@ -91,74 +91,85 @@ GAL.TV = function(config) {
             ,border: false
             ,items: [{
                 xtype: 'hidden'
-                ,fieldLabel: 'album'
-                ,name: 'album'
-                ,id: 'tv'+config.tv+'-album'
-                ,value: config.data.album || 0
+                ,name: 'gal_id'
+                ,id: 'tv'+config.tv+'-gal_id'
+                ,value: config.data['gal_id'] || 0
             },{
                 xtype: 'hidden'
-                ,fieldLabel: 'src'
-                ,name: 'src'
-                ,id: 'tv'+config.tv+'-src'
-                ,value: config.data.src || ''
+                ,name: 'gal_album'
+                ,id: 'tv'+config.tv+'-gal_album'
+                ,value: config.data['gal_album'] || 0
+            },{
+                xtype: 'hidden'
+                ,name: 'gal_src'
+                ,id: 'tv'+config.tv+'-gal_src'
+                ,value: config.data['gal_src'] || ''
             },{
                 xtype: 'hidden'
                 ,name: 'orig_width'
-                ,id: 'tv'+config.tv+'-orig_width'
-                ,value: config.data.orig_width || 0
+                ,id: 'tv'+config.tv+'-gal_orig_width'
+                ,value: config.data['gal_orig_width'] || 0
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'hidden'
-                ,name: 'orig_height'
-                ,id: 'tv'+config.tv+'-orig_height'
-                ,value: config.data.orig_height || 0
+                ,name: 'gal_orig_height'
+                ,id: 'tv'+config.tv+'-gal_orig_height'
+                ,value: config.data['gal_orig_height'] || 0
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'textfield'
-                ,name: 'name'
-                ,id: 'tv'+config.tv+'-name'
+                ,name: 'gal_name'
+                ,id: 'tv'+config.tv+'-gal_name'
                 ,fieldLabel: _('gallery.title')
-                ,value: config.data.name || ''
+                ,value: config.data['gal_name'] || ''
                 ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'textfield'
-                ,name: 'description'
-                ,id: 'tv'+config.tv+'-description'
+                ,name: 'gal_description'
+                ,id: 'tv'+config.tv+'-gal_description'
                 ,fieldLabel: _('gallery.alt_text')
-                ,value: config.data.description || ''
+                ,value: config.data['gal_description'] || ''
                 ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'textfield'
-                ,name: 'image_width'
-                ,id: 'tv'+config.tv+'-image_width'
+                ,name: 'gal_class'
+                ,id: 'tv'+config.tv+'-gal_class'
+                ,fieldLabel: _('gallery.class')
+                ,value: config.data['gal_class'] || ''
+                ,anchor: '97%'
+                ,listeners: {'change':this.syncHidden,scope:this}
+            },{
+                xtype: 'textfield'
+                ,name: 'gal_image_width'
+                ,id: 'tv'+config.tv+'-gal_image_width'
                 ,fieldLabel: _('gallery.width')
-                ,value: config.data.image_width || 0
+                ,value: config.data['gal_image_width'] || 0
                 ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'textfield'
-                ,name: 'image_height'
-                ,id: 'tv'+config.tv+'-image_height'
+                ,name: 'gal_image_height'
+                ,id: 'tv'+config.tv+'-gal_image_height'
                 ,fieldLabel: _('gallery.height')
-                ,value: config.data.image_height || 0
+                ,value: config.data['gal_image_height'] || 0
                 ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'slider'
-                ,id: 'tv'+config.tv+'-sizer'
+                ,id: 'tv'+config.tv+'-gal_sizer'
                 ,fieldLabel: _('gallery.resize')
-                ,name: 'sizer'
+                ,name: 'gal_sizer'
                 ,minValue: 5
                 ,maxValue: 100
-                ,value: config.data.slider || 100
+                ,value: config.data['gal_sizer'] || 100
                 ,anchor: '97%'
                 ,listeners: {
                     'changecomplete': {fn:function(sl,e) {
                         this.resetCropValues();
                         this.disableCrop();
-                        this.resizeImage(sl,e,'sizer');
+                        this.resizeImage(sl,e,'gal_sizer');
                     },scope:this}
                 }
                 ,plugins: [new Ext.slider.Tip({
@@ -168,26 +179,26 @@ GAL.TV = function(config) {
                 })]
             },{
                  xtype: 'radiogroup'
-                ,id: 'tv'+config.tv+'-rotate'
+                ,id: 'tv'+config.tv+'-gal_rotate'
                 ,fieldLabel: _('gallery.rotate')
-                ,name: 'rotate'
+                ,name: 'gal_rotate'
                 ,items: [
-                    {boxLabel: '0',name: 'rotate',inputValue: 0,value: 0, checked: config.data.rotate == 0}
-                    ,{boxLabel: '90',name: 'rotate',inputValue: 90,value: 90, checked: config.data.rotate == 90}
-                    ,{boxLabel: '180',name: 'rotate',inputValue: 180,value: 180, checked: config.data.rotate == 180}
-                    ,{boxLabel: '270',name: 'rotate',inputValue: 270,value: 270, checked: config.data.rotate == 270}
+                    {boxLabel: '0',name: 'gal_rotate',inputValue: 0,value: 0, checked: config.data['gal_rotate'] == 0}
+                    ,{boxLabel: '90',name: 'gal_rotate',inputValue: 90,value: 90, checked: config.data['gal_rotate'] == 90}
+                    ,{boxLabel: '180',name: 'gal_rotate',inputValue: 180,value: 180, checked: config.data['gal_rotate'] == 180}
+                    ,{boxLabel: '270',name: 'gal_rotate',inputValue: 270,value: 270, checked: config.data['gal_rotate'] == 270}
                 ]
                 ,allowBlank: false
-                ,value: config.data.rotate || 0
+                ,value: config.data['gal_rotate'] || 0
                 ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'textfield'
-                ,id: 'tv'+config.tv+'-other'
-                ,name: 'other'
+                ,id: 'tv'+config.tv+'-gal_other'
+                ,name: 'gal_other'
                 ,fieldLabel: _('gallery.other_opt')
                 ,description: _('gallery.other_opt_desc')
-                ,value: config.data.other || ''
+                ,value: config.data['gal_other'] || ''
                 ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
@@ -201,17 +212,17 @@ GAL.TV = function(config) {
                     ,border: false
                 },{
                     xtype: 'textfield'
-                    ,id: 'tv'+config.tv+'-watermark-text'
+                    ,id: 'tv'+config.tv+'-gal_watermark-text'
                     ,fieldLabel: _('gallery.watermark_text')
                     ,description: _('gallery.watermark_text_desc')
-                    ,name: 'watermark-text'
+                    ,name: 'gal_watermark-text'
                     ,allowBlank: true
                     ,anchor: '97%'
-                    ,value: config.data['watermark-text'] || ''
+                    ,value: config.data['gal_watermark-text'] || ''
                     ,listeners: {'change':this.syncHidden,scope:this}
                 },{
                     xtype: 'combo'
-                    ,id: 'tv'+config.tv+'-watermark-text-position'
+                    ,id: 'tv'+config.tv+'-gal_watermark-text-position'
                     ,fieldLabel: _('gallery.watermark_text_position')
                     ,store: [
                         ['BR',_('gallery.pos_br')]
@@ -225,7 +236,7 @@ GAL.TV = function(config) {
                         ,['B',_('gallery.pos_b')]
                     ]
                     ,description: _('gallery.watermark_text_position_desc')
-                    ,name: 'watermark-text-position'
+                    ,name: 'gal_watermark-text-position'
                     ,allowBlank: true
                     ,anchor: '97%'
                     ,typeAhead: false
@@ -233,7 +244,7 @@ GAL.TV = function(config) {
                     ,triggerAction: 'all'
                     ,selectOnFocus: true
                     ,editable: false
-                    ,value: config.data['watermark-text-position'] || ''
+                    ,value: config.data['gal_watermark-text-position'] || ''
                     ,listeners: {'select':this.syncHidden,scope:this}
                 }]
             },{
@@ -243,48 +254,48 @@ GAL.TV = function(config) {
                 ,checkboxToggle: true
                 ,autoHeight: true
                 ,title: _('gallery.crop_enable')
-                ,id: 'tv'+config.tv+'-cropMode'
-                ,checkboxName: 'cropMode'
+                ,id: 'tv'+config.tv+'-gal_cropMode'
+                ,checkboxName: 'gal_cropMode'
                 ,onCheckClick: this.loadCropMode.createDelegate(this)
                 ,items: [{
                     xtype: 'hidden'
-                    ,name: 'cropCoords'
+                    ,name: 'gal_cropCoords'
                     ,anchor: '97%'
-                    ,id: 'tv'+config.tv+'-cropCoords'
-                    ,value: config.data.cropCoords ? Ext.encode(config.data.cropCoords) : '{}'
+                    ,id: 'tv'+config.tv+'-gal_cropCoords'
+                    ,value: config.data['gal_cropCoords'] ? Ext.encode(config.data['gal_cropCoords']) : '{}'
                 },{
                     xtype: 'statictextfield'
-                    ,name: 'cropTop'
-                    ,id: 'tv'+config.tv+'-cropTop'
+                    ,name: 'gal_cropTop'
+                    ,id: 'tv'+config.tv+'-gal_cropTop'
                     ,fieldLabel: _('gallery.crop_top')
-                    ,value: config.data.cropTop || 0
+                    ,value: config.data['gal_cropTop'] || 0
                     ,allowBlank: true
                     ,anchor: '97%'
                     ,submitValue: true
                 },{
                     xtype: 'statictextfield'
-                    ,name: 'cropRight'
-                    ,id: 'tv'+config.tv+'-cropRight'
+                    ,name: 'gal_cropRight'
+                    ,id: 'tv'+config.tv+'-gal_cropRight'
                     ,fieldLabel: _('gallery.crop_right')
-                    ,value: config.data.cropRight || 0
+                    ,value: config.data['gal_cropRight'] || 0
                     ,allowBlank: true
                     ,anchor: '97%'
                     ,submitValue: true
                 },{
                     xtype: 'statictextfield'
-                    ,name: 'cropBottom'
-                    ,id: 'tv'+config.tv+'-cropBottom'
+                    ,name: 'gal_cropBottom'
+                    ,id: 'tv'+config.tv+'-gal_cropBottom'
                     ,fieldLabel: _('gallery.crop_bottom')
-                    ,value: config.data.cropBottom || 0
+                    ,value: config.data['gal_cropBottom'] || 0
                     ,allowBlank: true
                     ,anchor: '97%'
                     ,submitValue: true
                 },{
                     xtype: 'statictextfield'
-                    ,name: 'cropLeft'
-                    ,id: 'tv'+config.tv+'-cropLeft'
+                    ,name: 'gal_cropLeft'
+                    ,id: 'tv'+config.tv+'-gal_cropLeft'
                     ,fieldLabel: _('gallery.crop_left')
-                    ,value: config.data.cropLeft || 0
+                    ,value: config.data['gal_cropLeft'] || 0
                     ,allowBlank: true
                     ,anchor: '97%'
                     ,submitValue: true
@@ -295,7 +306,8 @@ GAL.TV = function(config) {
         }]
     });
     GAL.TV.superclass.constructor.call(this,config);
-    if (config.data.cropCoords && config.data.cropMode == 'on') {
+    this.setValues(config.data);
+    if (config.data['gal_cropCoords'] && config.data['gal_cropCoords'] != '{}') {
         this.enableCrop();
     }
 };
@@ -303,10 +315,12 @@ Ext.extend(GAL.TV,MODx.Panel,{
     browser: null
     ,inCropMode: false
 
-    ,fields: ['album','src','orig_width','orig_height'
-            ,'name','description','image_width','image_height','slider','rotate'
-            ,'watermark-text','watermark-text-position','other'
-            ,'cropCoords','cropTop','cropRight','cropBottom','cropLeft','cropMode']
+    ,fields: ['gal_id','gal_album','gal_src','gal_orig_width','gal_orig_height'
+            ,'gal_name','gal_description','gal_class'
+            ,'gal_image_width','gal_image_height','gal_slider','gal_rotate'
+            ,'gal_watermark-text','gal_watermark-text-position','gal_other'
+            ,'gal_cropCoords','gal_cropTop','gal_cropRight','gal_cropBottom','gal_cropLeft','gal_cropMode']
+
     ,setValues: function(vs) {
         var id;
         for (id in vs) {
@@ -361,12 +375,12 @@ Ext.extend(GAL.TV,MODx.Panel,{
         if (this.resizable) {
             this.resizable.el.hide();
         }
-        this.findField('cropMode').collapse();
+        var fld = this.findField('gal_cropMode').collapse();
         this.resetCropValues();
         //this.cropMask.hide();
     }
     ,enableCrop: function() {
-        this.findField('cropMode').expand();
+        this.findField('gal_cropMode').expand();
         this.loadCropper();
         var img = Ext.get('tv'+this.config.tv+'-image');
         this.imageBox = img.getBox();
@@ -377,7 +391,7 @@ Ext.extend(GAL.TV,MODx.Panel,{
             this.resizable.el.show();
 
             var cd = this.getValues();
-            this.resizable.resize4(cd.cropTop,cd.cropRight,cd.cropBottom,cd.cropLeft);
+            this.resizable.resize4(cd['gal_cropTop'],cd['gal_cropRight'],cd['gal_cropBottom'],cd['gal_cropLeft']);
             //this.cropMask.show(Ext.get('tv'+this.config.tv+'-image'));
             return;
         }
@@ -414,7 +428,7 @@ Ext.extend(GAL.TV,MODx.Panel,{
         });
         if (!this.inCropMode) {
             var d = this.getValues();
-            this.resizable.resize4(d.cropTop,d.cropRight,d.cropBottom,d.cropLeft);
+            this.resizable.resize4(d['gal_cropTop'],d['gal_cropRight'],d['gal_cropBottom'],d['gal_cropLeft']);
         }
         this.resizable.on('resize',this.onCrop,this);
         this.resizable.getEl().setStyle('border','1px solid black');
@@ -449,21 +463,21 @@ Ext.extend(GAL.TV,MODx.Panel,{
             ,on: true
         };
         var vs = {
-            cropCoords: Ext.encode(this.cropCoords)
-            ,cropTop: this.cropCoords.top
-            ,cropRight: this.cropCoords.relRight
-            ,cropBottom: this.cropCoords.relBottom
-            ,cropLeft: this.cropCoords.left
+            'gal_cropCoords': Ext.encode(this.cropCoords)
+            ,'gal_cropTop': this.cropCoords.top
+            ,'gal_cropRight': this.cropCoords.relRight
+            ,'gal_cropBottom': this.cropCoords.relBottom
+            ,'gal_cropLeft': this.cropCoords.left
         };
         this.setValues(vs);
     }
 
     ,resetCropValues: function() {
-        this.setValue('cropCoords','');
-        this.setValue('cropTop',0);
-        this.setValue('cropRight',0);
-        this.setValue('cropBottom',0);
-        this.setValue('cropLeft',0);
+        this.setValue('gal_cropCoords','');
+        this.setValue('gal_cropTop',0);
+        this.setValue('gal_cropRight',0);
+        this.setValue('gal_cropBottom',0);
+        this.setValue('gal_cropLeft',0);
     }
 
     ,syncHidden: function(tf,nv,nm) {
@@ -480,31 +494,36 @@ Ext.extend(GAL.TV,MODx.Panel,{
         this.updateImage();
     }
     ,resizeImage: function(sl,e,name) {
-        var vs = this.getValues();
-
         var nv = this.getValue(name);
-        var w = this.getValue('orig_width');
-        var h = this.getValue('orig_height');
+        var w = this.getValue('gal_orig_width');
+        var h = this.getValue('gal_orig_height');
 
         var nw = Ext.util.Format.round(w * (nv / 100),0);
         var nh = Ext.util.Format.round(h * (nv / 100),0);
-        if (name == 'sizer') {
-            this.setValue('image_width',nw);
-            this.setValue('image_height',nh);
-            this.syncHidden(sl,nv,'sizer');
-            this.syncHidden(this.findField('image_width'),nw);
-            this.syncHidden(this.findField('image_height'),nh);
-            this.syncHidden(this.findField('orig_width'),w);
-            this.syncHidden(this.findField('orig_height'),h);
+        if (name == 'gal_sizer') {
+            this.setValue('gal_image_width',nw);
+            this.setValue('gal_image_height',nh);
+            this.syncHidden(sl,nv,'gal_sizer');
         }
         
-        vs.image_height = nh;
-        vs.image_width = nw;
-        this.updateImage(vs);
+        this.updateImage();
         this.resetCropValues();
     }
+
+    ,updateImage: function() {
+        var vs = this.getValues();
+        var p = Ext.get('tv'+this.config.tv+'-preview');
+        if (p) {
+            this.previewTpl.overwrite(p,vs);
+        }
+
+        this.imageBox = Ext.get('tv'+this.config.tv+'-image').getBox();
+        if (this.resizer) {this.resizer.imgBox = this.imageBox;}
+        return true;
+    }
+    
     ,loadBrowser: function(btn,e) {
-        var alb = this.config.data.album || 0;
+        var alb = this.config.data['gal_album'] || 0;
         if (this.browser === null) {
             this.browser = MODx.load({
                 xtype: 'gal-browser'
@@ -520,22 +539,26 @@ Ext.extend(GAL.TV,MODx.Panel,{
         this.browser.show(btn);
     }
     ,selectImage: function(data) {
-        data.url = data.absoluteImage;
+        data['gal_url'] = data.absoluteImage;
+        data['gal_src'] = data.absoluteImage;
 
         this.fireEvent('select',data);
-        data.orig_width = data.image_width;
-        data.orig_height = data.image_height;
-        data.title = data.description;
-        data.src = data.url;
-        data['watermark-text'] = '';
-        data['watermark-text-position'] = 'BL';
-        data['other'] = '';
-        data['rotate'] = 0;
-        
+        data['gal_id'] = data.id;
+        data['gal_name'] = data.name;
+        data['gal_description'] = data.description;
+        data['gal_image_width'] = data.image_width;
+        data['gal_image_height'] = data.image_height;
+        data['gal_orig_width'] = data.image_width;
+        data['gal_orig_height'] = data.image_height;
+        data['gal_album'] = data.album;
+        data['gal_watermark-text'] = '';
+        data['gal_watermark-text-position'] = 'BL';
+        data['gal_other'] = '';
+        data['gal_rotate'] = 0;
+        data['gal_sizer'] = 100;
         this.setValues(data);
-        this.setValue('sizer',100);
 
-        this.updateImage(data);
+        this.updateImage();
         this.disableCrop();
     }
 
@@ -547,36 +570,26 @@ Ext.extend(GAL.TV,MODx.Panel,{
         Ext.getCmp('modx-panel-resource').markDirty();
     }
 
-    ,updateImage: function(vs) {
-        if (!vs) vs = this.getValues();
-
-        var p = Ext.get('tv'+this.config.tv+'-preview');
-        if (p) {
-            this.previewTpl.overwrite(p,vs);
-        }
-
-        this.imageBox = Ext.get('tv'+this.config.tv+'-image').getBox();
-        if (this.resizer) {this.resizer.imgBox = this.imageBox;}
-        return true;
-    }
 
     ,clearValues: function() {
         this.setValues({
-            name: ''
-            ,description: ''
-            ,image_width: 0
-            ,image_height: 0
-            ,slider: 100
-            ,rotate: 0
-            ,'watermark-text': ''
-            ,'watermark-text-position': 'BL'
-            ,other : ''
-            ,cropCoords: ''
-            ,cropTop: 0
-            ,cropRight: 0
-            ,cropBottom: 0
-            ,cropLeft: 0
-            ,cropMode: 0
+            'gal_id': 0
+            ,'gal_name': ''
+            ,'gal_description': ''
+            ,'gal_class': ''
+            ,'gal_image_width': 0
+            ,'gal_image_height': 0
+            ,'gal_slider': 100
+            ,'gal_rotate': 0
+            ,'gal_watermark-text': ''
+            ,'gal_watermark-text-position': 'BL'
+            ,'gal_other' : ''
+            ,'gal_cropCoords': ''
+            ,'gal_cropTop': 0
+            ,'gal_cropRight': 0
+            ,'gal_cropBottom': 0
+            ,'gal_cropLeft': 0
+            ,'gal_cropMode': 0
         });
         this.disableCrop();
         Ext.getCmp('modx-panel-resource').markDirty();
