@@ -20,21 +20,17 @@ Ext.override(Ext.slider.Thumb, {
 
 GAL.TV = function(config) {
     config = config || {};
-    config.data = config.data || {};
+    config.data = config.data || {src:false};
 
-/**
- * CANNOT HAVE NESTED FORMS. Dangit.
- */
     this.phpthumb = MODx.config.url_scheme+MODx.config.http_host+MODx.config['gallery.phpthumb_url']+'phpThumb.php';
     this.previewTpl = new Ext.XTemplate('<tpl for=".">'
-        ,'<img src="'+this.phpthumb+'?src={src}&h={image_height}&w={image_width}&zc=0&far=C&fltr[]=rot|{rotate}&{other}" '
-        ,' alt="{name}" id="tv'+config.tv+'-image" style="width: {image_width}px; height: {image_height}px" />'
+        ,'<tpl if="src">'
+            ,'<img src="'+this.phpthumb+'?src={src}&h={image_height}&w={image_width}&zc=0&far=C&fltr[]=rot|{rotate}&{other}" '
+            ,' alt="{name}" id="tv'+config.tv+'-image" style="width: {image_width}px; height: {image_height}px" />'
+        ,'</tpl>'
         ,'</tpl>');
     this.previewTpl.compile();
-    var item;
-    if (config.data.id) {
-        item = this.previewTpl.applyTemplate(config.data);
-    }
+    var item = this.previewTpl.applyTemplate(config.data);
     Ext.applyIf(config,{
         layout: 'column'
         ,autoHeight: true
@@ -98,24 +94,24 @@ GAL.TV = function(config) {
                 ,fieldLabel: 'album'
                 ,name: 'album'
                 ,id: 'tv'+config.tv+'-album'
-                ,value: config.data.album
+                ,value: config.data.album || 0
             },{
                 xtype: 'hidden'
                 ,fieldLabel: 'src'
                 ,name: 'src'
                 ,id: 'tv'+config.tv+'-src'
-                ,value: config.data.src
+                ,value: config.data.src || ''
             },{
                 xtype: 'hidden'
                 ,name: 'orig_width'
                 ,id: 'tv'+config.tv+'-orig_width'
-                ,value: config.data.orig_width
+                ,value: config.data.orig_width || 0
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'hidden'
                 ,name: 'orig_height'
                 ,id: 'tv'+config.tv+'-orig_height'
-                ,value: config.data.orig_height
+                ,value: config.data.orig_height || 0
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
                 xtype: 'textfield'
@@ -138,7 +134,7 @@ GAL.TV = function(config) {
                 ,name: 'image_width'
                 ,id: 'tv'+config.tv+'-image_width'
                 ,fieldLabel: _('gallery.width')
-                ,value: config.data.image_width
+                ,value: config.data.image_width || 0
                 ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
@@ -146,7 +142,7 @@ GAL.TV = function(config) {
                 ,name: 'image_height'
                 ,id: 'tv'+config.tv+'-image_height'
                 ,fieldLabel: _('gallery.height')
-                ,value: config.data.image_height
+                ,value: config.data.image_height || 0
                 ,anchor: '97%'
                 ,listeners: {'change':this.syncHidden,scope:this}
             },{
@@ -211,7 +207,7 @@ GAL.TV = function(config) {
                     ,name: 'watermark-text'
                     ,allowBlank: true
                     ,anchor: '97%'
-                    ,value: config.data['watermark-text']
+                    ,value: config.data['watermark-text'] || ''
                     ,listeners: {'change':this.syncHidden,scope:this}
                 },{
                     xtype: 'combo'
@@ -237,7 +233,7 @@ GAL.TV = function(config) {
                     ,triggerAction: 'all'
                     ,selectOnFocus: true
                     ,editable: false
-                    ,value: config.data['watermark-text-position']
+                    ,value: config.data['watermark-text-position'] || ''
                     ,listeners: {'select':this.syncHidden,scope:this}
                 }]
             },{
@@ -255,7 +251,7 @@ GAL.TV = function(config) {
                     ,name: 'cropCoords'
                     ,anchor: '97%'
                     ,id: 'tv'+config.tv+'-cropCoords'
-                    ,value: Ext.encode(config.data.cropCoords) || '{}'
+                    ,value: config.data.cropCoords ? Ext.encode(config.data.cropCoords) : '{}'
                 },{
                     xtype: 'statictextfield'
                     ,name: 'cropTop'
@@ -417,7 +413,7 @@ Ext.extend(GAL.TV,MODx.Panel,{
             ,img: Ext.get('tv'+this.config.tv+'-image')
         });
         if (!this.inCropMode) {
-            var d = this.config.data;
+            var d = this.getValues();
             this.resizable.resize4(d.cropTop,d.cropRight,d.cropBottom,d.cropLeft);
         }
         this.resizable.on('resize',this.onCrop,this);
