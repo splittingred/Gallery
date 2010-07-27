@@ -30,14 +30,14 @@ class galItem extends xPDOSimpleObject {
                 if (empty($format)) $format = array();
 
                 $format['src']= $this->getSiteUrl().$this->xpdo->getOption('gallery.files_url').$this->get('filename');
-                $url = $value.'&'.http_build_query($format);
+                $url = $value.'&'.http_build_query($format,'','&');
                 $value = str_replace('&','&amp;',$url);
                 break;
             case 'image':
                 if (empty($format)) $format = array();
                 $format['src'] = $this->getSiteUrl().$this->xpdo->getOption('gallery.files_url').$this->get('filename');
 
-                $value = $this->getPhpThumbUrl().'&'.http_build_query($format);
+                $value = $this->getPhpThumbUrl().'&'.http_build_query($format,'','&');
                 break;
             case 'absoluteImage':
                 $value = $this->getSiteUrl().$this->xpdo->getOption('gallery.files_url').$this->get('filename');
