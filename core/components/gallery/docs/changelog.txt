@@ -2,6 +2,9 @@ Changelog for Gallery.
 
 Gallery 1.0.0
 =============
+- Fixed phpthumb cache issue by using core phpthumb
+- Fixed port issue on thumbs
+- Added updated Russian translation
 - Added cropping support to custom TV, fixed bugs
 - Added rotating, watermark and other options to custom TV
 - Added a few settings for customizing backend mgr UX, including default batch upload path

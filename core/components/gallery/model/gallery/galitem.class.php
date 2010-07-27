@@ -23,24 +23,24 @@
  * @package gallery
  */
 class galItem extends xPDOSimpleObject {
-
     public function get($k, $format = null, $formatTemplate= null) {
         switch ($k) {
             case 'thumbnail':
                 $value = $this->getPhpThumbUrl();
                 if (empty($format)) $format = array();
-                $format['src']= MODX_URL_SCHEME.MODX_HTTP_HOST.$this->xpdo->getOption('gallery.files_url').$this->get('filename');
-                $url = $value.'?'.http_build_query($format);
+
+                $format['src']= $this->getSiteUrl().$this->xpdo->getOption('gallery.files_url').$this->get('filename');
+                $url = $value.'&'.http_build_query($format);
                 $value = str_replace('&','&amp;',$url);
                 break;
             case 'image':
                 if (empty($format)) $format = array();
-                $format['src'] = MODX_URL_SCHEME.MODX_HTTP_HOST.$this->xpdo->getOption('gallery.files_url').$this->get('filename');
+                $format['src'] = $this->getSiteUrl().$this->xpdo->getOption('gallery.files_url').$this->get('filename');
 
-                $value = $this->getPhpThumbUrl().'?'.http_build_query($format);
+                $value = $this->getPhpThumbUrl().'&'.http_build_query($format);
                 break;
             case 'absoluteImage':
-                $value = MODX_URL_SCHEME.MODX_HTTP_HOST.$this->xpdo->getOption('gallery.files_url').$this->get('filename');
+                $value = $this->getSiteUrl().$this->xpdo->getOption('gallery.files_url').$this->get('filename');
                 break;
             case 'relativeImage':
                 $value = ltrim($this->xpdo->getOption('gallery.files_url').$this->get('filename'),'/');
@@ -61,9 +61,16 @@ class galItem extends xPDOSimpleObject {
     }
 
     public function getPhpThumbUrl() {
-        return MODX_URL_SCHEME.MODX_HTTP_HOST.$this->xpdo->getOption('gallery.phpthumb_url').'phpThumb.php';
+        $assetsUrl = $this->xpdo->getOption('gallery.assets_url',null,$this->xpdo->getOption('assets_url',null,MODX_ASSETS_URL).'components/gallery/');
+        $assetsUrl .= 'connector.php?action=web/phpthumb';
+        return $assetsUrl;
     }
 
+    private function getSiteUrl() {
+        $url = MODX_URL_SCHEME;
+        return $url.$_SERVER['HTTP_HOST'];
+    }
+    
 
     public function upload($file) {
         if (empty($file) || empty($file['tmp_name']) || empty($file['name'])) return false;

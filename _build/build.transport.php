@@ -35,7 +35,7 @@ set_time_limit(0);
 define('PKG_NAME','Gallery');
 define('PKG_NAME_LOWER','gallery');
 define('PKG_VERSION','1.0.0');
-define('PKG_RELEASE','rc1');
+define('PKG_RELEASE','rc2');
 
 /* define sources */
 $root = dirname(dirname(__FILE__)).'/';
@@ -52,7 +52,6 @@ $sources = array(
     'pages' => $root.'core/components/'.PKG_NAME_LOWER.'/elements/pages/',
     'source_assets' => $root.'assets/components/'.PKG_NAME_LOWER,
     'source_core' => $root.'core/components/'.PKG_NAME_LOWER,
-    'source_phpthumb' => $root.'assets/components/phpthumb',
 );
 unset($root);
 
@@ -174,10 +173,6 @@ $vehicle->resolve('file',array(
 $vehicle->resolve('file',array(
     'source' => $sources['source_core'],
     'target' => "return MODX_CORE_PATH . 'components/';",
-));
-$vehicle->resolve('file',array(
-    'source' => $sources['source_phpthumb'],
-    'target' => "return MODX_ASSETS_PATH . 'components/';",
 ));
 $builder->putVehicle($vehicle);
 

@@ -26,6 +26,9 @@
  *
  * @package gallery
  */
+if ($_REQUEST['action'] == 'web/phpthumb') {
+    define('MODX_REQP',false);
+}
 require_once dirname(dirname(dirname(dirname(__FILE__)))).'/config.core.php';
 require_once MODX_CORE_PATH.'config/'.MODX_CONFIG_KEY.'.inc.php';
 require_once MODX_CONNECTORS_PATH.'index.php';
@@ -35,6 +38,10 @@ require_once $galleryCorePath.'model/gallery/gallery.class.php';
 $modx->gallery = new Gallery($modx);
 
 $modx->lexicon->load('gallery:default');
+
+if ($_REQUEST['action'] == 'web/phpthumb') {
+    $_SERVER['HTTP_MODAUTH'] = $modx->site_id;
+}
 
 /* handle request */
 $path = $modx->getOption('processorsPath',$modx->gallery->config,$galleryCorePath.'processors/');
