@@ -22,10 +22,9 @@ GAL.TV = function(config) {
     config = config || {};
     config.data = config.data || {gal_src:false};
 
-    this.phpthumb = MODx.config.url_scheme+MODx.config.http_host+MODx.config['gallery.phpthumb_url']+'phpThumb.php';
     this.previewTpl = new Ext.XTemplate('<tpl for=".">'
         ,'<tpl if="gal_src">'
-            ,'<img src="'+this.phpthumb+'?src={gal_src}&h={gal_image_height}&w={gal_image_width}&zc=0&far=C&fltr[]=rot|{gal_rotate}&{gal_other}" '
+            ,'<img src="'+GAL.config.connector_url+'?action=web/phpthumb&src={gal_src}&h={gal_image_height}&w={gal_image_width}&zc=0&far=C&fltr[]=rot|{gal_rotate}&{gal_other}" '
             ,' alt="{gal_name}" class="{gal_class}" id="tv'+config.tv+'-image" style="width: {gal_image_width}px; height: {gal_image_height}px" />'
         ,'</tpl>'
         ,'</tpl>');

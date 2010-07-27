@@ -82,7 +82,7 @@ $albums = $modx->getCollection('galAlbum',$c);
 $itemArray['albums'] = '';
 $i = 0; $count = count($albums);
 foreach ($albums as $album) {
-    $albumArray = $album->toArray();
+    $albumArray = $album->toArray('',true,true);
     $albumArray['albumRequestVar'] = $albumRequestVar;
     $itemArray['albums'] .= $gallery->getChunk($albumTpl,$albumArray);
     if ($i+1 < $count) $itemArray['albums'] .= $albumSeparator;

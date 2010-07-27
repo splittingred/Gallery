@@ -72,6 +72,15 @@ $settings['gallery.default_batch_upload_path']->fromArray(array(
     'area' => 'backend',
 ),'',true,true);
 
+$settings['xhtml_urls']= $modx->newObject('modSystemSetting');
+$settings['xhtml_urls']->fromArray(array(
+    'key' => 'xhtml_urls',
+    'value' => 0,
+    'xtype' => 'combo-boolean',
+    'namespace' => 'core',
+    'area' => 'furls',
+),'',true,true);
+
 /*
 $settings['gallery.']= $modx->newObject('modSystemSetting');
 $settings['gallery.']->fromArray(array(
