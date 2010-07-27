@@ -35,7 +35,7 @@ set_time_limit(0);
 define('PKG_NAME','Gallery');
 define('PKG_NAME_LOWER','gallery');
 define('PKG_VERSION','1.0.0');
-define('PKG_RELEASE','rc4');
+define('PKG_RELEASE','pl');
 
 /* define sources */
 $root = dirname(dirname(__FILE__)).'/';
@@ -224,6 +224,9 @@ if (empty($menu)) {
     ));
     $vehicle->resolve('php',array(
         'source' => $sources['resolvers'] . 'resolve.dbchanges.php',
+    ));
+    $vehicle->resolve('php',array(
+        'source' => $sources['resolvers'] . 'resolve.spaces.php',
     ));
     $builder->putVehicle($vehicle);
     $modx->log(modX::LOG_LEVEL_INFO,'Packaged in menu.');

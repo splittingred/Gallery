@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 1.0.0
 =============
+- Added checks to prevent spaces in filenames
 - Fixed ampersand issue in gallery URLs
 - Fixed phpthumb cache issue by using core phpthumb
 - Fixed port issue on thumbs

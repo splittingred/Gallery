@@ -96,7 +96,7 @@ foreach (new DirectoryIterator($fullpath) as $file) {
     $item->set('active',$_POST['active']);
 
     /* upload the file */
-    $fileNameLower = strtolower($fileName);
+    $fileNameLower = str_replace(' ','',strtolower($fileName));
     $location = strtr($targetDir.'/'.$fileNameLower,'\\','/');
     $location = str_replace('//','/',$location);
     if (@file_exists($location.$fileNameLower)) {

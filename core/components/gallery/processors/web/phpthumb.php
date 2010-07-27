@@ -4,7 +4,7 @@
  */
 
 /* filter path */
-$src = $modx->getOption('src',$scriptProperties,'');
+$src = str_replace('+','%27',urldecode($modx->getOption('src',$scriptProperties,'')));
 if (empty($src)) return '';
 
 /* load phpThumb */
@@ -32,8 +32,11 @@ foreach ($scriptProperties as $property => $value) {
 }
 
 /* set source and generate thumbnail */
+//$src = urlencode($src);
 $phpThumb->setSourceFilename($src);
-if (!$phpThumb->GenerateThumbnail()) return '';
+if (!$phpThumb->GenerateThumbnail()) {
+    return '';
+}
 
 $outputFilename = $modx->getOption('output_filename',$scriptProperties,false);
 $captureRawData = $modx->getOption('capture_raw_data',$scriptProperties,false);
