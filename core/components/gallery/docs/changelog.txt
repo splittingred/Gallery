@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 1.0.1
 =============
+- Fixed bugs with HTML in item thumbs, urls when xhtml_urls is true
 - Added French translation, github readme
 
 Gallery 1.0.0

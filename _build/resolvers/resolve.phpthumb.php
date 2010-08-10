@@ -30,9 +30,8 @@ if ($object->xpdo) {
         case xPDOTransport::ACTION_INSTALL:
             $modx =& $object->xpdo;
 
-            $ptCacheDir = $object->xpdo->getOption('core_path').'cache/phpthumb/';
-            @mkdir($ptCacheDir,0775);
-
+            $ptCacheDir = $modx->getOption('core_path',null,MODX_CORE_PATH).'cache/phpthumb/';
+            $modx->cacheManager->writeTree($ptCacheDir);
             break;
         case xPDOTransport::ACTION_UPGRADE:
             break;
