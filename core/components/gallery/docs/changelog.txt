@@ -2,6 +2,8 @@ Changelog for Gallery.
 
 Gallery 1.0.1
 =============
+- *Many* caching improvements to phpthumb-generated thumbnails
+- Added gallery.thumbs_prepend_site_url setting for environments having issues with thumbnails
 - Fixed bugs with HTML in item thumbs, urls when xhtml_urls is true
 - Added French translation, github readme
 

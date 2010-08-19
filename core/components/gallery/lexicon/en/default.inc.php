@@ -97,3 +97,6 @@ $_lang['setting_gallery.backend_thumb_zoomcrop_desc'] = 'Whether or not to use z
 
 $_lang['setting_gallery.default_batch_upload_path'] = 'Default Batch Upload Path';
 $_lang['setting_gallery.default_batch_upload_path_desc'] = 'The default value to use for the path when using batch upload.';
+
+$_lang['setting_gallery.thumbs_prepend_site_url'] = 'Prepend Site URL to Thumbs';
+$_lang['setting_gallery.thumbs_prepend_site_url_desc'] = 'If true, will prepend the site URL to all thumbnails being sent to phpThumb.';

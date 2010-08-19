@@ -81,6 +81,15 @@ $settings['xhtml_urls']->fromArray(array(
     'area' => 'furls',
 ),'',true,true);
 
+$settings['gallery.thumbs_prepend_site_url']= $modx->newObject('modSystemSetting');
+$settings['gallery.thumbs_prepend_site_url']->fromArray(array(
+    'key' => 'gallery.thumbs_prepend_site_url',
+    'value' => false,
+    'xtype' => 'combo-boolean',
+    'namespace' => 'gallery',
+    'area' => '',
+),'',true,true);
+
 /*
 $settings['gallery.']= $modx->newObject('modSystemSetting');
 $settings['gallery.']->fromArray(array(
