@@ -1,5 +1,7 @@
 Changelog for Gallery.
 
+- Add additional system setting checks for phpthumb config options.
+
 Gallery 1.0.1
 =============
 - *Many* caching improvements to phpthumb-generated thumbnails
