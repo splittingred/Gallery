@@ -1,9 +1,9 @@
 Changelog for Gallery.
 
-- Add additional system setting checks for phpthumb config options.
-
 Gallery 1.0.1
 =============
+- [#12] Make left-click do update-album in mgr tree
+- Add additional system setting checks for phpthumb config options.
 - *Many* caching improvements to phpthumb-generated thumbnails
 - Added gallery.thumbs_prepend_site_url setting for environments having issues with thumbnails
 - Fixed bugs with HTML in item thumbs, urls when xhtml_urls is true

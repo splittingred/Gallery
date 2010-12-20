@@ -17,6 +17,11 @@ $c->where(array(
 $c->sortby('galAlbum.rank','ASC');
 $albums = $modx->getCollection('galAlbum',$c);
 
+$action = $modx->getObject('modAction',array(
+    'controller' => 'index',
+    'namespace' => 'gallery',
+));
+
 foreach ($albums as $album) {
     $albumArray = $album->toArray();
 
@@ -26,6 +31,9 @@ foreach ($albums as $album) {
     $albumArray['parent'] = 0;
     $albumArray['cls'] = 'icon-tiff'.($album->get('active') ? '' : ' gal-item-inactive');
     $albumArray['classKey'] = 'galAlbum';
+    if (!empty($action)) {
+        $albumArray['page'] = '?a='.$action->get('id').'&album='.$album->get('id').'&action=album/update';
+    }
 
     $albumArray['menu'] = array('items' => array());
     $albumArray['menu']['items'][] = array(
