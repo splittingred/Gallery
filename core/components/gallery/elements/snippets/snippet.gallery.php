@@ -130,6 +130,8 @@ foreach ($items as $item) {
     $itemArray['cls'] = $itemCls;
     $itemArray['filename'] = basename($item->get('filename'));
     $itemArray['image_absolute'] = $modx->getOption('gallery.files_url').$item->get('filename');
+    $itemArray['fileurl'] = $itemArray['image_absolute'];
+    $itemArray['filepath'] = $modx->getOption('gallery.files_path').$item->get('filename');
     $itemArray['filesize'] = $item->get('filesize');
     $itemArray['thumbnail'] = $item->get('thumbnail',array(
         'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),

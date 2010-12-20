@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 1.0.1
 =============
+- [#54] Added filepath placeholder for getting absolute path of an image, fileurl for absolute URL
 - [#12] Make left-click do update-album in mgr tree
 - Add additional system setting checks for phpthumb config options.
 - *Many* caching improvements to phpthumb-generated thumbnails
