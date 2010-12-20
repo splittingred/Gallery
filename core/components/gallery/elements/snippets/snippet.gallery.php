@@ -102,7 +102,11 @@ if (!$showInactive) {
     ));
 }
 
-$c->sortby($sortAlias.'.'.$sort,$dir);
+if (strcasecmp($sort,'rand')==0) {
+    $c->sortby('RAND()',$dir);
+} else {
+    $c->sortby($sortAlias.'.'.$sort,$dir);
+}
 if (!empty($limit)) $c->limit($limit,$start);
 $items = $modx->getCollection('galItem',$c);
 
