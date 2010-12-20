@@ -44,6 +44,9 @@ GAL.BrowserWindow = function(config) {
         ,listeners: {
             'click': {fn:function(node,e) {
                 this.load(node.attributes.pk);
+                return false;
+                e.stopPropagation();
+                e.preventDefault();
             },scope: this}
         }
         ,tbar: []

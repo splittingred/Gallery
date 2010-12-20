@@ -1,7 +1,11 @@
 Changelog for Gallery.
 
-Gallery 1.0.1
-=============
+Gallery 1.0.2
+====================================
+- Fix issue where Gallery TV albums tree loaded page when clicking on a node
+
+Gallery 1.0.1 (December 20th, 2010)
+====================================
 - [#54] Added filepath placeholder for getting absolute path of an image, fileurl for absolute URL
 - [#12] Make left-click do update-album in mgr tree
 - Add additional system setting checks for phpthumb config options.
