@@ -148,7 +148,7 @@ GAL.panel.AlbumItems = function(config) {
             id: 'gal-album-items-ct'
             ,cls: 'browser-view'
             ,region: 'center'
-            ,width: '80%'
+            ,width: '75%'
             ,height: 450
             ,autoScroll: true
             ,border: false
