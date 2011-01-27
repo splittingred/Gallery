@@ -104,6 +104,13 @@ $properties = array(
         'value' => 'C',
     ),
     array(
+        'name' => 'thumbQuality',
+        'desc' => 'The "q" value for phpThumb for the thumbnail, for quality.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 90,
+    ),
+    array(
         'name' => 'linkToImage',
         'desc' => 'If true, will link directly to the image. If false, will append ',
         'type' => 'combo-boolean',
@@ -144,6 +151,13 @@ $properties = array(
         'type' => 'textfield',
         'options' => '',
         'value' => '',
+    ),
+    array(
+        'name' => 'imageQuality',
+        'desc' => 'The "q" value for phpThumb for the image, for quality.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 90,
     ),
     array(
         'name' => 'sort',

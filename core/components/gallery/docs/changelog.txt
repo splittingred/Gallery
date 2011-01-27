@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 1.0.2
 ====================================
+- Add cover ability to GalleryAlbums by using rowTpl "galAlbumRowWithCoverTpl"
 - Fix issue where Gallery TV albums tree loaded page when clicking on a node
 
 Gallery 1.0.1 (December 20th, 2010)

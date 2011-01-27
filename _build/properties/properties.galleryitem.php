@@ -132,6 +132,13 @@ $properties = array(
         'value' => 'C',
     ),
     array(
+        'name' => 'thumbQuality',
+        'desc' => 'The "q" value for phpThumb for the thumbnail, for quality.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 90,
+    ),
+    array(
         'name' => 'imageWidth',
         'desc' => 'If being used by a plugin, the max width of the generated image.',
         'type' => 'textfield',
@@ -158,5 +165,12 @@ $properties = array(
         'type' => 'textfield',
         'options' => '',
         'value' => '',
+    ),
+    array(
+        'name' => 'imageQuality',
+        'desc' => 'The "q" value for phpThumb for the image, for quality.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 90,
     ),
 );

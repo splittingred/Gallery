@@ -39,6 +39,17 @@ $start = $modx->getOption('start',$scriptProperties,0);
 $parent = $modx->getOption('parent',$scriptProperties,0);
 $showAll = $modx->getOption('showAll',$scriptProperties,false);
 $albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
+$albumCoverSort = $modx->getOption('albumCoverSort',$scriptProperties,'rank');
+$albumCoverSortDir = $modx->getOption('albumCoverSortDir',$scriptProperties,'ASC');
+
+/* handle sorting for album cover */
+if ($albumCoverSort == 'rank') {
+    $albumCoverSort = 'AlbumItems.rank';
+}
+if (in_array(strtolower($albumCoverSort),array('random','RAND()','RAND'))) {
+    $albumCoverSort = 'RAND()';
+    $albumCoverSortDir = '';
+}
 
 /* build query */
 $c = $modx->newQuery('galAlbum');
@@ -65,6 +76,25 @@ $albums = $modx->getCollection('galAlbum',$c);
 $output = '';
 foreach ($albums as $album) {
     $albumArray = $album->toArray();
+    $c = $modx->newQuery('galItem');
+    $c->innerJoin('galAlbumItem','AlbumItems');
+    $c->where(array(
+        'AlbumItems.album' => $album->get('id'),
+    ));
+    $c->sortby($albumCoverSort,$albumCoverSortDir);
+    $c->limit(1);
+    $coverItem = $modx->getObject('galAlbumItem',$c);
+    
+    if ($coverItem) {
+        $albumArray['image'] = $coverItem->get('thumbnail',array(
+            'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),
+            'h' => (int)$modx->getOption('thumbHeight',$scriptProperties,100),
+            'zc' => (boolean)$modx->getOption('thumbZoomCrop',$scriptProperties,1),
+            'far' => (boolean)$modx->getOption('thumbFar',$scriptProperties,'C'),
+            'q' => $modx->getOption('thumbQuality',$scriptProperties,90),
+        ));
+    }
+
     $albumArray['albumRequestVar'] = $albumRequestVar;
     $output .= $gallery->getChunk($rowTpl,$albumArray);
 }
