@@ -109,6 +109,7 @@ if (strcasecmp($sort,'rand')==0) {
 }
 if (!empty($limit)) $c->limit($limit,$start);
 $items = $modx->getCollection('galItem',$c);
+$num_items = count($items);
 
 /* load plugins */
 if (!empty($plugin)) {
@@ -175,6 +176,7 @@ if (!empty($toPlaceholder)) {
         $toPlaceholder.'.id' => $galleryId,
         $toPlaceholder.'.name' => $galleryName,
         $toPlaceholder.'.description' => $galleryDescription,
+        $toPlaceholder.'.count' => $num_items
     ));
 } else {
     $placeholderPrefix = $modx->getOption('placeholderPrefix',$scriptProperties,'gallery.');
@@ -182,6 +184,7 @@ if (!empty($toPlaceholder)) {
         $placeholderPrefix.'id' => $galleryId,
         $placeholderPrefix.'name' => $galleryName,
         $placeholderPrefix.'description' => $galleryDescription,
+        $placeholderPrefix.'.count' => $num_items
     ));
     return $output;
 }
