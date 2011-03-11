@@ -74,3 +74,26 @@ $_lang['galleryalbums.thumbquality_desc'] = 'The "q" value for phpThumb for the 
 $_lang['galleryalbums.thumbwidth_desc'] = 'The width of the generated album cover thumbnail, in pixels.';
 $_lang['galleryalbums.thumbzoomcrop_desc'] = 'Whether or not the album coverthumbnail will be zoom-cropped.';
 $_lang['galleryalbums.toplaceholder_desc'] = 'If not empty, will set the output to a placeholder with this value.';
+
+/* GalleryItem Snippet */
+$_lang['galleryitem.id_desc'] = 'The ID of the item to display.';
+$_lang['galleryitem.toplaceholders_desc'] = 'If true, will set the properties of the Item to placeholders. If false, will use the tpl property to output a chunk.';
+$_lang['galleryitem.toplaceholdersprefix_desc'] = 'Optional. The prefix to add to placeholders set by this snippet. Only works if toPlaceholders is true.';
+$_lang['galleryitem.tpl_desc'] = 'Name of a chunk to use when toPlaceholders is set to false.';
+$_lang['galleryitem.albumtpl_desc'] = 'Name of a chunk to use for each album that is listed for the Item.';
+$_lang['galleryitem.albumseparator_desc'] = 'A string separator for each album listed for the Item.';
+$_lang['galleryitem.albumrequestvar_desc'] = 'The REQUEST var to use when linking albums.';
+$_lang['galleryitem.tagtpl_desc'] = 'Name of a chunk to use for each tag that is listed for the Item.';
+$_lang['galleryitem.tagseparator_desc'] = 'A string separator for each tag listed for the Item.';
+$_lang['galleryitem.tagsortdir_desc'] = 'A the direction to sort the tags listed for the Item.';
+$_lang['galleryitem.tagrequestvar_desc'] = 'The REQUEST var to use when linking tags.';
+$_lang['galleryitem.thumbwidth_desc'] = 'The max width of the generated thumbnail, in pixels.';
+$_lang['galleryitem.thumbheight_desc'] = 'The max height of the generated thumbnail, in pixels.';
+$_lang['galleryitem.thumbzoomcrop_desc'] = 'Whether or not to use zoom cropping for the thumbnail.';
+$_lang['galleryitem.thumbfar_desc'] = 'The "far" value for phpThumb for the thumbnail, for aspect ratio zooming.';
+$_lang['galleryitem.thumbquality_desc'] = 'The "q" value for phpThumb for the thumbnail, for quality.';
+$_lang['galleryitem.imagewidth_desc'] = 'If being used by a plugin, the max width of the generated image.';
+$_lang['galleryitem.imageheight_desc'] = 'If being used by a plugin, the max height of the generated image.';
+$_lang['galleryitem.imagezoomcrop_desc'] = 'Whether or not to use zoom cropping for the image.';
+$_lang['galleryitem.imagefar_desc'] = 'The "far" value for phpThumb for the image, for aspect ratio zooming.';
+$_lang['galleryitem.imagequality_desc'] = 'The "q" value for phpThumb for the image, for quality.';

@@ -1,5 +1,9 @@
 Changelog for Gallery.
 
+Gallery 1.1.0
+====================================
+- i18n of Snippet properties
+
 Gallery 1.0.2
 ====================================
 - [#31] Add &gallerifficUseCss parameter for toggling CSS by Galleriffic
