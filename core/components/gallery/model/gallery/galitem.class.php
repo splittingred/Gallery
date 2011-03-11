@@ -79,12 +79,16 @@ class galItem extends xPDOSimpleObject {
         return $url.$_SERVER['HTTP_HOST'];
     }
     
-
+    /**
+     * Upload a file to an album
+     */
     public function upload($file,$album) {
         if (empty($file) || empty($file['tmp_name']) || empty($file['name'])) return false;
+        if (in_array($this->get('id'),array(0,null,''))) return false;
         $uploaded = false;
 
-        $targetDir = $this->xpdo->getOption('gallery.files_path').$album.'/';
+        $albumDir = $album.'/';
+        $targetDir = $this->xpdo->getOption('gallery.files_path').$albumDir;
 
         $cacheManager = $this->xpdo->getCacheManager();
         /* if directory doesnt exist, create it */
@@ -101,18 +105,19 @@ class galItem extends xPDOSimpleObject {
         }
 
         /* upload the file */
-        $fileNameLower = strtolower($file['name']);
-        $location = strtr($targetDir.'/'.$fileNameLower,'\\','/');
-        $location = str_replace('//','/',$location);
-        $location = str_replace(' ','',$location);
-        if (@file_exists($location.$fileNameLower)) {
-            @unlink($location.$fileNameLower);
+        $extension = pathinfo($file['name'],PATHINFO_EXTENSION);
+        $filename = $this->get('id').'.'.$extension;
+        $relativePath = $albumDir.$filename;
+        $absolutePath = $targetDir.$filename;
+        
+        if (@file_exists($absolutePath)) {
+            @unlink($absolutePath);
         }
-        if (!@move_uploaded_file($file['tmp_name'],$location)) {
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$file['tmp_name'].' to '.$location);
+        if (!@move_uploaded_file($file['tmp_name'],$absolutePath)) {
+            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$file['tmp_name'].' to '.$absolutePath);
         } else {
             $uploaded = true;
-            $this->set('filename',str_replace(' ','',$album.'/'.$fileNameLower));
+            $this->set('filename',str_replace(' ','',$relativePath));
         }
 
         return $uploaded;

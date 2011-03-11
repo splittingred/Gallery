@@ -93,27 +93,28 @@ foreach (new DirectoryIterator($fullpath) as $file) {
     $item->set('createdby',$modx->user->get('id'));
     $item->set('mediatype','image');
     $item->set('active',$scriptProperties['active']);
-
-    /* upload the file */
-    $fileNameLower = str_replace(' ','',strtolower($fileName));
-    $location = strtr($targetDir.'/'.$fileNameLower,'\\','/');
-    $location = str_replace('//','/',$location);
-    if (@file_exists($location.$fileNameLower)) {
-        @unlink($location.$fileNameLower);
-    }
-    if (!@copy($filePathName,$location)) {
-        $errors[] = $modx->lexicon('gallery.file_err_move',array(
-            'file' => $fileNameLower,
-            'target' => $location,
-        ));
-        continue;
-    } else {
-        $item->set('filename',$dateFolder.$fileNameLower);
-    }
-
     if (!$item->save()) {
         $errors[] = $modx->lexicon('gallery.item_err_save');
         continue;
+    }
+
+    $newFileName = $item->get('id').'.'.$fileExtension;
+    $newRelativePath = $scriptProperties['album'].'/'.$newFileName;
+    $newAbsolutePath = $targetDir.'/'.$newFileName;
+    
+    if (@file_exists($newAbsolutePath)) {
+        @unlink($newAbsolutePath);
+    }
+    if (!@copy($filePathName,$newAbsolutePath)) {
+        $errors[] = $modx->lexicon('gallery.file_err_move',array(
+            'file' => $newFileName,
+            'target' => $newAbsolutePath,
+        ));
+        $item->remove();
+        continue;
+    } else {
+        $item->set('filename',$newRelativePath);
+        $item->save();
     }
 
     /* get count of items in album */

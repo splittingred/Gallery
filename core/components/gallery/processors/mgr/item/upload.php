@@ -42,14 +42,19 @@ $item = $modx->newObject('galItem');
 $item->fromArray($scriptProperties);
 $item->set('createdby',$modx->user->get('id'));
 
-if (empty($_FILES['file'])) return $modx->error->failure($modx->lexicon('gallery.item_err_ns_file'));
-if (!$item->upload($_FILES['file'],$scriptProperties['album'])) {
-    return $modx->error->failure($modx->lexicon('gallery.item_err_upload'));
+if (empty($_FILES['file']) || $_FILES['file']['error'] != UPLOAD_ERR_OK) {
+    return $modx->error->failure($modx->lexicon('gallery.item_err_ns_file'));
 }
 
 if (!$item->save()) {
     return $modx->error->failure($modx->lexicon('gallery.item_err_save'));
 }
+
+if (!$item->upload($_FILES['file'],$scriptProperties['album'])) {
+    $item->remove();
+    return $modx->error->failure($modx->lexicon('gallery.item_err_upload'));
+}
+$item->save();
 
 /* get count of items in album */
 $total = $modx->getCount('galAlbumItem',array('album' => $scriptProperties['album']));
