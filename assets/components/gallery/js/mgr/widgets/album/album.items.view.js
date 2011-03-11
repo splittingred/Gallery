@@ -4,7 +4,7 @@ GAL.view.AlbumItems = function(config) {
     this._initTemplates();
     Ext.applyIf(config,{
         url: GAL.config.connector_url
-        ,fields: ['id','album','name','description','mediatype','createdon','createdby','filename','filesize','thumbnail','image','image_width','image_height','tags','active','rank','absoluteImage','relativeImage','menu']
+        ,fields: ['id','album','name','description','mediatype','url','createdon','createdby','filename','filesize','thumbnail','image','image_width','image_height','tags','active','rank','absoluteImage','relativeImage','menu']
         ,ident: 'galbit'
         ,id: 'gal-album-items-view'
         ,baseParams: {
@@ -197,8 +197,9 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
                     ,'<tpl if="description"><p>{description}</p><br /></tpl>'
                     ,'<b>'+_('id')+':</b><span>{id}</span>'
                     ,'<b>'+_('gallery.file_name')+':</b><span>{filename}</span>'
-                    ,'<b>'+_('gallery.file_size')+':</b><span>{filesize}</span>'                    
+                    ,'<b>'+_('gallery.file_size')+':</b><span>{filesize}</span>'
                     ,'<tpl if="tags"><b>'+_('gallery.tags')+':</b><span>{tags}</span></tpl>'
+                    ,'<tpl if="url"><b>'+_('gallery.item_url')+':</b><span>{url}</span></tpl>'
                 ,'</div>'
             ,'</tpl>'
             ,'</div>'
@@ -311,6 +312,13 @@ GAL.window.UpdateItem = function(config) {
             ,description: _('gallery.comma_separated_list')
             ,name: 'tags'
             ,id: 'gal-'+this.ident+'-tags'
+            ,width: 300
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('gallery.item_url')
+            ,description: _('gallery.item_url_desc')
+            ,name: 'url'
+            ,id: 'gal-'+this.ident+'-item-url'
             ,width: 300
         }]
     });

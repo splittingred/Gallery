@@ -35,6 +35,8 @@ if ($object->xpdo) {
 
             $modx->exec("ALTER TABLE {$modx->getTableName('galAlbum')} ADD `parent` int(10) unsigned NOT NULL default '0' AFTER `id`");
             $modx->exec("ALTER TABLE {$modx->getTableName('galAlbum')} ADD INDEX `parent` (`parent`)");
+
+            $modx->exec("ALTER TABLE {$modx->getTableName('galItem')} ADD `url` TEXT AFTER `mediatype`");
             break;
     }
 }

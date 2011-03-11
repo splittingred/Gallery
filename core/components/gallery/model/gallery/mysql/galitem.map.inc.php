@@ -9,13 +9,14 @@ $xpdo_meta_map['galItem']= array (
   array (
     'name' => '',
     'filename' => '',
-    'description' => '',
+    'description' => NULL,
     'mediatype' => 'image',
+    'url' => NULL,
     'createdon' => NULL,
     'createdby' => 0,
     'active' => 0,
     'duration' => '',
-    'streamer' => '',
+    'streamer' => NULL,
     'watermark_pos' => 'tl',
   ),
   'fieldMeta' => 
@@ -39,9 +40,7 @@ $xpdo_meta_map['galItem']= array (
     'description' => 
     array (
       'dbtype' => 'text',
-      'phptype' => 'text',
-      'null' => false,
-      'default' => '',
+      'phptype' => 'string',
     ),
     'mediatype' => 
     array (
@@ -50,6 +49,11 @@ $xpdo_meta_map['galItem']= array (
       'phptype' => 'string',
       'null' => false,
       'default' => 'image',
+    ),
+    'url' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
     ),
     'createdon' => 
     array (
@@ -88,8 +92,6 @@ $xpdo_meta_map['galItem']= array (
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => false,
-      'default' => '',
     ),
     'watermark_pos' => 
     array (

@@ -6,15 +6,16 @@
     <object class="galItem" table="gallery_items" extends="xPDOSimpleObject">
         <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
         <field key="filename" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
-        <field key="description" dbtype="text" phptype="text" null="false" default="" />
+        <field key="description" dbtype="text" phptype="string" />
         <field key="mediatype" dbtype="varchar" precision="40" phptype="string" null="false" default="image" /><!-- image/video -->
-        
+        <field key="url" dbtype="text" phptype="string" />
+
         <field key="createdon" dbtype="datetime" phptype="datetime" null="true" />
         <field key="createdby" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
         <field key="active" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
         
         <field key="duration" dbtype="varchar" precision="40" phptype="string" null="false" default="" />
-        <field key="streamer" dbtype="text" phptype="string" null="false" default="" />
+        <field key="streamer" dbtype="text" phptype="string" />
         <field key="watermark_pos" dbtype="varchar" precision="10" phptype="string" null="false" default="tl" /><!-- BR, BL, TR, TL, C, R, L, T, B, * -->
                 
         <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign" />
@@ -28,7 +29,7 @@
     <object class="galAlbum" table="gallery_albums" extends="xPDOSimpleObject">
         <field key="parent" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
         <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="index" />
-        <field key="description" dbtype="text" phptype="string" null="false" default="" />
+        <field key="description" dbtype="text" phptype="string" />
         <field key="createdon" dbtype="datetime" phptype="datetime" null="true" />
         <field key="createdby" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
         <field key="rank" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" />

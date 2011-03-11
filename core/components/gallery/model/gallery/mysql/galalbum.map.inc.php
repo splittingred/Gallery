@@ -9,7 +9,7 @@ $xpdo_meta_map['galAlbum']= array (
   array (
     'parent' => 0,
     'name' => '',
-    'description' => '',
+    'description' => NULL,
     'createdon' => NULL,
     'createdby' => 0,
     'rank' => 0,
@@ -42,8 +42,6 @@ $xpdo_meta_map['galAlbum']= array (
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => false,
-      'default' => '',
     ),
     'createdon' => 
     array (

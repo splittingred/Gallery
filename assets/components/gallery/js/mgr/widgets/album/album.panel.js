@@ -291,6 +291,13 @@ GAL.window.UploadItem = function(config) {
             ,description: _('gallery.comma_separated_list')
             ,name: 'tags'
             ,id: 'gal-'+this.ident+'-tags'
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('gallery.item_url')
+            ,description: _('gallery.item_url_desc')
+            ,name: 'url'
+            ,id: 'gal-'+this.ident+'-item-url'
+            ,width: 300
         }]
     });
     GAL.window.UploadItem.superclass.constructor.call(this,config);
