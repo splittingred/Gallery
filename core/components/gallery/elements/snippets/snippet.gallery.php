@@ -63,10 +63,6 @@ $tagc->prepare();
 $tagSql = $tagc->toSql();
 
 $c = $modx->newQuery('galItem');
-$c->select(array('galItem.*'));
-$c->select(array(
-    '('.$tagSql.') AS `tags`'
-));
 $c->innerJoin('galAlbumItem','AlbumItems');
 $c->innerJoin('galAlbum','Album',$modx->getSelectColumns('galAlbumItem','AlbumItems','',array('album')).' = '.$modx->getSelectColumns('galAlbum','Album','',array('id')));
 
@@ -105,6 +101,11 @@ if (!$showInactive) {
     ));
 }
 
+$count = $modx->getCount('galItem',$c);
+$c->select(array('galItem.*'));
+$c->select(array(
+    '('.$tagSql.') AS `tags`'
+));
 if (strcasecmp($sort,'rand')==0) {
     $c->sortby('RAND()',$dir);
 } else {
@@ -167,6 +168,7 @@ foreach ($items as $item) {
     $output .= $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
 }
 
+/* if set, place in a container tpl */
 $containerTpl = $modx->getOption('containerTpl',$scriptProperties,false);
 if (!empty($containerTpl)) {
     $ct = $gallery->getChunk($containerTpl,array(
@@ -177,6 +179,7 @@ if (!empty($containerTpl)) {
     if (!empty($ct)) $output = $ct;
 }
 
+/* set to placeholders or output directly */
 $toPlaceholder = $modx->getOption('toPlaceholder',$scriptProperties,false);
 if (!empty($toPlaceholder)) {
     $modx->toPlaceholders(array(
@@ -184,6 +187,7 @@ if (!empty($toPlaceholder)) {
         $toPlaceholder.'.id' => $galleryId,
         $toPlaceholder.'.name' => $galleryName,
         $toPlaceholder.'.description' => $galleryDescription,
+        $toPlaceholder.'.total' => $count,
     ));
 } else {
     $placeholderPrefix = $modx->getOption('placeholderPrefix',$scriptProperties,'gallery.');
@@ -191,6 +195,7 @@ if (!empty($toPlaceholder)) {
         $placeholderPrefix.'id' => $galleryId,
         $placeholderPrefix.'name' => $galleryName,
         $placeholderPrefix.'description' => $galleryDescription,
+        $placeholderPrefix.'total' => $count,
     ));
     return $output;
 }
