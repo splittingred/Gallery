@@ -20,18 +20,18 @@
  * @package gallery
  */
 /**
- * Upload an item into an album
+ * Batch upload items into an Album via a directory
  *
  * @package gallery
  */
 
 /* validate form */
-$album = $modx->getOption('album',$_POST,false);
+$album = $modx->getOption('album',$scriptProperties,false);
 if (empty($album)) return $modx->error->failure($modx->lexicon('gallery.album_err_ns'));
 
-$_POST['active'] = !empty($_POST['active']) ? 1 : 0;
+$scriptProperties['active'] = !empty($scriptProperties['active']) ? 1 : 0;
 
-if (empty($_POST['directory'])) $modx->error->addField('directory',$modx->lexicon('gallery.directory_err_ns'));
+if (empty($scriptProperties['directory'])) $modx->error->addField('directory',$modx->lexicon('gallery.directory_err_ns'));
 $directory = str_replace(array(
     '{base_path}',
     '{assets_path}',
@@ -40,7 +40,7 @@ $directory = str_replace(array(
     $modx->getOption('base_path',null,MODX_BASE_PATH),
     $modx->getOption('assets_path',null,MODX_ASSETS_PATH),
     $modx->getOption('core_path',null,MODX_CORE_PATH),
-),$_POST['directory']);
+),$scriptProperties['directory']);
 
 if (empty($directory) || !is_dir($directory)) $modx->error->addField('directory',$modx->lexicon('gallery.directory_err_nf'));
 
@@ -62,13 +62,13 @@ $cacheManager = $modx->getCacheManager();
 if (!file_exists($targetDir) || !is_dir($targetDir)) {
     if (!$cacheManager->writeTree($targetDir)) {
        $modx->log(modX::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$targetDir);
-       return $modx->error->failure('Could not create directory: '.$targetDir);
+       return $modx->error->failure($modx->lexicon('gallery.directory_err_create',array('directory' => $targetDir)));
     }
 }
 /* make sure directory is readable/writable */
 if (!is_readable($targetDir) || !is_writable($targetDir)) {
     $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
-    return $modx->error->failure('Could not write to directory: '.$targetDir);
+    return $modx->error->failure($modx->lexicon('gallery.directory_err_write',array('directory' => $targetDir)));
 }
 
 $imagesExts = array('jpg','jpeg','png','gif','bmp');
@@ -93,7 +93,7 @@ foreach (new DirectoryIterator($fullpath) as $file) {
     $item->set('name',$fileName);
     $item->set('createdby',$modx->user->get('id'));
     $item->set('mediatype','image');
-    $item->set('active',$_POST['active']);
+    $item->set('active',$scriptProperties['active']);
 
     /* upload the file */
     $fileNameLower = str_replace(' ','',strtolower($fileName));
@@ -103,7 +103,10 @@ foreach (new DirectoryIterator($fullpath) as $file) {
         @unlink($location.$fileNameLower);
     }
     if (!@copy($filePathName,$location)) {
-        $errors[] = 'An error occurred while trying to move the file: '.$fileNameLower.' to '.$location;
+        $errors[] = $modx->lexicon('gallery.file_err_move',array(
+            'file' => $fileNameLower,
+            'target' => $location,
+        ));
         continue;
     } else {
         $item->set('filename',$dateFolder.$fileNameLower);
@@ -119,14 +122,14 @@ foreach (new DirectoryIterator($fullpath) as $file) {
 
     /* associate with album */
     $albumItem = $modx->newObject('galAlbumItem');
-    $albumItem->set('album',$_POST['album']);
+    $albumItem->set('album',$scriptProperties['album']);
     $albumItem->set('item',$item->get('id'));
     $albumItem->set('rank',$total);
     $albumItem->save();
 
     /* save tags */
-    if (isset($_POST['tags'])) {
-        $tagNames = explode(',',$_POST['tags']);
+    if (isset($scriptProperties['tags'])) {
+        $tagNames = explode(',',$scriptProperties['tags']);
         foreach ($tagNames as $tagName) {
             $tagName = trim($tagName);
             if (empty($tagName)) continue;

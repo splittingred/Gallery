@@ -62,7 +62,7 @@ $itemArray['filesize'] = $item->get('filesize');
 
 /* get image+thumbnail */
 $thumbProperties = $modx->getOption('thumbProperties',$scriptProperties,'');
-$thumbProperties = $modx->fromJSON($thumbProperties);
+$thumbProperties = !empty($thumbProperties) ? $modx->fromJSON($thumbProperties) : array();
 $thumbProperties = array_merge(array(
     'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),
     'h' => (int)$modx->getOption('thumbHeight',$scriptProperties,100),

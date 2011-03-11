@@ -47,9 +47,12 @@ $_lang['gallery.bytes'] = 'bytes';
 $_lang['gallery.comma_separated_list'] = 'Comma-separated list';
 $_lang['gallery.directory'] = 'Directory';
 $_lang['gallery.directory_desc'] = 'The directory to scan for images.';
+$_lang['gallery.directory_err_create'] = 'Could not create directory: [[+directory]]';
 $_lang['gallery.directory_err_nf'] = 'Directory not found.';
 $_lang['gallery.directory_err_ns'] = 'Directory not specified.';
+$_lang['gallery.directory_err_write'] = 'Could not write to directory: [[+directory]]';
 $_lang['gallery.file'] = 'File';
+$_lang['gallery.file_err_move'] = 'An error occurred while trying to move the file: [[+file]] to [[+target]]';
 $_lang['gallery.file_name'] = 'File Name';
 $_lang['gallery.file_size'] = 'File Size';
 $_lang['gallery.height'] = 'Height';
@@ -81,6 +84,11 @@ $_lang['gallery.refresh'] = 'Refresh';
 $_lang['gallery.tags'] = 'Tags';
 $_lang['gallery.title'] = 'Title';
 $_lang['gallery.width'] = 'Width';
+$_lang['gallery.xpdozip_err_nf'] = 'Could not load xPDOZip class.';
+$_lang['gallery.zip_err_unpack'] = 'Could not unpack zip file. Please check and make sure that your zip file is not corrupted, and that the Gallery files path is correct.';
+$_lang['gallery.zip_file'] = 'Zip File';
+$_lang['gallery.zip_upload'] = 'Zip Upload';
+$_lang['gallery.zip_upload_intro'] = '<p>Specify a zip file to upload for images. Gallery will unzip the file and place the images in it in this Album.</p>';
 
 
 $_lang['area_backend'] = 'Backend';

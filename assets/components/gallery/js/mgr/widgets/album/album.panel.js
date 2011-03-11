@@ -164,6 +164,11 @@ GAL.panel.AlbumItems = function(config) {
                     ,text: _('gallery.batch_upload')
                     ,handler: this.batchUpload
                     ,scope: this
+                },'-',{
+                    xtype: 'button'
+                    ,text: _('gallery.zip_upload')
+                    ,handler: this.zipUpload
+                    ,scope: this
                 }]
             },this.view]
             ,bbar: [this.view.pagingBar]
@@ -239,6 +244,25 @@ Ext.extend(GAL.panel.AlbumItems,MODx.Panel,{
         }
         this.windows.batchUpload.setValues(r);
         this.windows.batchUpload.show(e.target);
+    }
+
+    ,zipUpload: function(btn,e) {
+        var r = {
+            album: this.config.album
+            ,active: true
+        };
+        if (!this.windows.zipUpload) {
+            this.windows.zipUpload = MODx.load({
+                xtype: 'gal-window-zip-upload'
+                ,listeners: {
+                    'success': {fn:function() { this.view.run(); },scope:this}
+                }
+            });
+        } else {
+            this.windows.zipUpload.fp.getForm().reset();
+        }
+        this.windows.zipUpload.setValues(r);
+        this.windows.zipUpload.show(e.target);
     }
 });
 Ext.reg('gal-panel-album-items',GAL.panel.AlbumItems);
@@ -350,3 +374,49 @@ GAL.window.BatchUpload = function(config) {
 };
 Ext.extend(GAL.window.BatchUpload,MODx.Window);
 Ext.reg('gal-window-batch-upload',GAL.window.BatchUpload);
+
+GAL.window.ZipUpload = function(config) {
+    config = config || {};
+    this.ident = config.ident || 'gupbu'+Ext.id();
+    Ext.applyIf(config,{
+        title: _('gallery.zip_upload')
+        ,id: this.ident
+        ,height: 150
+        ,width: 475
+        ,url: GAL.config.connector_url
+        ,action: 'mgr/item/zipupload'
+        ,fileUpload: true
+        ,fields: [{
+            xtype: 'hidden'
+            ,name: 'album'
+        },{
+            html: _('gallery.zip_upload_intro')
+            ,border: false
+        },MODx.PanelSpacer,{
+            xtype: 'textfield'
+            ,inputType: 'file'
+            ,fieldLabel: _('gallery.zip_file')
+            ,name: 'zip'
+            ,id: 'gal-'+this.ident+'-zip'
+            ,anchor: '97%'
+        },{
+            xtype: 'checkbox'
+            ,fieldLabel: _('gallery.active')
+            ,name: 'active'
+            ,description: ''
+            ,id: 'gal-'+this.ident+'-active'
+            ,checked: true
+            ,inputValue: 1
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('gallery.tags')
+            ,description: _('gallery.batch_upload_tags')
+            ,name: 'tags'
+            ,id: 'gal-'+this.ident+'-tags'
+            ,anchor: '97%'
+        }]
+    });
+    GAL.window.ZipUpload.superclass.constructor.call(this,config);
+};
+Ext.extend(GAL.window.ZipUpload,MODx.Window);
+Ext.reg('gal-window-zip-upload',GAL.window.ZipUpload);
