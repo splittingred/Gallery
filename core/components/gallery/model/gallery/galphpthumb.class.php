@@ -193,7 +193,10 @@ class galPhpThumb extends phpThumb {
             if (!$this->config_cache_force_passthru && ereg('^'.preg_quote($nice_docroot).'(.*)$', $nice_cachefile, $matches)) {
                 header('Location: '.dirname($matches[1]).'/'.urlencode(basename($matches[1])));
             } else {
-                @readfile($this->cache_filename);
+                $ret = file_get_contents($this->cache_filename);
+                echo $ret;
+                return $ret;
+                //@readfile($this->cache_filename);
             }
             exit;
 
