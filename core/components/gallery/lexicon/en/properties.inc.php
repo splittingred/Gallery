@@ -23,4 +23,54 @@
  * @package gallery
  * @subpackage lexicon
  */
-$_lang['gallery.pluginpath_desc'] = 'Couldnt load plugin "[[+name]]" from path: [[+path]]';
+/* Gallery Snippet */
+$_lang['gallery.album_desc'] = 'Will load only items from this album. Can be either the name or ID of the Album.';
+$_lang['gallery.albumrequestvar_desc'] = 'If checkForRequestAlbumVar is set to true, will look for a REQUEST var with this name to select the album.';
+$_lang['gallery.checkforrequestalbumvar_desc'] = 'If true, if a REQUEST var of "album" is found, will use that as the album property for the snippet.';
+$_lang['gallery.checkforrequesttagvar_desc'] = 'If true, if a REQUEST var of "tag" is found, will use that as the tag property for the snippet.';
+$_lang['gallery.containertpl_desc'] = 'An optional chunk to wrap the output in.';
+$_lang['gallery.dir_desc'] = 'The direction to sort images by.';
+$_lang['gallery.imagefar_desc'] = 'The "far" value for phpThumb for the image, for aspect ratio zooming.';
+$_lang['gallery.imageheight_desc'] = 'If being used by a plugin, the height of the currently on-display image.';
+$_lang['gallery.imagegetparam_desc'] = 'The GET param to use when not linking directly to an image. Make sure this matches the getParam property in the GalleryItem snippet call.';
+$_lang['gallery.imagequality_desc'] = 'The "q" value for phpThumb for the image, for quality.';
+$_lang['gallery.imagewidth_desc'] = 'If being used by a plugin, the width of the currently on-display image.';
+$_lang['gallery.imagezoomcrop_desc'] = 'If being used by a plugin, whether or not the currently on-display image will be zoom-cropped.';
+$_lang['gallery.itemcls_desc'] = 'The CSS class for each thumbnail.';
+$_lang['gallery.limit_desc'] = 'If set to non-zero, will only show X number of items.';
+$_lang['gallery.linktoimage_desc'] = 'If true, will link directly to the image. If false, will append GET parameters to the URL to load the image with the GalleryItem snippet.';
+$_lang['gallery.plugin_desc'] = 'The name of a plugin to use for front-end displaying. Please see the official docs for a list of available plugins.';
+$_lang['gallery.pluginpath_desc'] = 'Could not load plugin "[[+name]]" from path: [[+path]]';
+$_lang['gallery.showinactive_desc'] = 'If true, will also display inactive images.';
+$_lang['gallery.sort_desc'] = 'The field to sort images by.';
+$_lang['gallery.start_desc'] = 'The index to start grabbing from when limiting the number of items. Similar to an SQL order by start clause.';
+$_lang['gallery.tag_desc'] = 'Will load only items with this tag.';
+$_lang['gallery.tagrequestvar_desc'] = 'If checkForRequestTagVar is set to true, will look for a REQUEST var with this name to select the tag.';
+$_lang['gallery.toplaceholder_desc'] = 'If set, will set the output to a placeholder of this value, and the snippet call will output nothing.';
+$_lang['gallery.thumbfar_desc'] = 'The "far" value for phpThumb for the thumbnail, for aspect ratio zooming.';
+$_lang['gallery.thumbheight_desc'] = 'The height of the generated thumbnails, in pixels.';
+$_lang['gallery.thumbquality_desc'] = 'The "q" value for phpThumb for the thumbnail, for quality.';
+$_lang['gallery.thumbtpl_desc'] = 'The Chunk to use as a tpl for each thumbnail.';
+$_lang['gallery.thumbwidth_desc'] = 'The width of the generated thumbnails, in pixels.';
+$_lang['gallery.thumbzoomcrop_desc'] = 'Whether or not the thumbnail will be zoom-cropped.';
+$_lang['gallery.usecss_desc'];
+
+/* GalleryAlbums Snippet */
+$_lang['galleryalbums.albumrequestvar_desc'] = 'If checkForRequestAlbumVar is set to true, will look for a REQUEST var with this name to select the album.';
+$_lang['galleryalbums.albumcoversort_desc'] = 'The field which to use when sorting to get the Album Cover. To get the first image, use "rank". To get a random image, use "random".';
+$_lang['galleryalbums.albumcoversortdir_desc'] = 'The direction to use when sorting to get the Album Cover. Accepts "ASC" or "DESC".';
+$_lang['galleryalbums.dir_desc'] = 'The direction to sort the results by.';
+$_lang['galleryalbums.limit_desc'] = 'If set to non-zero, will limit the number of results returned.';
+$_lang['galleryalbums.parent_desc'] = 'Grab only the albums with a parent album with this ID.';
+$_lang['galleryalbums.prominentonly_desc'] = 'If true, will only display albums marked with a "prominent" status.';
+$_lang['galleryalbums.rowtpl_desc'] = 'The Chunk to use for each album row.';
+$_lang['galleryalbums.showall_desc'] = 'If true, will show all albums regardless of their parent.';
+$_lang['galleryalbums.showinactive_desc'] = 'If true, will show inactive galleries as well.';
+$_lang['galleryalbums.start_desc'] = 'The index to start from in the results.';
+$_lang['galleryalbums.sort_desc'] = 'The field to sort the results by.';
+$_lang['galleryalbums.thumbfar_desc'] = 'The "far" value for phpThumb for the album cover thumbnail, for aspect ratio zooming.';
+$_lang['galleryalbums.thumbheight_desc'] = 'The height of the generated album cover thumbnail, in pixels.';
+$_lang['galleryalbums.thumbquality_desc'] = 'The "q" value for phpThumb for the album cover thumbnail, for quality.';
+$_lang['galleryalbums.thumbwidth_desc'] = 'The width of the generated album cover thumbnail, in pixels.';
+$_lang['galleryalbums.thumbzoomcrop_desc'] = 'Whether or not the album coverthumbnail will be zoom-cropped.';
+$_lang['galleryalbums.toplaceholder_desc'] = 'If not empty, will set the output to a placeholder with this value.';

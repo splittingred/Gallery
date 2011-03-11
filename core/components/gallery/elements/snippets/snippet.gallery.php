@@ -146,15 +146,15 @@ foreach ($items as $item) {
         'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),
         'h' => (int)$modx->getOption('thumbHeight',$scriptProperties,100),
         'zc' => (boolean)$modx->getOption('thumbZoomCrop',$scriptProperties,1),
-        'far' => (boolean)$modx->getOption('thumbFar',$scriptProperties,'C'),
-        'q' => $modx->getOption('thumbQuality',$scriptProperties,90),
+        'far' => (string)$modx->getOption('thumbFar',$scriptProperties,'C'),
+        'q' => (int)$modx->getOption('thumbQuality',$scriptProperties,90),
     ));
     $itemArray['image'] = $item->get('thumbnail',array(
         'w' => (int)$modx->getOption('imageWidth',$scriptProperties,500),
         'h' => (int)$modx->getOption('imageHeight',$scriptProperties,500),
         'zc' => (boolean)$modx->getOption('imageZoomCrop',$scriptProperties,false),
         'far' => (string)$modx->getOption('imageFar',$scriptProperties,''),
-        'q' => $modx->getOption('imageQuality',$scriptProperties,90),
+        'q' => (int)$modx->getOption('imageQuality',$scriptProperties,90),
     ));
     if (!empty($album)) $itemArray['album'] = $album->get('id');
     if (!empty($tag)) $itemArray['tag'] = $tag;

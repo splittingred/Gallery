@@ -90,8 +90,8 @@ foreach ($albums as $album) {
             'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),
             'h' => (int)$modx->getOption('thumbHeight',$scriptProperties,100),
             'zc' => (boolean)$modx->getOption('thumbZoomCrop',$scriptProperties,1),
-            'far' => (boolean)$modx->getOption('thumbFar',$scriptProperties,'C'),
-            'q' => $modx->getOption('thumbQuality',$scriptProperties,90),
+            'far' => (string)$modx->getOption('thumbFar',$scriptProperties,'C'),
+            'q' => (int)$modx->getOption('thumbQuality',$scriptProperties,90),
         ));
     }
 
