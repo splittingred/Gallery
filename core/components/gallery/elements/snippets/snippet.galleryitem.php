@@ -81,15 +81,16 @@ $c->innerJoin('galAlbumItem','AlbumItems',$modx->getSelectColumns('galAlbumItem'
     .' AND '.$modx->getSelectColumns('galAlbumItem','AlbumItems','',array('item')).' = '.$item->get('id'));
 $c->sortby('AlbumItems.rank','ASC');
 $albums = $modx->getCollection('galAlbum',$c);
-$itemArray['albums'] = '';
-$i = 0; $count = count($albums);
+$itemArray['albums'] = array();
+$i = 0;
 foreach ($albums as $album) {
     $albumArray = $album->toArray('',true,true);
+    $albumArray['idx'] = $i;
     $albumArray['albumRequestVar'] = $albumRequestVar;
     $itemArray['albums'] .= $gallery->getChunk($albumTpl,$albumArray);
-    if ($i+1 < $count) $itemArray['albums'] .= $albumSeparator;
     $i++;
 }
+$itemArray['albums'] = implode($albumSeparator,$itemArray['albums']);
 
 /* get tags */
 $c = $modx->newQuery('galTag');
@@ -98,15 +99,16 @@ $c->where(array(
 ));
 $c->sortby('tag',$tagSortDir);
 $tags = $modx->getCollection('galTag',$c);
-$itemArray['tags'] = '';
-$i = 0; $count = count($tags);
+$i = 0;
+$itemArray['tags'] = array();
 foreach ($tags as $tag) {
     $tagArray = $tag->toArray();
+    $tagArray['idx'] = $i;
     $tagArray['tagRequestVar'] = $tagRequestVar;
-    $itemArray['tags'] .= $gallery->getChunk($tagTpl,$tagArray);
-    if ($i+1 < $count) $itemArray['tags'] .= $tagSeparator;
+    $itemArray['tags'][] = $gallery->getChunk($tagTpl,$tagArray);
     $i++;
 }
+$itemArray['tags'] = implode($tagSeparator,$itemArray['tags']);
 
 /* if outputting to placeholders, use this, otherwise, use tpl */
 if ($toPlaceholders) {
