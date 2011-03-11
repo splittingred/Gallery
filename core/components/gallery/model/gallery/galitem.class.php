@@ -80,12 +80,11 @@ class galItem extends xPDOSimpleObject {
     }
     
 
-    public function upload($file) {
+    public function upload($file,$album) {
         if (empty($file) || empty($file['tmp_name']) || empty($file['name'])) return false;
         $uploaded = false;
 
-        $dateFolder = date('Y').'/'.date('m').'/';
-        $targetDir = $this->xpdo->getOption('gallery.files_path').$dateFolder;
+        $targetDir = $this->xpdo->getOption('gallery.files_path').$album.'/';
 
         $cacheManager = $this->xpdo->getCacheManager();
         /* if directory doesnt exist, create it */
@@ -113,7 +112,7 @@ class galItem extends xPDOSimpleObject {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$file['tmp_name'].' to '.$location);
         } else {
             $uploaded = true;
-            $this->set('filename',str_replace(' ','',$dateFolder.$fileNameLower));
+            $this->set('filename',str_replace(' ','',$album.'/'.$fileNameLower));
         }
 
         return $uploaded;

@@ -26,7 +26,7 @@
  */
 
 /* validate form */
-$album = $modx->getOption('album',$_POST,false);
+$album = $modx->getOption('album',$scriptProperties,false);
 if (empty($album)) return $modx->error->failure($modx->lexicon('gallery.album_err_ns'));
 
 if (empty($_FILES['file'])) $modx->error->addField('file',$modx->lexicon('gallery.item_err_ns_file'));
@@ -37,13 +37,13 @@ if ($modx->error->hasError()) {
 
 
 /* create item */
-$_POST['active'] = !empty($_POST['active']) ? 1 : 0;
+$scriptProperties['active'] = !empty($scriptProperties['active']) ? 1 : 0;
 $item = $modx->newObject('galItem');
-$item->fromArray($_POST);
+$item->fromArray($scriptProperties);
 $item->set('createdby',$modx->user->get('id'));
 
 if (empty($_FILES['file'])) return $modx->error->failure($modx->lexicon('gallery.item_err_ns_file'));
-if (!$item->upload($_FILES['file'])) {
+if (!$item->upload($_FILES['file'],$scriptProperties['album'])) {
     return $modx->error->failure($modx->lexicon('gallery.item_err_upload'));
 }
 
@@ -52,18 +52,18 @@ if (!$item->save()) {
 }
 
 /* get count of items in album */
-$total = $modx->getCount('galAlbumItem',array('album' => $_POST['album']));
+$total = $modx->getCount('galAlbumItem',array('album' => $scriptProperties['album']));
 
 /* associate with album */
 $albumItem = $modx->newObject('galAlbumItem');
-$albumItem->set('album',$_POST['album']);
+$albumItem->set('album',$scriptProperties['album']);
 $albumItem->set('item',$item->get('id'));
 $albumItem->set('rank',$total);
 $albumItem->save();
 
 /* save tags */
-if (isset($_POST['tags'])) {
-    $tagNames = explode(',',$_POST['tags']);
+if (isset($scriptProperties['tags'])) {
+    $tagNames = explode(',',$scriptProperties['tags']);
     foreach ($tagNames as $tagName) {
         $tagName = trim($tagName);
         if (empty($tagName)) continue;

@@ -25,4 +25,12 @@
  * @package gallery
  * @subpackage build
  */
-return '';
+$message = '';
+$galleryFileStructureVersion = (float)$modx->getOption('gallery.file_structure_version',NULL,0);
+if ($galleryFileStructureVersion < 1) {
+    $path = $modx->getOption('gallery.files_path',null,'');
+    if (!empty($path)) {
+        $message = 'Make sure to backup your Gallery albums in their paths before proceeding, as Gallery in this update will move them to album-centric storage. Your albums are at: '.$path;
+    }
+}
+return $message;

@@ -54,8 +54,7 @@ $modx->getService('fileHandler','modFileHandler');
 $fullpath = $modx->fileHandler->sanitizePath($directory);
 
 
-$dateFolder = date('Y').'/'.date('m').'/';
-$targetDir = $modx->getOption('gallery.files_path').$dateFolder;
+$targetDir = $modx->getOption('gallery.files_path').$scriptProperties['album'].'/';
 
 $cacheManager = $modx->getCacheManager();
 /* if directory doesnt exist, create it */

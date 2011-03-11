@@ -24,10 +24,10 @@
  *
  * @package gallery
  */
-if (empty($_POST['ids'])) return $modx->error->failure($modx->lexicon('gallery.item_err_ns'));
+if (empty($scriptProperties['ids'])) return $modx->error->failure($modx->lexicon('gallery.item_err_ns'));
 
-$separator = $modx->getOption('separator',$_POST,',');
-$ids = explode($separator,$_POST['ids']);
+$separator = $modx->getOption('separator',$scriptProperties,',');
+$ids = explode($separator,$scriptProperties['ids']);
 
 $errors = array();
 foreach ($ids as $id) {

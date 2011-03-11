@@ -137,7 +137,7 @@ if (!empty($plugin)) {
 $output = '';
 
 $imageProperties = $modx->getOption('imageProperties',$scriptProperties,'');
-$thumbProperties = !empty($imageProperties) ? $modx->fromJSON($imageProperties) : array();
+$imageProperties = !empty($imageProperties) ? $modx->fromJSON($imageProperties) : array();
 $imageProperties = array_merge(array(
     'w' => (int)$modx->getOption('imageWidth',$scriptProperties,500),
     'h' => (int)$modx->getOption('imageHeight',$scriptProperties,500),

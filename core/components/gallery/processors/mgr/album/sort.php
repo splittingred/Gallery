@@ -5,8 +5,8 @@
  * @package gallery
  * @subpackage processors
  */
-if (empty($_POST['data'])) return $modx->error->failure('Invalid data.');
-$data = urldecode($_POST['data']);
+if (empty($scriptProperties['data'])) return $modx->error->failure('Invalid data.');
+$data = urldecode($scriptProperties['data']);
 $data = $modx->fromJSON($data);
 $nodes = array();
 getNodesFormatted($nodes,$data);

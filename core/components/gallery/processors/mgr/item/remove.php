@@ -26,8 +26,8 @@
  */
 
 /* get item */
-if (empty($_POST['id'])) return $modx->error->failure($modx->lexicon('gallery.item_err_ns'));
-$item = $modx->getObject('galItem',$_POST['id']);
+if (empty($scriptProperties['id'])) return $modx->error->failure($modx->lexicon('gallery.item_err_ns'));
+$item = $modx->getObject('galItem',$scriptProperties['id']);
 if (empty($item)) return $modx->error->failure($modx->lexicon('gallery.item_err_nf'));
 
 /* remove item */

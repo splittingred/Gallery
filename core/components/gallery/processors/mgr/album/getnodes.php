@@ -3,7 +3,7 @@
  * @package gallery
  * @subpackage processors
  */
-$curNode = !empty($_REQUEST['id']) ? $_REQUEST['id'] : 'root_0';
+$curNode = !empty($scriptProperties['id']) ? $scriptProperties['id'] : 'root_0';
 $curNode = explode('_',trim($curNode));
 $type = $curNode[0];
 $id = isset($curNode[1]) ? $curNode[1] : 0;

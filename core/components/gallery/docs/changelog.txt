@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 1.1.0
 ====================================
+- [#28], [#64] Gallery items are now stored by albumId/itemId.ext in their directories
 - Added showName for GalleryAlbums to toggle whether or not to display Album name
 - [#29], [#69] Add batch upload via Zip file to albums
 - [#42] Add URL field to galItem object for allowing Items to have URLs that load when you click on them

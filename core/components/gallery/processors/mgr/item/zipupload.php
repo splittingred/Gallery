@@ -40,9 +40,9 @@ if ($modx->error->hasError()) {
 
 /* get sanitized base path and current path */
 $modx->getService('fileHandler','modFileHandler');
-$dateFolder = date('Y').'/'.date('m').'/';
-$targetDir = $modx->getOption('gallery.files_path').$dateFolder;
+$targetDir = $modx->getOption('gallery.files_path').$scriptProperties['album'].'/';
 $cacheManager = $modx->getCacheManager();
+
 /* if directory doesnt exist, create it */
 if (!file_exists($targetDir) || !is_dir($targetDir)) {
     if (!$cacheManager->writeTree($targetDir)) {

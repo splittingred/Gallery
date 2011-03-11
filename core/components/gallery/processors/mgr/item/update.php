@@ -26,20 +26,20 @@
  */
 
 /* get item */
-if (empty($_POST['id'])) return $modx->error->failure($modx->lexicon('gallery.item_err_ns'));
-$item = $modx->getObject('galItem',$_POST['id']);
+if (empty($scriptProperties['id'])) return $modx->error->failure($modx->lexicon('gallery.item_err_ns'));
+$item = $modx->getObject('galItem',$scriptProperties['id']);
 if (empty($item)) return $modx->error->failure($modx->lexicon('gallery.item_err_nf'));
 
-$_POST['active'] = !empty($_POST['active']) ? 1 : 0;
-$item->fromArray($_POST);
+$scriptProperties['active'] = !empty($scriptProperties['active']) ? 1 : 0;
+$item->fromArray($scriptProperties);
 
 /* remove item */
 if (!$item->save()) {
     return $modx->error->failure($modx->lexicon('gallery.item_err_save'));
 }
 
-if (isset($_POST['tags'])) {
-    $tagNames = explode(',',$_POST['tags']);
+if (isset($scriptProperties['tags'])) {
+    $tagNames = explode(',',$scriptProperties['tags']);
 
     $oldTags = $item->getMany('Tags');
     foreach ($oldTags as $oldTag) $oldTag->remove();
