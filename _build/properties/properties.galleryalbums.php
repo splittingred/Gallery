@@ -115,6 +115,14 @@ $properties = array(
         'lexicon' => 'gallery:properties',
     ),
     array(
+        'name' => 'showName',
+        'desc' => 'galleryalbums.showname_desc',
+        'type' => 'combo-boolean',
+        'options' => '',
+        'value' => true,
+        'lexicon' => 'gallery:properties',
+    ),
+    array(
         'name' => 'albumRequestVar',
         'desc' => 'galleryalbums.albumrequestvar_desc',
         'type' => 'textfield',

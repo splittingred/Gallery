@@ -42,6 +42,7 @@ $showAll = $modx->getOption('showAll',$scriptProperties,false);
 $albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
 $albumCoverSort = $modx->getOption('albumCoverSort',$scriptProperties,'rank');
 $albumCoverSortDir = $modx->getOption('albumCoverSortDir',$scriptProperties,'ASC');
+$showName = $modx->getOption('showName',$scriptProperties,true);
 
 /* handle sorting for album cover */
 if ($albumCoverSort == 'rank') {
@@ -104,6 +105,7 @@ foreach ($albums as $album) {
 
     $albumArray['cls'] = $rowCls;
     $albumArray['idx'] = $idx;
+    $albumArray['showName'] = $showName;
     $albumArray['albumRequestVar'] = $albumRequestVar;
     $output[] = $gallery->getChunk($rowTpl,$albumArray);
     $idx++;
