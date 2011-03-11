@@ -48,6 +48,14 @@ $properties = array(
         'value' => '',
     ),
     array(
+        'name' => 'pluginPath',
+        'desc' => 'gallery.pluginpath_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '',
+        'lexicon' => 'gallery:properties',
+    ),
+    array(
         'name' => 'thumbTpl',
         'desc' => 'The Chunk to use as a tpl for each thumbnail.',
         'type' => 'textfield',

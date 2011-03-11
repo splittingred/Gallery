@@ -26,6 +26,7 @@
  */
 $gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/gallery/',$scriptProperties);
 if (!($gallery instanceof Gallery)) return '';
+$modx->lexicon->load('gallery:web');
 
 /* setup default properties */
 $album = $modx->getOption('album',$scriptProperties,false);
@@ -63,7 +64,9 @@ $tagSql = $tagc->toSql();
 
 $c = $modx->newQuery('galItem');
 $c->select(array('galItem.*'));
-$c->select('('.$tagSql.') AS `tags`');
+$c->select(array(
+    '('.$tagSql.') AS `tags`'
+));
 $c->innerJoin('galAlbumItem','AlbumItems');
 $c->innerJoin('galAlbum','Album',$modx->getSelectColumns('galAlbumItem','AlbumItems','',array('album')).' = '.$modx->getSelectColumns('galAlbum','Album','',array('id')));
 
@@ -112,10 +115,16 @@ $items = $modx->getCollection('galItem',$c);
 
 /* load plugins */
 if (!empty($plugin)) {
-    if (($className = $modx->loadClass('gallery.plugins.'.$plugin,$gallery->config['modelPath'],true,true))) {
+    $pluginPath = $modx->getOption('pluginPath',$scriptProperties,'');
+    if (empty($pluginPath)) {
+        $pluginPath = $gallery->config['modelPath'].'gallery/plugins/';
+    }
+    if (($className = $modx->loadClass($plugin,$pluginPath,true,true))) {
         $plugin = new $className($gallery,$scriptProperties);
         $plugin->load();
         $scriptProperties = $plugin->adjustSettings($scriptProperties);
+    } else {
+        return $modx->lexicon('gallery.plugin_err_load',array('name' => $plugin,'path' => $pluginPath));
     }
 } else {
     if ($modx->getOption('useCss',$scriptProperties,true)) {
