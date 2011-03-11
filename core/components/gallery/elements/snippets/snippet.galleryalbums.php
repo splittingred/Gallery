@@ -83,7 +83,7 @@ foreach ($albums as $album) {
     ));
     $c->sortby($albumCoverSort,$albumCoverSortDir);
     $c->limit(1);
-    $coverItem = $modx->getObject('galAlbumItem',$c);
+    $coverItem = $modx->getObject('galItem',$c);
     
     if ($coverItem) {
         $albumArray['image'] = $coverItem->get('thumbnail',array(

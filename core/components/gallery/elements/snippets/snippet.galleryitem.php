@@ -61,18 +61,18 @@ $itemArray = $item->toArray();
 $itemArray['filename'] = basename($item->get('filename'));
 $itemArray['filesize'] = $item->get('filesize');
 $itemArray['thumbnail'] = $item->get('thumbnail',array(
-    'w' => $modx->getOption('thumbWidth',$scriptProperties,100),
-    'h' => $modx->getOption('thumbHeight',$scriptProperties,100),
-    'zc' => $modx->getOption('thumbZoomCrop',$scriptProperties,0),
-    'far' => $modx->getOption('thumbFar',$scriptProperties,'C'),
-    'q' => $modx->getOption('thumbQuality',$scriptProperties,90),
+    'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),
+    'h' => (int)$modx->getOption('thumbHeight',$scriptProperties,100),
+    'zc' => (boolean)$modx->getOption('thumbZoomCrop',$scriptProperties,0),
+    'far' => (string)$modx->getOption('thumbFar',$scriptProperties,'C'),
+    'q' => (int)$modx->getOption('thumbQuality',$scriptProperties,90),
 ));
 $itemArray['image'] = $item->get('thumbnail',array(
-    'w' => $modx->getOption('imageWidth',$scriptProperties,500),
-    'h' => $modx->getOption('imageHeight',$scriptProperties,500),
-    'zc' => $modx->getOption('imageZoomCrop',$scriptProperties,0),
-    'far' => $modx->getOption('imageFar',$scriptProperties,false),
-    'q' => $modx->getOption('imageQuality',$scriptProperties,90),
+    'w' => (int)$modx->getOption('imageWidth',$scriptProperties,500),
+    'h' => (int)$modx->getOption('imageHeight',$scriptProperties,500),
+    'zc' => (boolean)$modx->getOption('imageZoomCrop',$scriptProperties,0),
+    'far' => (string)$modx->getOption('imageFar',$scriptProperties,false),
+    'q' => (int)$modx->getOption('imageQuality',$scriptProperties,90),
 ));
 
 /* get albums */
