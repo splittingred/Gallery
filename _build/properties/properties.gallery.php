@@ -131,6 +131,14 @@ $properties = array(
         'lexicon' => 'gallery:properties',
     ),
     array(
+        'name' => 'thumbProperties',
+        'desc' => 'gallery.thumbproperties_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '',
+        'lexicon' => 'gallery:properties',
+    ),
+    array(
         'name' => 'linkToImage',
         'desc' => 'gallery.linktoimage_desc',
         'type' => 'combo-boolean',
@@ -184,6 +192,14 @@ $properties = array(
         'type' => 'textfield',
         'options' => '',
         'value' => 90,
+        'lexicon' => 'gallery:properties',
+    ),
+    array(
+        'name' => 'imageProperties',
+        'desc' => 'gallery.imageproperties_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '',
         'lexicon' => 'gallery:properties',
     ),
     array(

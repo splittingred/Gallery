@@ -35,6 +35,14 @@ $properties = array(
         'lexicon' => 'gallery:properties',
     ),
     array(
+        'name' => 'rowCls',
+        'desc' => 'galleryalbums.rowcls_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '',
+        'lexicon' => 'gallery:properties',
+    ),
+    array(
         'name' => 'sort',
         'desc' => 'galleryalbums.sort_desc',
         'type' => 'textfield',
@@ -168,6 +176,14 @@ $properties = array(
         'type' => 'textfield',
         'options' => '',
         'value' => 90,
+        'lexicon' => 'gallery:properties',
+    ),
+    array(
+        'name' => 'thumbProperties',
+        'desc' => 'galleryalbums.thumbproperties_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '',
         'lexicon' => 'gallery:properties',
     ),
 /*

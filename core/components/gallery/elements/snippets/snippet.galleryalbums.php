@@ -29,6 +29,7 @@ if (!($gallery instanceof Gallery)) return '';
 
 /* setup default properties */
 $rowTpl = $modx->getOption('rowTpl',$scriptProperties,'galAlbumRowTpl');
+$rowCls = $modx->getOption('rowCls',$scriptProperties,'');
 $showInactive = $modx->getOption('showInactive',$scriptProperties,false);
 $prominentOnly = $modx->getOption('prominentOnly',$scriptProperties,true);
 $toPlaceholder = $modx->getOption('toPlaceholder',$scriptProperties,false);
@@ -72,8 +73,20 @@ $c->sortby($sort,$dir);
 if ($limit > 0) { $c->limit($limit,$start); }
 $albums = $modx->getCollection('galAlbum',$c);
 
+/* get thumb properties for album cover */
+$thumbProperties = $modx->getOption('thumbProperties',$scriptProperties,'');
+$thumbProperties = !empty($thumbProperties) ? $modx->fromJSON($thumbProperties) : array();
+$thumbProperties = array_merge(array(
+    'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),
+    'h' => (int)$modx->getOption('thumbHeight',$scriptProperties,100),
+    'zc' => (boolean)$modx->getOption('thumbZoomCrop',$scriptProperties,1),
+    'far' => (string)$modx->getOption('thumbFar',$scriptProperties,'C'),
+    'q' => (int)$modx->getOption('thumbQuality',$scriptProperties,90),
+),$thumbProperties);
+
 /* iterate */
-$output = '';
+$output = array();
+$idx = 0;
 foreach ($albums as $album) {
     $albumArray = $album->toArray();
     $c = $modx->newQuery('galItem');
@@ -86,19 +99,19 @@ foreach ($albums as $album) {
     $coverItem = $modx->getObject('galItem',$c);
     
     if ($coverItem) {
-        $albumArray['image'] = $coverItem->get('thumbnail',array(
-            'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),
-            'h' => (int)$modx->getOption('thumbHeight',$scriptProperties,100),
-            'zc' => (boolean)$modx->getOption('thumbZoomCrop',$scriptProperties,1),
-            'far' => (string)$modx->getOption('thumbFar',$scriptProperties,'C'),
-            'q' => (int)$modx->getOption('thumbQuality',$scriptProperties,90),
-        ));
+        $albumArray['image'] = $coverItem->get('thumbnail',$thumbProperties);
     }
 
+    $albumArray['cls'] = $rowCls;
+    $albumArray['idx'] = $idx;
     $albumArray['albumRequestVar'] = $albumRequestVar;
-    $output .= $gallery->getChunk($rowTpl,$albumArray);
+    $output[] = $gallery->getChunk($rowTpl,$albumArray);
+    $idx++;
 }
 
+/* set output to placeholder or return */
+$outputSeparator = $modx->getOption('outputSeparator',$scriptProperties,"\n");
+$output = implode($outputSeparator,$output);
 if ($toPlaceholder) {
     $modx->setPlaceholder($toPlaceholder,$output);
     return '';

@@ -46,7 +46,6 @@ $tagTpl = $modx->getOption('tagTpl',$scriptProperties,'galItemTag');
 $tagSeparator = $modx->getOption('tagSeparator',$scriptProperties,',&nbsp;');
 $tagSortDir = $modx->getOption('tagSortDir',$scriptProperties,'DESC');
 $tagRequestVar = $modx->getOption('tagRequestVar',$scriptProperties,'galTag');
-
 /* get item */
 $c = $modx->newQuery('galItem');
 $c->select($modx->getSelectColumns('galItem','galItem'));
@@ -60,20 +59,29 @@ if (empty($item)) return '';
 $itemArray = $item->toArray();
 $itemArray['filename'] = basename($item->get('filename'));
 $itemArray['filesize'] = $item->get('filesize');
-$itemArray['thumbnail'] = $item->get('thumbnail',array(
+
+/* get image+thumbnail */
+$thumbProperties = $modx->getOption('thumbProperties',$scriptProperties,'');
+$thumbProperties = $modx->fromJSON($thumbProperties);
+$thumbProperties = array_merge(array(
     'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),
     'h' => (int)$modx->getOption('thumbHeight',$scriptProperties,100),
     'zc' => (boolean)$modx->getOption('thumbZoomCrop',$scriptProperties,0),
     'far' => (string)$modx->getOption('thumbFar',$scriptProperties,'C'),
     'q' => (int)$modx->getOption('thumbQuality',$scriptProperties,90),
-));
-$itemArray['image'] = $item->get('thumbnail',array(
+),$thumbProperties);
+$itemArray['thumbnail'] = $item->get('thumbnail',$thumbProperties);
+
+$imageProperties = $modx->getOption('imageProperties',$scriptProperties,'');
+$imageProperties = !empty($imageProperties) ? $modx->fromJSON($imageProperties) : array();
+$imageProperties = array_merge(array(
     'w' => (int)$modx->getOption('imageWidth',$scriptProperties,500),
     'h' => (int)$modx->getOption('imageHeight',$scriptProperties,500),
     'zc' => (boolean)$modx->getOption('imageZoomCrop',$scriptProperties,0),
     'far' => (string)$modx->getOption('imageFar',$scriptProperties,false),
     'q' => (int)$modx->getOption('imageQuality',$scriptProperties,90),
-));
+),$imageProperties);
+$itemArray['image'] = $item->get('thumbnail',$imageProperties);
 
 /* get albums */
 $c = $modx->newQuery('galAlbum');
@@ -87,7 +95,7 @@ foreach ($albums as $album) {
     $albumArray = $album->toArray('',true,true);
     $albumArray['idx'] = $i;
     $albumArray['albumRequestVar'] = $albumRequestVar;
-    $itemArray['albums'] .= $gallery->getChunk($albumTpl,$albumArray);
+    $itemArray['albums'][] = $gallery->getChunk($albumTpl,$albumArray);
     $i++;
 }
 $itemArray['albums'] = implode($albumSeparator,$itemArray['albums']);

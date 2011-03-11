@@ -135,28 +135,39 @@ if (!empty($plugin)) {
 
 /* iterate */
 $output = '';
+
+$imageProperties = $modx->getOption('imageProperties',$scriptProperties,'');
+$thumbProperties = !empty($imageProperties) ? $modx->fromJSON($imageProperties) : array();
+$imageProperties = array_merge(array(
+    'w' => (int)$modx->getOption('imageWidth',$scriptProperties,500),
+    'h' => (int)$modx->getOption('imageHeight',$scriptProperties,500),
+    'zc' => (boolean)$modx->getOption('imageZoomCrop',$scriptProperties,0),
+    'far' => (string)$modx->getOption('imageFar',$scriptProperties,false),
+    'q' => (int)$modx->getOption('imageQuality',$scriptProperties,90),
+),$imageProperties);
+
+$thumbProperties = $modx->getOption('thumbProperties',$scriptProperties,'');
+$thumbProperties = !empty($thumbProperties) ? $modx->fromJSON($thumbProperties) : array();
+$thumbProperties = array_merge(array(
+    'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),
+    'h' => (int)$modx->getOption('thumbHeight',$scriptProperties,100),
+    'zc' => (boolean)$modx->getOption('thumbZoomCrop',$scriptProperties,1),
+    'far' => (string)$modx->getOption('thumbFar',$scriptProperties,'C'),
+    'q' => (int)$modx->getOption('thumbQuality',$scriptProperties,90),
+),$thumbProperties);
+
+$idx = 0;
 foreach ($items as $item) {
     $itemArray = $item->toArray();
+    $itemArray['idx'] = $idx;
     $itemArray['cls'] = $itemCls;
     $itemArray['filename'] = basename($item->get('filename'));
     $itemArray['image_absolute'] = $modx->getOption('gallery.files_url').$item->get('filename');
     $itemArray['fileurl'] = $itemArray['image_absolute'];
     $itemArray['filepath'] = $modx->getOption('gallery.files_path').$item->get('filename');
     $itemArray['filesize'] = $item->get('filesize');
-    $itemArray['thumbnail'] = $item->get('thumbnail',array(
-        'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),
-        'h' => (int)$modx->getOption('thumbHeight',$scriptProperties,100),
-        'zc' => (boolean)$modx->getOption('thumbZoomCrop',$scriptProperties,1),
-        'far' => (string)$modx->getOption('thumbFar',$scriptProperties,'C'),
-        'q' => (int)$modx->getOption('thumbQuality',$scriptProperties,90),
-    ));
-    $itemArray['image'] = $item->get('thumbnail',array(
-        'w' => (int)$modx->getOption('imageWidth',$scriptProperties,500),
-        'h' => (int)$modx->getOption('imageHeight',$scriptProperties,500),
-        'zc' => (boolean)$modx->getOption('imageZoomCrop',$scriptProperties,false),
-        'far' => (string)$modx->getOption('imageFar',$scriptProperties,''),
-        'q' => (int)$modx->getOption('imageQuality',$scriptProperties,90),
-    ));
+    $itemArray['thumbnail'] = $item->get('thumbnail',$thumbProperties);
+    $itemArray['image'] = $item->get('thumbnail',$imageProperties);
     if (!empty($album)) $itemArray['album'] = $album->get('id');
     if (!empty($tag)) $itemArray['tag'] = $tag;
     $itemArray['linkToImage'] = $linkToImage;
@@ -166,6 +177,7 @@ foreach ($items as $item) {
     $itemArray['tag'] = '';
 
     $output .= $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
+    $idx++;
 }
 
 /* if set, place in a container tpl */

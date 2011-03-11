@@ -2,6 +2,8 @@ Changelog for Gallery.
 
 Gallery 1.1.0
 ====================================
+- [#46] Add imageProperties, thumbProperties properties to all snippets that allow you to pass a JSON object of properties to pass to phpThumb
+- Add rowCls property to GalleryAlbums
 - [#60] Fix issue with galPhpThumb and image passthru
 - [#67] Fix prev lexicon placeholder in Galleriffic plugin
 - [#66] Fix issue with album cover xPDO call in GalleryAlbums snippet
