@@ -47,7 +47,7 @@ class Galleriffic extends GalleryPlugin {
             'prevLinkText' => '&lsaquo; '.$this->modx->lexicon('gallery.photo_previous'),
             'nextLinkText' => $this->modx->lexicon('gallery.photo_next').' &rsaquo;',
             'nextPageLinkText' => $this->modx->lexicon('gallery.next').' &rsaquo;',
-            'prevPageLinkText' => '&lsaquo; '.$this->modx->lexicon('gallery.next'),
+            'prevPageLinkText' => '&lsaquo; '.$this->modx->lexicon('gallery.prev'),
             'enableHistory' => false,
             'autoStart' => false,
             'syncTransitions' => true,
