@@ -2,6 +2,8 @@ Changelog for Gallery.
 
 Gallery 1.1.0
 ====================================
+- [#73] Fix issue with absoluteImage galItem issue and gallery.thumbs_prepend_site_url setting
+- Fix issue where marking gallery active/prominent did not stick
 - [#28], [#64] Gallery items are now stored by albumId/itemId.ext in their directories
 - Added showName for GalleryAlbums to toggle whether or not to display Album name
 - [#29], [#69] Add batch upload via Zip file to albums
@@ -16,8 +18,6 @@ Gallery 1.1.0
 
 Gallery 1.0.2
 ====================================
-- [#73] Fix issue with absoluteImage galItem issue and gallery.thumbs_prepend_site_url setting
-- Fix issue where marking gallery active/prominent did not stick
 - [#31] Add &gallerifficUseCss parameter for toggling CSS by Galleriffic
 - Add cover ability to GalleryAlbums by using rowTpl "galAlbumRowWithCoverTpl"
 - Fix issue where Gallery TV albums tree loaded page when clicking on a node
