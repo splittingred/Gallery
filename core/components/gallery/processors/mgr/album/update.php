@@ -28,8 +28,8 @@ if (empty($scriptProperties['id'])) return $modx->error->failure($modx->lexicon(
 $album = $modx->getObject('galAlbum',$scriptProperties['id']);
 if (!$album) return $modx->error->failure($modx->lexicon('gallery.album_err_nf'));
 
-$_POST['active'] = !empty($scriptProperties['active']) ? 1 : 0;
-$_POST['prominent'] = !empty($scriptProperties['prominent']) ? 1 : 0;
+$scriptProperties['active'] = !empty($scriptProperties['active']) ? 1 : 0;
+$scriptProperties['prominent'] = !empty($scriptProperties['prominent']) ? 1 : 0;
 $album->fromArray($scriptProperties);
 
 if ($album->save() == false) {
