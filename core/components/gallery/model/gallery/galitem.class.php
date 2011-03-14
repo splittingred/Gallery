@@ -48,7 +48,11 @@ class galItem extends xPDOSimpleObject {
                 $value = $this->xpdo->getOption('xhtml_urls',null,false) ? str_replace('&','&amp;',$value) : $value;
                 break;
             case 'absoluteImage':
-                $value = $this->getSiteUrl().$this->xpdo->getOption('gallery.files_url').$this->get('filename');
+                $siteUrl = '';
+                if ($this->xpdo->getOption('gallery.thumbs_prepend_site_url',null,false)) {
+                    $siteUrl = $this->getSiteUrl();
+                }
+                $value = $siteUrl.$this->xpdo->getOption('gallery.files_url').$this->get('filename');
                 break;
             case 'relativeImage':
                 $value = ltrim($this->xpdo->getOption('gallery.files_url').$this->get('filename'),'/');

@@ -16,6 +16,7 @@ Gallery 1.1.0
 
 Gallery 1.0.2
 ====================================
+- [#73] Fix issue with absoluteImage galItem issue and gallery.thumbs_prepend_site_url setting
 - Fix issue where marking gallery active/prominent did not stick
 - [#31] Add &gallerifficUseCss parameter for toggling CSS by Galleriffic
 - Add cover ability to GalleryAlbums by using rowTpl "galAlbumRowWithCoverTpl"
