@@ -1,5 +1,9 @@
 Changelog for Gallery.
 
+Gallery 1.1.1
+====================================
+- Fix trivial issue with js console error when saving albums
+
 Gallery 1.1.0
 ====================================
 - [#73] Fix issue with absoluteImage galItem issue and gallery.thumbs_prepend_site_url setting

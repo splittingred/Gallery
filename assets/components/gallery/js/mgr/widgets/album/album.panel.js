@@ -97,7 +97,7 @@ Ext.extend(GAL.panel.Album,MODx.FormPanel,{
         });
     }
     ,success: function(o) {
-        Ext.getCmp('dis-btn-save').setDisabled(false);
+        Ext.getCmp('gal-btn-save').setDisabled(false);
     }
 });
 Ext.reg('gal-panel-album',GAL.panel.Album);
