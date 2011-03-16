@@ -19,9 +19,9 @@ if ($phpThumb->checkForCachedFile()) {
 }
 
 /* generate thumbnail */
-$phpThumb->generate();
-
-/* cache the thumbnail and output */
-$phpThumb->cache();
-$phpThumb->output();
+if ($phpThumb->generate()) {
+    /* cache the thumbnail and output */
+    $phpThumb->cache();
+    $phpThumb->output();
+}
 return '';
