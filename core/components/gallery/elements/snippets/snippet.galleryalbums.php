@@ -44,6 +44,12 @@ $albumCoverSort = $modx->getOption('albumCoverSort',$scriptProperties,'rank');
 $albumCoverSortDir = $modx->getOption('albumCoverSortDir',$scriptProperties,'ASC');
 $showName = $modx->getOption('showName',$scriptProperties,true);
 
+/* add random sorting for albums */
+if (in_array(strtolower($sort),array('random','rand()','rand'))) {
+    $sort = 'RAND()';
+    $dir = '';
+}
+
 /* handle sorting for album cover */
 if ($albumCoverSort == 'rank') {
     $albumCoverSort = 'AlbumItems.rank';
