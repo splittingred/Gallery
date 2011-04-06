@@ -47,7 +47,7 @@ $properties = array(
         'desc' => 'galleryalbums.sort_desc',
         'type' => 'textfield',
         'options' => '',
-        'value' => 'createdon',
+        'value' => 'rank',
         'lexicon' => 'gallery:properties',
     ),
     array(
