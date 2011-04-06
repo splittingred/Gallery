@@ -115,6 +115,9 @@ GAL.window.CreateAlbum = function(config) {
         ,url: GAL.config.connector_url
         ,action: 'mgr/album/create'
         ,fields: [{
+            xtype: 'hidden'
+            ,name: 'parent'
+        },{
             xtype: 'statictextfield'
             ,fieldLabel: _('gallery.parent')
             ,name: 'parent_name'
