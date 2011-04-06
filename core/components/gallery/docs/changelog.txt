@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 1.2.0
 ====================================
+- [#80] Added GalleryAlbumList custom TV, for selecting Albums in a TV
 - [#82] Fix bug where creating Album did not respect parent
 - [#85] Add random sorting to albums in GalleryAlbums
 

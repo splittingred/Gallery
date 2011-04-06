@@ -20,28 +20,19 @@
  * @package gallery
  */
 /**
- * Events for GalleryCustomTV plugin
- * 
+ * Input TV render for Gallery's GalleryAlbumList TV
+ *
  * @package gallery
- * @subpackage build
+ * @subpackage tv
  */
-$events = array();
+$modx->lexicon->load('tv_widget','gallery:tvprops');
+$modx->smarty->assign('base_url',$modx->getOption('base_url'));
 
-$evs = array(
-    'OnTVInputRenderList',
-    'OnTVInputPropertiesList',
-    'OnTVOutputRenderList',
-    'OnTVOutputRenderPropertiesList',
-    'OnDocFormPrerender',
-);
+$corePath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/');
+$modx->addPackage('gallery',$corePath.'model/');
 
-foreach ($evs as $ev) {
-    $events[(string)$ev] = $modx->newObject('modPluginEvent');
-    $events[(string)$ev]->fromArray(array(
-        'event' => (string)$ev,
-        'priority' => 0,
-        'propertyset' => 0,
-    ),'',true,true);
-}
+/* get TV input properties specific language strings */
+$lang = $modx->lexicon->fetch('galtv.',true);
+$modx->smarty->assign('gl',$lang);
 
-return $events;
+return $modx->smarty->fetch($corePath.'elements/tv/galleryalbumlist.inputproperties.tpl');
