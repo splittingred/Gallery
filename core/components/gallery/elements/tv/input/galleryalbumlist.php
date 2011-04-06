@@ -79,7 +79,7 @@ foreach ($albums as $album) {
         $c->where(array(
             'AlbumItems.album' => $album->get('id'),
         ));
-        $c->sortby('rank','DESC');
+        $c->sortby('rank','ASC');
         $c->limit(1);
         $coverItem = $modx->getObject('galItem',$c);
     }
