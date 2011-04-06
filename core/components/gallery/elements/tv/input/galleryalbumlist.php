@@ -31,6 +31,8 @@ $modx->smarty->assign('base_url',$this->xpdo->getOption('base_url'));
 $corePath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/');
 $modx->addPackage('gallery',$corePath.'model/');
 
+if (empty($params)) $params = array();
+
 /* setup default properties */
 $sort = $modx->getOption('sort',$params,'rank');
 $dir = $modx->getOption('dir',$params,'ASC');
