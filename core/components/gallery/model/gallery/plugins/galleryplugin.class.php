@@ -51,7 +51,9 @@ abstract class GalleryPlugin {
         foreach ($properties as $property) {
             if (isset($array[$property])) {
                 if($array[$property] == 'false'){
-                    $array[$property] = (boolean)0;
+                    $array[$property] = false;
+                }else if($array[$property] == 'true'){
+                    $array[$property] = true;
                 }else{
                     $array[$property] = (boolean)$array[$property];
                 }
