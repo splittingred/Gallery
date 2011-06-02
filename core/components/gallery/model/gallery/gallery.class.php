@@ -68,6 +68,7 @@ class Gallery {
      *
      * @access public
      * @param string $ctx The context to load. Defaults to web.
+     * @return string
      */
     public function initialize($ctx = 'web') {
         switch ($ctx) {
@@ -105,6 +106,28 @@ class Gallery {
                 ');
             break;
         }
+    }
+
+    /**
+     * Return the appropriate gallery importer class
+     * 
+     * @param string $class
+     * @param array $options
+     * @return galImport
+     */
+    public function loadImporter($class,array $options = array()) {
+        $loaded = true;
+        if (empty($this->$class)) {
+            $classPath = $this->config['modelPath'].'gallery/import/';
+            $className = $this->modx->loadClass($class,$classPath,true,true);
+            if (!empty($className)) {
+                $this->$class = new $className($this,$options);
+            } else {
+                $loaded = 'Could not load '.$class.' class: '.$classPath;
+                $this->modx->log(modX::LOG_LEVEL_ERROR,'[Gallery] '.$loaded);
+            }
+        }
+        return $loaded;
     }
 
     public function loadProcessor($name,array $scriptProperties = array()) {
@@ -171,6 +194,9 @@ class Gallery {
 
     /**
      * Used for development and debugging
+     * @param string $name
+     * @param array $properties
+     * @return boolean
      */
     public function getPage($name,array $properties = array()) {
         $name = str_replace('.','/',$name);
@@ -192,7 +218,8 @@ class Gallery {
      * debug mode.
      *
      * @access public
-     * @param string $output The output to process
+     * @param string $page
+     * @param array $properties
      * @return string The final wrapped output, or blank if not in debug.
      */
     public function output($page = '',array $properties = array()) {

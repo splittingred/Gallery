@@ -85,6 +85,7 @@ $_lang['gallery.tags'] = 'Tags';
 $_lang['gallery.title'] = 'Title';
 $_lang['gallery.width'] = 'Width';
 $_lang['gallery.xpdozip_err_nf'] = 'Could not load xPDOZip class.';
+$_lang['gallery.zip_err_ns'] = 'Please specify a zip file.';
 $_lang['gallery.zip_err_unpack'] = 'Could not unpack zip file. Please check and make sure that your zip file is not corrupted, and that the Gallery files path is correct.';
 $_lang['gallery.zip_file'] = 'Zip File';
 $_lang['gallery.zip_upload'] = 'Zip Upload';
