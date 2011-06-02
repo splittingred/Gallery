@@ -42,12 +42,17 @@ if ($loaded !== true) return $modx->error->failure($loaded);
 if (!$modx->gallery->galZipImport->setSource($_FILES['zip'])) {
     $modx->error->addField('zip',$modx->lexicon('gallery.zip_err_ns'));
 }
+
+$targetSet = $modx->gallery->galZipImport->setTarget($scriptProperties['album']);
+if (!$targetSet) {
+    $modx->error->addField('zip',$targetSet);
+}
 if ($modx->error->hasError()) {
     return $modx->error->failure();
 }
 
 /* run import */
-$success = $modx->gallery->galZipImport->run($scriptProperties['album'],$scriptProperties);
+$success = $modx->gallery->galZipImport->run($scriptProperties);
 if ($success !== true) {
     return $modx->error->failure($success);
 }

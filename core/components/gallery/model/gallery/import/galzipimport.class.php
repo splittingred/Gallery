@@ -1,31 +1,52 @@
 <?php
 /**
+ * Gallery
+ *
+ * Copyright 2010-2011 by Shaun McCormick <shaun@modx.com>
+ *
+ * Gallery is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * Gallery is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Gallery; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA
+ *
  * @package gallery
  */
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'galimport.class.php';
 /**
+ * Gallery import derivative class for zip-based imports. Supports both zip files that have a directory inside
+ * and files that just contain images.
+ *
  * @package gallery
  */
 class galZipImport extends galImport {
-    const OPT_EXTENSIONS = 'extensions';
     const OPT_IGNORE_DIRECTORIES = 'ignore_directories';
-    const OPT_USE_MULTIBYTE = 'use_multibyte';
-    const OPT_ENCODING = 'encoding';
-    public $target = '';
-    public $results = array();
-
+    
+    /**
+     * Initialize the zip import class and setup directory based options.
+     *
+     * @abstract
+     * @return void
+     */
     public function initialize() {
-        if (!$this->modx->loadClass('compression.xPDOZip',$this->modx->getOption('core_path').'xpdo/',true,true)) {
-            return $this->modx->lexicon('gallery.xpdozip_err_nf');
-        }
-        $this->config[galZipImport::OPT_EXTENSIONS] = explode(',',$this->modx->getOption('gallery.import_allowed_extensions',null,'jpg,jpeg,png,gif,bmp'));
-        $this->config[galZipImport::OPT_USE_MULTIBYTE] = $this->modx->getOption('use_multibyte',null,false);
-        $this->config[galZipImport::OPT_ENCODING] = $this->modx->getOption('modx_charset',null,'UTF-8');
         $this->config[galZipImport::OPT_IGNORE_DIRECTORIES] = explode(',',$this->modx->getOption('gallery.import_ignore_directories',null,'.,..,.svn,.git,__MACOSX,.DS_Store'));
-        return true;
     }
 
-    public function setSource($source,array $options) {
+    /**
+     * Set the source zip file for the import.
+     *
+     * @param string|array $source
+     * @param array $options
+     * @return boolean
+     */
+    public function setSource($source,array $options = array()) {
         if (empty($source) || $source['error'] !== UPLOAD_ERR_OK) {
             return false;
         }
@@ -33,116 +54,123 @@ class galZipImport extends galImport {
         return true;
     }
 
-    public function run($albumId,array $options) {
-        $preparedTarget = $this->prepareTarget($albumId);
-        if ($preparedTarget !== true) return $preparedTarget;
-        
+    /**
+     * Run the import script.
+     * 
+     * @param array $options
+     * @return bool|string
+     */
+    public function run(array $options) {
         $unpacked = $this->unpack();
         if ($unpacked !== true) return $unpacked;
 
         /* iterate */
-        $errors = array();
+        $this->errors = array();
         /* iterate over zipped files and move them into main dir */
         foreach (new DirectoryIterator($this->target) as $dir) {
-            if (in_array($dir->getFilename(),$this->config[galZipImport::OPT_IGNORE_DIRECTORIES])) continue;
             if ($dir->isDir()) {
+                if (in_array($dir->getFilename(),$this->config[galZipImport::OPT_IGNORE_DIRECTORIES])) {
+                    continue;
+                }
                 foreach (new DirectoryIterator($dir->getPathname()) as $file) {
-                    if (in_array($file->getFilename(),$this->config[galZipImport::OPT_IGNORE_DIRECTORIES])) continue;
-
-                    $fileName = $file->getFilename();
-                    $filePathName = $file->getPathname();
-
-                    $fileExtension = pathinfo($filePathName,PATHINFO_EXTENSION);
-                    $fileExtension = $this->config[galZipImport::OPT_USE_MULTIBYTE] ? mb_strtolower($fileExtension,$this->config[galZipImport::OPT_ENCODING]) : strtolower($fileExtension);
-                    if (!in_array($fileExtension,$this->config[galZipImport::OPT_EXTENSIONS])) continue;
-
-                    /* create item */
-                    $item = $this->modx->newObject('galItem');
-                    $item->set('name',$fileName);
-                    $item->set('createdby',$this->modx->user->get('id'));
-                    $item->set('mediatype','image');
-                    $item->set('active',$options['active']);
-                    if (!$item->save()) {
-                        $errors[] = $this->modx->lexicon('gallery.item_err_save');
-                        continue;
-                    }
-
-                    $newFileName = $item->get('id').'.'.$fileExtension;
-                    $newRelativePath = $albumId.'/'.$newFileName;
-                    $newAbsolutePath = $this->target.'/'.$newFileName;
-
-                    if (@file_exists($newAbsolutePath)) {
-                        @unlink($newAbsolutePath);
-                    }
-                    if (!@copy($filePathName,$newAbsolutePath)) {
-                        $errors[] = $this->modx->lexicon('gallery.file_err_move',array(
-                            'file' => $newFileName,
-                            'target' => $newAbsolutePath,
-                        ));
-                        $item->remove();
-                        continue;
-                    } else {
-                        $item->set('filename',$newRelativePath);
-                        $item->save();
-                    }
-
-                    /* get count of items in album */
-                    $total = $this->modx->getCount('galAlbumItem',array('album' => $albumId));
-
-                    /* associate with album */
-                    $albumItem = $this->modx->newObject('galAlbumItem');
-                    $albumItem->set('album',$albumId);
-                    $albumItem->set('item',$item->get('id'));
-                    $albumItem->set('rank',$total);
-                    $albumItem->save();
-
-                    /* save tags */
-                    if (isset($options['tags'])) {
-                        $tagNames = explode(',',$options['tags']);
-                        foreach ($tagNames as $tagName) {
-                            $tagName = trim($tagName);
-                            if (empty($tagName)) continue;
-
-                            $tag = $this->modx->newObject('galTag');
-                            $tag->set('item',$item->get('id'));
-                            $tag->set('tag',$tagName);
-                            $tag->save();
-                        }
-                    }
-
-                    $this->results[] = $fileName;
+                    $this->importFile($file,$options);
                 }
                 /* delete subdir */
                 $this->modx->cacheManager->deleteTree($dir->getPathname(),array('deleteTop' => true, 'skipDirs' => false, 'extensions' => '*'));
+            } else {
+                $this->importFile($dir,$options);
+                @unlink($dir->getPathname());
             }
         }
-        if (!empty($errors)) {
-            return implode(',',$errors);
+        if (!empty($this->errors)) {
+            return implode(',',$this->errors);
         }
         return true;
     }
 
-    public function prepareTarget($albumId) {
-        $this->target = $this->modx->getOption('gallery.files_path').$albumId.'/';
-        
-        /* get sanitized base path and current path */
-        $cacheManager = $this->modx->getCacheManager();
-        /* if directory doesnt exist, create it */
-        if (!file_exists($this->target) || !is_dir($this->target)) {
-            if (!$cacheManager->writeTree($this->target)) {
-               $this->modx->log(modX::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$this->target);
-               return $this->modx->lexicon('gallery.directory_err_create',array('directory' => $this->target));
+    /**
+     * Import a specific file into the current album
+     * 
+     * @param object $file A DirectoryIterator item that represents the file
+     * @param array $options
+     * @return bool
+     */
+    public function importFile($file,array $options = array()) {
+        if (in_array($file->getFilename(),$this->config[galZipImport::OPT_IGNORE_DIRECTORIES])) return false;
+
+        $fileName = $file->getFilename();
+        $filePathName = $file->getPathname();
+
+        $fileExtension = pathinfo($filePathName,PATHINFO_EXTENSION);
+        $fileExtension = $this->config[galImport::OPT_USE_MULTIBYTE] ? mb_strtolower($fileExtension,$this->config[galImport::OPT_ENCODING]) : strtolower($fileExtension);
+        if (!in_array($fileExtension,$this->config[galImport::OPT_EXTENSIONS])) return false;
+
+        /* create item */
+        $item = $this->modx->newObject('galItem');
+        $item->set('name',$fileName);
+        $item->set('createdby',$this->modx->user->get('id'));
+        $item->set('mediatype','image');
+        $item->set('active',$options['active']);
+        if (!$item->save()) {
+            $this->errors[] = $this->modx->lexicon('gallery.item_err_save');
+            return false;
+        }
+
+        $newFileName = $item->get('id').'.'.$fileExtension;
+        $newRelativePath = $this->albumId.'/'.$newFileName;
+        $newAbsolutePath = $this->target.'/'.$newFileName;
+
+        if (@file_exists($newAbsolutePath)) {
+            @unlink($newAbsolutePath);
+        }
+        if (!@copy($filePathName,$newAbsolutePath)) {
+            $errors[] = $this->modx->lexicon('gallery.file_err_move',array(
+                'file' => $newFileName,
+                'target' => $newAbsolutePath,
+            ));
+            $item->remove();
+            return false;
+        } else {
+            $item->set('filename',$newRelativePath);
+            $item->save();
+        }
+
+        /* get count of items in album */
+        $total = $this->modx->getCount('galAlbumItem',array('album' => $this->albumId));
+
+        /* associate with album */
+        $albumItem = $this->modx->newObject('galAlbumItem');
+        $albumItem->set('album',$this->albumId);
+        $albumItem->set('item',$item->get('id'));
+        $albumItem->set('rank',$total);
+        $albumItem->save();
+
+        /* save tags */
+        if (isset($options['tags'])) {
+            $tagNames = explode(',',$options['tags']);
+            foreach ($tagNames as $tagName) {
+                $tagName = trim($tagName);
+                if (empty($tagName)) continue;
+
+                $tag = $this->modx->newObject('galTag');
+                $tag->set('item',$item->get('id'));
+                $tag->set('tag',$tagName);
+                $tag->save();
             }
         }
-        /* make sure directory is readable/writable */
-        if (!is_readable($this->target) || !is_writable($this->target)) {
-            $this->modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$this->target);
-            return $this->modx->lexicon('gallery.directory_err_write',array('directory' => $this->target));
-        }
+        $this->results[] = $fileName;
         return true;
     }
 
+    /**
+     * Unpack the zip file using the xPDOZip class
+     * 
+     * @return bool|string
+     */
     public function unpack() {
+        if (!$this->modx->loadClass('compression.xPDOZip',$this->modx->getOption('core_path').'xpdo/',true,true)) {
+            return $this->modx->lexicon('gallery.xpdozip_err_nf');
+        }
         /* unpack zip file */
         $archive = new xPDOZip($this->modx,$this->source['tmp_name']);
         if (!$archive) {
