@@ -135,28 +135,10 @@ class galZipImport extends galImport {
             $item->save();
         }
 
-        /* get count of items in album */
-        $total = $this->modx->getCount('galAlbumItem',array('album' => $this->albumId));
-
-        /* associate with album */
-        $albumItem = $this->modx->newObject('galAlbumItem');
-        $albumItem->set('album',$this->albumId);
-        $albumItem->set('item',$item->get('id'));
-        $albumItem->set('rank',$total);
-        $albumItem->save();
-
+        $this->associateToAlbum($item->get('id'));
         /* save tags */
-        if (isset($options['tags'])) {
-            $tagNames = explode(',',$options['tags']);
-            foreach ($tagNames as $tagName) {
-                $tagName = trim($tagName);
-                if (empty($tagName)) continue;
-
-                $tag = $this->modx->newObject('galTag');
-                $tag->set('item',$item->get('id'));
-                $tag->set('tag',$tagName);
-                $tag->save();
-            }
+        if (!empty($options['tags'])) {
+            $this->processTags($options['tags'],$item->get('id'));
         }
         $this->results[] = $fileName;
         return true;

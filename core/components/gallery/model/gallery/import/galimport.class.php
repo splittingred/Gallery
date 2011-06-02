@@ -104,6 +104,44 @@ abstract class galImport {
     }
 
     /**
+     * Process tags and add them to item
+     * 
+     * @param string|array $tags
+     * @param string|int $itemId
+     * @return bool
+     */
+    public function processTags($tags,$itemId) {
+        $tagNames = is_array($tags) ? $tags : explode(',',$tags);
+        foreach ($tagNames as $tagName) {
+            $tagName = trim($tagName);
+            if (empty($tagName)) continue;
+
+            $tag = $this->modx->newObject('galTag');
+            $tag->set('item',$itemId);
+            $tag->set('tag',$tagName);
+            $tag->save();
+        }
+        return true;
+    }
+
+    /**
+     * Associate an item with an album
+     * @param string|int $itemId
+     * @return bool
+     */
+    public function associateToAlbum($itemId) {
+        /* get count of items in album */
+        $total = $this->modx->getCount('galAlbumItem',array('album' => $this->albumId));
+
+        /* associate with album */
+        $albumItem = $this->modx->newObject('galAlbumItem');
+        $albumItem->set('album',$this->albumId);
+        $albumItem->set('item',$itemId);
+        $albumItem->set('rank',$total);
+        return $albumItem->save();
+    }
+
+    /**
      * Run the import script. Return a non-true value to display an error.
      *
      * @abstract
