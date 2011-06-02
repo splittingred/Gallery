@@ -30,6 +30,7 @@ class galItem extends xPDOSimpleObject {
                 if (empty($format)) $format = array();
 
                 $format['src'] = $this->xpdo->getOption('gallery.thumbs_prepend_site_url',null,false) ? $this->getSiteUrl() : '';
+                $format['src'] = $this->getSiteUrl();
                 $format['src'] .= $this->xpdo->getOption('gallery.files_url').$this->get('filename');
                 $url = $value.'&'.http_build_query($format,'','&');
                 if ($this->xpdo->getOption('xhtml_urls',null,false)) {
@@ -42,6 +43,7 @@ class galItem extends xPDOSimpleObject {
             case 'image':
                 if (empty($format)) $format = array();
                 $format['src'] = $this->xpdo->getOption('gallery.thumbs_prepend_site_url',null,false) ? $this->getSiteUrl() : '';
+                $format['src'] = $this->getSiteUrl();
                 $format['src'] .= $this->xpdo->getOption('gallery.files_url').$this->get('filename');
 
                 $value = $this->getPhpThumbUrl().'&'.http_build_query($format,'','&');
@@ -52,6 +54,7 @@ class galItem extends xPDOSimpleObject {
                 if ($this->xpdo->getOption('gallery.thumbs_prepend_site_url',null,false)) {
                     $siteUrl = $this->getSiteUrl();
                 }
+                $siteUrl = $this->getSiteUrl();
                 $value = $siteUrl.$this->xpdo->getOption('gallery.files_url').$this->get('filename');
                 break;
             case 'relativeImage':

@@ -24,6 +24,7 @@ require_once MODX_CORE_PATH.'model/phpthumb/phpthumb.class.php';
  * Helper class to extend phpThumb and simplify thumbnail generation process
  * since phpThumb class is overly convoluted and doesn't do enough.
  *
+ * @deprecated Now using phpThumbOf-based code, which eventually will be transferred here
  * @package gallery
  */
 class galPhpThumb extends phpThumb {
@@ -38,6 +39,7 @@ class galPhpThumb extends phpThumb {
 
     /**
      * Setup some site-wide phpthumb options from modx config
+     * @return bool
      */
     public function initialize() {
         $cachePath = $this->modx->getOption('core_path',null,MODX_CORE_PATH).'cache/phpthumb/';
@@ -78,6 +80,8 @@ class galPhpThumb extends phpThumb {
 
     /**
      * Sets the source image
+     * @param $src
+     * @return string
      */
     public function set($src) {
         $src = str_replace('+','%27',urldecode($this->modx->getOption('src',$this->config,'')));
@@ -87,6 +91,7 @@ class galPhpThumb extends phpThumb {
 
     /**
      * Check to see if cached file already exists
+     * @return bool
      */
     public function checkForCachedFile() {
         $this->setCacheFilename();
@@ -119,6 +124,8 @@ class galPhpThumb extends phpThumb {
 
     /**
      * Generate a thumbnail
+     *
+     * @return bool
      */
     public function generate() {
         if (!$this->GenerateThumbnail()) {
@@ -130,6 +137,8 @@ class galPhpThumb extends phpThumb {
 
     /**
      * Output a thumbnail.
+     *
+     * @return string
      */
     public function output() {
         $output = $this->OutputThumbnail();
@@ -142,6 +151,9 @@ class galPhpThumb extends phpThumb {
 
     /** PHPTHUMB HELPER METHODS **/
 
+    /**
+     * @return bool|string
+     */
     public function RedirectToCachedFile() {
 
         $nice_cachefile = str_replace(DIRECTORY_SEPARATOR, '/', $this->cache_filename);
@@ -203,6 +215,9 @@ class galPhpThumb extends phpThumb {
         }
         return true;
     }
+    /**
+     * @return bool
+     */
     public function SendSaveAsFileHeaderIfNeeded() {
         if (headers_sent()) {
             return false;
