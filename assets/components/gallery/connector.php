@@ -40,7 +40,13 @@ $modx->gallery = new Gallery($modx);
 $modx->lexicon->load('gallery:default');
 
 if ($_REQUEST['action'] == 'web/phpthumb') {
-    $_SERVER['HTTP_MODAUTH'] = $modx->site_id;
+    $version = $modx->getVersionData();
+    if (version_compare($version['full_version'],'2.1.1-pl') >= 0) {
+        $_SERVER['HTTP_MODAUTH'] = $_SESSION["modx.{$modx->context->get('key')}.user.token"];
+    } else {
+        $_SERVER['HTTP_MODAUTH'] = $modx->site_id;
+    }
+
 }
 
 /* handle request */
