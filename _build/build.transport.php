@@ -35,7 +35,7 @@ set_time_limit(0);
 define('PKG_NAME','Gallery');
 define('PKG_NAME_LOWER','gallery');
 define('PKG_VERSION','1.2.0');
-define('PKG_RELEASE','rc2');
+define('PKG_RELEASE','pl');
 
 /* define sources */
 $root = dirname(dirname(__FILE__)).'/';
