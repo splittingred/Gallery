@@ -117,7 +117,7 @@ $properties = array(
     array(
         'name' => 'thumbFar',
         'desc' => 'gallery.thumbfar_desc',
-        'type' => 'combo-boolean',
+        'type' => 'textfield',
         'options' => '',
         'value' => 'C',
         'lexicon' => 'gallery:properties',

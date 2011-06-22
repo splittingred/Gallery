@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 1.2.1
 ====================================
+- [#95] Fix issue where thumbFar property was incorrectly set as a boolean
 - [#112] Fix issue with images not respecting gallery.thumbs_prepend_site_url setting
 - [#104] Fix issue with Content Type on cached thumbnails
 
