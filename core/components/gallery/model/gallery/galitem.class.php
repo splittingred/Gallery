@@ -28,8 +28,6 @@ class galItem extends xPDOSimpleObject {
             case 'thumbnail':
                 $value = $this->getPhpThumbUrl();
                 if (empty($format)) $format = array();
-
-                $format['src'] = $this->xpdo->getOption('gallery.thumbs_prepend_site_url',null,false) ? $this->getSiteUrl() : '';
                 $format['src'] = $this->getSiteUrl();
                 $format['src'] .= $this->xpdo->getOption('gallery.files_url').$this->get('filename');
                 $url = $value.'&'.http_build_query($format,'','&');
@@ -42,7 +40,6 @@ class galItem extends xPDOSimpleObject {
                 break;
             case 'image':
                 if (empty($format)) $format = array();
-                $format['src'] = $this->xpdo->getOption('gallery.thumbs_prepend_site_url',null,false) ? $this->getSiteUrl() : '';
                 $format['src'] = $this->getSiteUrl();
                 $format['src'] .= $this->xpdo->getOption('gallery.files_url').$this->get('filename');
 
@@ -50,10 +47,6 @@ class galItem extends xPDOSimpleObject {
                 $value = $this->xpdo->getOption('xhtml_urls',null,false) ? str_replace('&','&amp;',$value) : $value;
                 break;
             case 'absoluteImage':
-                $siteUrl = '';
-                if ($this->xpdo->getOption('gallery.thumbs_prepend_site_url',null,false)) {
-                    $siteUrl = $this->getSiteUrl();
-                }
                 $siteUrl = $this->getSiteUrl();
                 $value = $siteUrl.$this->xpdo->getOption('gallery.files_url').$this->get('filename');
                 break;
@@ -82,8 +75,11 @@ class galItem extends xPDOSimpleObject {
     }
 
     private function getSiteUrl() {
-        $url = MODX_URL_SCHEME;
-        return $url.$_SERVER['HTTP_HOST'];
+        $url = '';
+        if ($this->xpdo->getOption('gallery.thumbs_prepend_site_url',null,false)) {
+            $url = MODX_URL_SCHEME.$_SERVER['HTTP_HOST'];
+        }
+        return $url;
     }
     
     /**

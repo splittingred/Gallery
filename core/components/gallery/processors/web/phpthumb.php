@@ -59,7 +59,15 @@ if (strpos($src,'/') != 0 && strpos($src,'http') != 0) {
 } else {
     $src = urldecode($src);
 }
-
+/* auto-prepend base path if not a URL */
+if (strpos($src,'http') === false) {
+    $basePath = $modx->getOption('base_path',null,MODX_BASE_PATH);
+    if ($basePath != '/') {
+        $src = str_replace(basename($basePath),'',$src);
+        $src = ltrim($src,'/');
+        $src = $basePath.$src;
+    }
+}
 /* set source */
 $phpThumb->set($src);
 
@@ -113,6 +121,7 @@ if ($debug) {
     $modx->setLogTarget($oldLogTarget);
 }
 $output = '';
+$modx->setLogTarget('ECHO');
 /* check to see if there's a cached file of this already */
 if (file_exists($cacheKey)) {
     $modx->log(modX::LOG_LEVEL_DEBUG,'[phpThumbOf] Using cached file found for thumb: '.$cacheKey);
