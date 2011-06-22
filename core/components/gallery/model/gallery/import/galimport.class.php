@@ -74,7 +74,7 @@ abstract class galImport {
      * @param array $options
      * @return bool
      */
-    abstract public function setSource($source,array $options);
+    abstract public function setSource($source,array $options = array());
 
     /**
      * Set the target album for the import
