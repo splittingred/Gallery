@@ -148,7 +148,6 @@ class galPhpThumb extends phpThumb {
         return $output;
     }
 
-
     /** PHPTHUMB HELPER METHODS **/
 
     /**

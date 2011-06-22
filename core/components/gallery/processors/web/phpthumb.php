@@ -116,7 +116,7 @@ $output = '';
 /* check to see if there's a cached file of this already */
 if (file_exists($cacheKey)) {
     $modx->log(modX::LOG_LEVEL_DEBUG,'[phpThumbOf] Using cached file found for thumb: '.$cacheKey);
-    $output =  str_replace(' ','%20',$cacheUrl);
+    $output = str_replace(' ','%20',$cacheUrl);
 } else {
     /* actually make the thumbnail */
     if ($phpThumb->GenerateThumbnail()) { // this line is VERY important, do not remove it!
@@ -130,4 +130,7 @@ if (file_exists($cacheKey)) {
     }
 }
 
+if (!headers_sent()) {
+    header('Content-Type: '.phpthumb_functions::ImageTypeToMIMEtype($phpThumb->thumbnailFormat));
+}
 return file_get_contents($cacheKey);

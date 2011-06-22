@@ -1,5 +1,9 @@
 Changelog for Gallery.
 
+Gallery 1.2.1
+====================================
+- [#104] Fix issue with Content Type on cached thumbnails
+
 Gallery 1.2.0
 ====================================
 - [#97] Change thumbnail logic to use phpthumbof style php code in connector, vastly improving load/thumbnailing speed, and properly caching images
