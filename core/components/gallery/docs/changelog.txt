@@ -1,7 +1,17 @@
 Changelog for Gallery.
 
+Gallery 1.2.1
+====================================
+- [#107] Fix issue with abstract method definition in galZipImport class
+- [#95] Fix issue where thumbFar property was incorrectly set as a boolean
+- [#112] Fix issue with images not respecting gallery.thumbs_prepend_site_url setting
+- [#104] Fix issue with Content Type on cached thumbnails
+
 Gallery 1.2.0
 ====================================
+- [#97] Change thumbnail logic to use phpthumbof style php code in connector, vastly improving load/thumbnailing speed, and properly caching images
+- [#76], [#94], Zip upload now accepts zip files with just files inside
+- [#102] Fix issue with Gallery and Revolution 2.1.1+
 - [#80] Added GalleryAlbumList custom TV, for selecting Albums in a TV
 - [#82] Fix bug where creating Album did not respect parent
 - [#85] Add random sorting to albums in GalleryAlbums

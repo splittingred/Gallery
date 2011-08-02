@@ -173,7 +173,7 @@ $properties = array(
     array(
         'name' => 'thumbFar',
         'desc' => 'galleryalbums.thumbfar_desc',
-        'type' => 'combo-boolean',
+        'type' => 'textfield',
         'options' => '',
         'value' => 'C',
         'lexicon' => 'gallery:properties',
