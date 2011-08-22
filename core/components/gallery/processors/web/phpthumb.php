@@ -1,5 +1,9 @@
 <?php
 /**
+ * @var modX $modx
+ * @var array $scriptProperties
+ * @var Gallery $gallery
+ *
  * @package gallery
  */
 
@@ -141,5 +145,6 @@ if (file_exists($cacheKey)) {
 
 if (!headers_sent()) {
     header('Content-Type: '.phpthumb_functions::ImageTypeToMIMEtype($phpThumb->thumbnailFormat));
+    header('Content-Disposition: inline; filename="'.basename($src).'"');
 }
 return file_get_contents($cacheKey);
