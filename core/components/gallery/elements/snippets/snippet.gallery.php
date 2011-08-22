@@ -22,6 +22,9 @@
 /**
  * The main Gallery snippet.
  *
+ * @var modX $modx
+ * @var Gallery $gallery
+ * 
  * @package gallery
  */
 $gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/gallery/',$scriptProperties);
@@ -71,6 +74,7 @@ if (!empty($album)) {
     $albumField = is_numeric($album) ? 'id' : 'name';
 
     $albumWhere = $albumField == 'name' ? array('name' => $album) : $album;
+    /** @var galAlbum $album */
     $album = $modx->getObject('galAlbum',$albumWhere);
     if (empty($album)) return '';
     $c->where(array(
@@ -120,6 +124,7 @@ if (!empty($plugin)) {
     if (empty($pluginPath)) {
         $pluginPath = $gallery->config['modelPath'].'gallery/plugins/';
     }
+    /** @var GalleryPlugin $plugin */
     if (($className = $modx->loadClass($plugin,$pluginPath,true,true))) {
         $plugin = new $className($gallery,$scriptProperties);
         $plugin->load();
@@ -157,6 +162,7 @@ $thumbProperties = array_merge(array(
 ),$thumbProperties);
 
 $idx = 0;
+/** @var galItem $item */
 foreach ($items as $item) {
     $itemArray = $item->toArray();
     $itemArray['idx'] = $idx;
@@ -187,6 +193,8 @@ if (!empty($containerTpl)) {
         'thumbnails' => $output,
         'album_name' => $galleryName,
         'album_description' => $galleryDescription,
+        'albumRequestVar' => $albumRequestVar,
+        'albumId' => $galleryId,
     ));
     if (!empty($ct)) $output = $ct;
 }

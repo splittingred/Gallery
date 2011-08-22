@@ -34,7 +34,7 @@ set_time_limit(0);
 /* define package */
 define('PKG_NAME','Gallery');
 define('PKG_NAME_LOWER','gallery');
-define('PKG_VERSION','1.2.1');
+define('PKG_VERSION','1.2.2');
 define('PKG_RELEASE','pl');
 
 /* define sources */

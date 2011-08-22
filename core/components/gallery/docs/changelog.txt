@@ -1,5 +1,10 @@
 Changelog for Gallery.
 
+Gallery 1.2.2
+====================================
+- [#121] Add extra placeholders for containerTpl chunk
+- [#113] Fix name of thumbnails being connector.php
+
 Gallery 1.2.1
 ====================================
 - [#107] Fix issue with abstract method definition in galZipImport class
