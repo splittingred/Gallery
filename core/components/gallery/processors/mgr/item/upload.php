@@ -22,6 +22,9 @@
 /**
  * Upload an item into an album
  *
+ * @var modX $modx
+ * @var array $scriptProperties
+ * 
  * @package gallery
  */
 
@@ -38,6 +41,7 @@ if ($modx->error->hasError()) {
 
 /* create item */
 $scriptProperties['active'] = !empty($scriptProperties['active']) ? 1 : 0;
+/** @var galItem $item */
 $item = $modx->newObject('galItem');
 $item->fromArray($scriptProperties);
 $item->set('createdby',$modx->user->get('id'));
@@ -60,6 +64,7 @@ $item->save();
 $total = $modx->getCount('galAlbumItem',array('album' => $scriptProperties['album']));
 
 /* associate with album */
+/** @var galAlbumItem $albumItem */
 $albumItem = $modx->newObject('galAlbumItem');
 $albumItem->set('album',$scriptProperties['album']);
 $albumItem->set('item',$item->get('id'));
@@ -73,6 +78,7 @@ if (isset($scriptProperties['tags'])) {
         $tagName = trim($tagName);
         if (empty($tagName)) continue;
 
+        /** @var galTag $tag */
         $tag = $modx->newObject('galTag');
         $tag->set('item',$item->get('id'));
         $tag->set('tag',$tagName);
@@ -82,4 +88,6 @@ if (isset($scriptProperties['tags'])) {
 
 
 /* output to browser */
-return $modx->error->success('',$item);
+$itemArray = $item->toArray();
+unset($itemArray['description']);
+return $modx->error->success('',$itemArray);
