@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 1.2.2
 ====================================
+- [#124] Fix document root issue with watermarks
 - [#121] Add extra placeholders for containerTpl chunk
 - [#113] Fix name of thumbnails being connector.php
 

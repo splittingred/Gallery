@@ -54,7 +54,7 @@ $phpThumb->initialize();
 $phpThumb->setParameter('config_cache_directory',$assetsPath.'cache/');
 $phpThumb->setParameter('config_allow_src_above_phpthumb',true);
 $phpThumb->setParameter('allow_local_http_src',true);
-$phpThumb->setParameter('config_document_root','');
+$phpThumb->setParameter('config_document_root', $modx->getOption('base_path',null,MODX_BASE_PATH));
 $phpThumb->setCacheDirectory();
 
 /* get absolute url of image */
