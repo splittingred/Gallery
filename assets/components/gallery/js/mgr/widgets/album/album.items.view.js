@@ -4,7 +4,7 @@ GAL.view.AlbumItems = function(config) {
     this._initTemplates();
     Ext.applyIf(config,{
         url: GAL.config.connector_url
-        ,fields: ['id','album','name','description','mediatype','url','createdon','createdby','filename','filesize','thumbnail','image','image_width','image_height','tags','active','rank','absoluteImage','relativeImage','menu']
+        ,fields: ['id','album','name','description','mediatype','url','customthumb','createdon','createdby','filename','filesize','thumbnail','image','image_width','image_height','tags','active','rank','absoluteImage','relativeImage','menu']
         ,ident: 'galbit'
         ,id: 'gal-album-items-view'
         ,baseParams: {
@@ -276,7 +276,7 @@ GAL.window.UpdateItem = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.item_update')
         ,id: this.ident
-        ,height: 150
+        ,height: 180
         ,width: 475
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/update'
@@ -320,6 +320,13 @@ GAL.window.UpdateItem = function(config) {
             ,name: 'url'
             ,id: 'gal-'+this.ident+'-item-url'
             ,width: 300
+	},{
+	    xtype: 'textfield'
+	    ,fieldLabel: _('gallery.item_customthumb')
+	    ,description: _('gallery.item_customthumb_desc')
+	    ,name: 'customthumb'
+	    ,id: 'gal-'+this.ident+'-item-customthumb'
+	    ,width: 300
         }]
     });
     GAL.window.UpdateItem.superclass.constructor.call(this,config);

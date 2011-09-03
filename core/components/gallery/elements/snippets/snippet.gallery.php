@@ -172,7 +172,11 @@ foreach ($items as $item) {
     $itemArray['fileurl'] = $itemArray['image_absolute'];
     $itemArray['filepath'] = $modx->getOption('gallery.files_path').$item->get('filename');
     $itemArray['filesize'] = $item->get('filesize');
-    $itemArray['thumbnail'] = $item->get('thumbnail',$thumbProperties);
+    if ($customthumb = $item->get('custumthumb')){
+        $itemArray['thumbnail'] = $customthumb;
+    } else {
+        $itemArray['thumbnail'] = $item->get('thumbnail',$thumbProperties);
+    }
     $itemArray['image'] = $item->get('thumbnail',$imageProperties);
     if (!empty($album)) $itemArray['album'] = $album->get('id');
     if (!empty($tag)) $itemArray['tag'] = $tag;

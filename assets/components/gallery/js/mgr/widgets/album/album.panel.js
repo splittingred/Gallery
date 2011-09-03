@@ -322,7 +322,14 @@ GAL.window.UploadItem = function(config) {
             ,name: 'url'
             ,id: 'gal-'+this.ident+'-item-url'
             ,width: 300
-        }]
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('gallery.item_customthumb')
+            ,description: _('gallery.item_customthumb_desc')
+            ,name: 'customthumb'
+            ,id: 'gal-'+this.ident+'-item-customthumb'
+            ,width: 300
+	}]
     });
     GAL.window.UploadItem.superclass.constructor.call(this,config);
 };
