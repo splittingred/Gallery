@@ -398,7 +398,6 @@ GAL.window.uploadMultiItems = function(config) {
                             album: this.config.album,
                             HTTP_MODAUTH: MODx.siteId
                         },
-                        debug: true,
                         onComplete: function() { Ext.getCmp('gal-panel-album-items').view.run(); },
                         onSubmit: function() {
                             var p = this.params;
