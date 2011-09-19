@@ -297,7 +297,7 @@ GAL.window.UploadItem = function(config) {
         title: _('gallery.item_upload')
         ,id: this.ident
         ,height: 150
-        ,width: 475
+        ,width: '55%'
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/upload'
         ,fileUpload: true
@@ -321,7 +321,7 @@ GAL.window.UploadItem = function(config) {
             ,fieldLabel: _('description')
             ,name: 'description'
             ,id: 'gal-'+this.ident+'-description'
-            ,width: 300
+            ,width: '85%'
         },{
             xtype: 'checkbox'
             ,fieldLabel: _('gallery.active')
@@ -346,6 +346,9 @@ GAL.window.UploadItem = function(config) {
         }]
     });
     GAL.window.UploadItem.superclass.constructor.call(this,config);
+    this.on('activate',function() {
+        if (typeof Tiny != 'undefined') { MODx.loadRTE('gal-' + this.ident + '-description'); }
+    });
 };
 Ext.extend(GAL.window.UploadItem,MODx.Window);
 Ext.reg('gal-window-item-upload',GAL.window.UploadItem);
@@ -413,11 +416,7 @@ GAL.window.uploadMultiItems = function(config) {
     GAL.window.uploadMultiItems.superclass.constructor.call(this,config);
 
 };
-Ext.extend(GAL.window.uploadMultiItems,MODx.Window,{
-    loadMultiUpload: function() {
-
-    }
-});
+Ext.extend(GAL.window.uploadMultiItems,MODx.Window);
 Ext.reg('gal-window-multi-item-upload',GAL.window.uploadMultiItems);
 
 GAL.window.BatchUpload = function(config) {

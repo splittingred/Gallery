@@ -113,3 +113,29 @@ $_lang['setting_gallery.default_batch_upload_path_desc'] = 'Het standaard pad om
 
 $_lang['setting_gallery.thumbs_prepend_site_url'] = 'Voeg Site URL toe aan Thumbnails';
 $_lang['setting_gallery.thumbs_prepend_site_url_desc'] = 'Wanneer deze instelling "waar" is zullen alle thumbnails met de site URL naar phpThumb worden gestuurd.';
+
+$_lang['setting_gallery.use_richtext'] = 'Gebruik Rich Text?';
+$_lang['setting_gallery.use_richtext_desc'] = 'Gebruik TinyMCE als Rich Text Editor voor de afbeelding omschrijvingen. Let op: de TinyMCE extra dient geïnstalleerd te zijn.';
+$_lang['setting_gallery.tiny.width'] = 'Editor Breedte';
+$_lang['setting_gallery.tiny.width_desc'] = 'De breedte van de Rich Text Editor.';
+$_lang['setting_gallery.tiny.height'] = 'Editor Hoogte';
+$_lang['setting_gallery.tiny.height_desc'] = 'De hoogte van de Rich Text Editor.';
+$_lang['setting_gallery.tiny.buttons1'] = 'Aangepaste Knoppen 1';
+$_lang['setting_gallery.tiny.buttons1_desc'] = 'Aangepaste knoppen om te gebruiken in rij 1. Als dit leeg is, worden de TinyMCE instellingen gebruikt. ';
+$_lang['setting_gallery.tiny.buttons2'] = 'Aangepaste Knoppen 2';
+$_lang['setting_gallery.tiny.buttons2_desc'] = 'Aangepaste knoppen om te gebruiken in rij 2. Als dit leeg is, worden de TinyMCE instellingen gebruikt.';
+$_lang['setting_gallery.tiny.buttons3'] = 'Aangepaste Knoppen 3';
+$_lang['setting_gallery.tiny.buttons3_desc'] = 'Aangepaste knoppen om te gebruiken in rij 3. Als dit leeg is, worden de TinyMCE instellingen gebruikt.';
+$_lang['setting_gallery.tiny.buttons4'] = 'Aangepaste Knoppen 4';
+$_lang['setting_gallery.tiny.buttons4_desc'] = 'Aangepaste knoppen om te gebruiken in rij 4. Als dit leeg is, worden de TinyMCE instellingen gebruikt.';
+$_lang['setting_gallery.tiny.buttons5'] = 'Aangepaste Knoppen 5';
+$_lang['setting_gallery.tiny.buttons5_desc'] = 'Aangepaste knoppen om te gebruiken in rij 5. Als dit leeg is, worden de TinyMCE instellingen gebruikt.';
+$_lang['setting_gallery.tiny.custom_plugins'] = 'Aangepaste Plugins';
+$_lang['setting_gallery.tiny.custom_plugins_desc'] = 'Aangepaste plugins om in te laden. Als dit leeg is, worden de TinyMCE instellingen gebruikt.';
+$_lang['setting_gallery.tiny.theme'] = 'Editor Thema';
+$_lang['setting_gallery.tiny.theme_desc'] = 'Het thema om te gebruiken binnen de Rich Text Editor. Als dit leeg is, worden de TinyMCE instellingen gebruikt.';
+$_lang['setting_gallery.tiny.theme_advanced_blockformats'] = 'Block Formaten';
+$_lang['setting_gallery.tiny.theme_advanced_blockformats_desc'] = 'Block Formaten om met de editor te gebruiken. Als dit leeg is, worden de TinyMCE instellingen gebruikt.';
+$_lang['setting_gallery.tiny.theme_advanced_css_selectors'] = 'CSS Selectors';
+$_lang['setting_gallery.tiny.theme_advanced_css_selectors_desc'] = 'CSS selectoren om met de editor te gebruiken. Als dit leeg is, worden de TinyMCE instellingen gebruikt.';
+

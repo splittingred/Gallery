@@ -113,3 +113,30 @@ $_lang['setting_gallery.default_batch_upload_path_desc'] = 'The default value to
 
 $_lang['setting_gallery.thumbs_prepend_site_url'] = 'Prepend Site URL to Thumbs';
 $_lang['setting_gallery.thumbs_prepend_site_url_desc'] = 'If true, will prepend the site URL to all thumbnails being sent to phpThumb.';
+
+$_lang['setting_gallery.use_richtext'] = 'Use Rich Text?';
+$_lang['setting_gallery.use_richtext_desc'] = 'Use TinyMCE as Rich Text Editor for item descriptions. Note: this requires the TinyMCE extra being installed.';
+$_lang['setting_gallery.tiny.width'] = 'Editor Width';
+$_lang['setting_gallery.tiny.width_desc'] = 'The width of the Rich Text Editor.';
+$_lang['setting_gallery.tiny.height'] = 'Editor Height';
+$_lang['setting_gallery.tiny.height_desc'] = 'The height of the Rich Text Editor.';
+$_lang['setting_gallery.tiny.buttons1'] = 'Custom Buttons 1';
+$_lang['setting_gallery.tiny.buttons1_desc'] = 'Custom string of Buttons to use on the first row. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.buttons2'] = 'Custom Buttons 2';
+$_lang['setting_gallery.tiny.buttons2_desc'] = 'Custom string of Buttons to use on the second row. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.buttons3'] = 'Custom Buttons 3';
+$_lang['setting_gallery.tiny.buttons3_desc'] = 'Custom string of Buttons to use on the third row. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.buttons4'] = 'Custom Buttons 4';
+$_lang['setting_gallery.tiny.buttons4_desc'] = 'Custom string of Buttons to use on the fourth row. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.buttons5'] = 'Custom Buttons 5';
+$_lang['setting_gallery.tiny.buttons5_desc'] = 'Custom string of Buttons to use on the fifth row. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.custom_plugins'] = 'Custom Plugins';
+$_lang['setting_gallery.tiny.custom_plugins_desc'] = 'Custom string of plugins to load. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.theme'] = 'Editor Theme';
+$_lang['setting_gallery.tiny.theme_desc'] = 'The theme to use with the Rich Text Editor.';
+$_lang['setting_gallery.tiny.theme_advanced_blockformats'] = 'Block Formats';
+$_lang['setting_gallery.tiny.theme_advanced_blockformats_desc'] = 'Block Formats to use in the editor. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.theme_advanced_css_selectors'] = 'CSS Selectors';
+$_lang['setting_gallery.tiny.theme_advanced_css_selectors_desc'] = 'CSS selectors to use in the editor. When empty, will inherit from the TinyMCE Extra.';
+
+
