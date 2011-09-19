@@ -21,14 +21,6 @@
  */
 /**
  * @package gallery
- * @subpackage galleriffic
+ * @subpackage lexicon
  */
-$_lang['gallery.download_original'] = 'Download Original';
-$_lang['gallery.photo_next'] = 'Next Photo';
-$_lang['gallery.photo_previous'] = 'Previous Photo';
-$_lang['gallery.next'] = 'Next';
-$_lang['gallery.prev'] = 'Prev';
-$_lang['gallery.slideshow_pause'] = 'Pause Slideshow';
-$_lang['gallery.slideshow_play'] = 'Play Slideshow';
-$_lang['gallery.tags'] = 'Tags';
-
+$_lang['gallery.plugin_err_load'] = 'Kon de plugin "[[+name]]" niet laden in pad: [[+path]]';
