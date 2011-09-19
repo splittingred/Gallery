@@ -75,8 +75,9 @@ GAL.panel.Album = function(config) {
     GAL.panel.Album.superclass.constructor.call(this,config);
 };
 Ext.extend(GAL.panel.Album,MODx.FormPanel,{
-    setup: function() {
-        if (!this.config.album) return;
+    initialized: false
+    ,setup: function() {
+        if (!this.config.album || this.initialized) return;
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
@@ -88,6 +89,7 @@ Ext.extend(GAL.panel.Album,MODx.FormPanel,{
                     this.getForm().setValues(r.object);
 
                     Ext.getCmp('gal-album-header').getEl().update('<h2>'+_('gallery.album')+': '+r.object.name+'</h2>');
+                    this.initialized = true;
                 },scope:this}
             }
         });
@@ -297,7 +299,7 @@ GAL.window.UploadItem = function(config) {
         title: _('gallery.item_upload')
         ,id: this.ident
         ,height: 150
-        ,width: 475
+        ,width: '55%'
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/upload'
         ,fileUpload: true
@@ -321,7 +323,7 @@ GAL.window.UploadItem = function(config) {
             ,fieldLabel: _('description')
             ,name: 'description'
             ,id: 'gal-'+this.ident+'-description'
-            ,width: 300
+            ,width: '85%'
         },{
             xtype: 'checkbox'
             ,fieldLabel: _('gallery.active')
@@ -346,6 +348,9 @@ GAL.window.UploadItem = function(config) {
         }]
     });
     GAL.window.UploadItem.superclass.constructor.call(this,config);
+    this.on('activate',function() {
+        if (typeof Tiny != 'undefined') { MODx.loadRTE('gal-' + this.ident + '-description'); }
+    });
 };
 Ext.extend(GAL.window.UploadItem,MODx.Window);
 Ext.reg('gal-window-item-upload',GAL.window.UploadItem);

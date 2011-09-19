@@ -277,7 +277,7 @@ GAL.window.UpdateItem = function(config) {
         title: _('gallery.item_update')
         ,id: this.ident
         ,height: 150
-        ,width: 475
+        ,width: '55%'
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/update'
         ,fileUpload: true
@@ -297,7 +297,7 @@ GAL.window.UpdateItem = function(config) {
             ,fieldLabel: _('description')
             ,name: 'description'
             ,id: 'gal-'+this.ident+'-description'
-            ,width: 300
+            ,width: '85%'
         },{
             xtype: 'checkbox'
             ,fieldLabel: _('gallery.active')
@@ -323,6 +323,9 @@ GAL.window.UpdateItem = function(config) {
         }]
     });
     GAL.window.UpdateItem.superclass.constructor.call(this,config);
+    this.on('activate',function() {
+        if (typeof Tiny != 'undefined') { MODx.loadRTE('gal-' + this.ident + '-description'); }
+    });
 };
 Ext.extend(GAL.window.UpdateItem,MODx.Window);
 Ext.reg('gal-window-item-update',GAL.window.UpdateItem);

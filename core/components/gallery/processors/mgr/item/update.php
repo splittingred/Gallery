@@ -20,12 +20,15 @@
  * @package gallery
  */
 /**
- * Delete an item entirely
+ * Update an item
+ *
+ * @var modX $modx
+ * @var array $scriptProperties
  *
  * @package gallery
  */
 
-/* get item */
+/* @var galItem $item */
 if (empty($scriptProperties['id'])) return $modx->error->failure($modx->lexicon('gallery.item_err_ns'));
 $item = $modx->getObject('galItem',$scriptProperties['id']);
 if (empty($item)) return $modx->error->failure($modx->lexicon('gallery.item_err_nf'));
@@ -56,4 +59,6 @@ if (isset($scriptProperties['tags'])) {
 }
 
 /* output to browser */
-return $modx->error->success('',$item);
+$itemArray = $item->toArray('',true);
+unset($itemArray['description']);
+return $modx->error->success('',$itemArray);
