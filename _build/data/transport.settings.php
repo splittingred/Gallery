@@ -101,4 +101,113 @@ $settings['gallery.']->fromArray(array(
 ),'',true,true);
 */
 
+/* Settings for the TinyMCE integration */
+$settings['gallery.use_richtext']= $modx->newObject('modSystemSetting');
+$settings['gallery.use_richtext']->fromArray(array(
+    'key' => 'gallery.use_richtext',
+    'value' => false,
+    'xtype' => 'combo-boolean',
+    'namespace' => 'gallery',
+    'area' => 'TinyMCE',
+),'',true,true);
+
+$settings['gallery.tiny.width']= $modx->newObject('modSystemSetting');
+$settings['gallery.tiny.width']->fromArray(array(
+    'key' => 'gallery.tiny.width',
+    'value' => '95%',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'TinyMCE',
+),'',true,true);
+
+$settings['gallery.tiny.height']= $modx->newObject('modSystemSetting');
+$settings['gallery.tiny.height']->fromArray(array(
+    'key' => 'gallery.tiny.height',
+    'value' => 200,
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'TinyMCE',
+),'',true,true);
+
+$settings['gallery.tiny.buttons1']= $modx->newObject('modSystemSetting');
+$settings['gallery.tiny.buttons1']->fromArray(array(
+    'key' => 'gallery.tiny.buttons1',
+    'value' => 'undo,redo,selectall,pastetext,pasteword,charmap,separator,image,modxlink,unlink,media,separator,code,help',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'TinyMCE',
+),'',true,true);
+
+$settings['gallery.tiny.buttons2']= $modx->newObject('modSystemSetting');
+$settings['gallery.tiny.buttons2']->fromArray(array(
+    'key' => 'gallery.tiny.buttons2',
+    'value' => 'bold,italic,underline,strikethrough,sub,sup,separator,bullist,numlist,outdent,indent,separator,justifyleft,justifycenter,justifyright,justifyfull',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'TinyMCE',
+),'',true,true);
+
+$settings['gallery.tiny.buttons3']= $modx->newObject('modSystemSetting');
+$settings['gallery.tiny.buttons3']->fromArray(array(
+    'key' => 'gallery.tiny.buttons3',
+    'value' => 'styleselect,formatselect,separator,styleprops',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'TinyMCE',
+),'',true,true);
+
+$settings['gallery.tiny.buttons4']= $modx->newObject('modSystemSetting');
+$settings['gallery.tiny.buttons4']->fromArray(array(
+    'key' => 'gallery.tiny.buttons4',
+    'value' => '',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'TinyMCE',
+),'',true,true);
+
+$settings['gallery.tiny.buttons5']= $modx->newObject('modSystemSetting');
+$settings['gallery.tiny.buttons5']->fromArray(array(
+    'key' => 'gallery.tiny.buttons5',
+    'value' => '',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'TinyMCE',
+),'',true,true);
+
+$settings['gallery.tiny.custom_plugins']= $modx->newObject('modSystemSetting');
+$settings['gallery.tiny.custom_plugins']->fromArray(array(
+    'key' => 'gallery.tiny.custom_plugins',
+    'value' => '',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'TinyMCE',
+),'',true,true);
+
+$settings['gallery.tiny.theme']= $modx->newObject('modSystemSetting');
+$settings['gallery.tiny.theme']->fromArray(array(
+    'key' => 'gallery.tiny.theme',
+    'value' => '',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'TinyMCE',
+),'',true,true);
+
+$settings['gallery.tiny.theme_advanced_blockformats']= $modx->newObject('modSystemSetting');
+$settings['gallery.tiny.theme_advanced_blockformats']->fromArray(array(
+    'key' => 'gallery.tiny.theme_advanced_blockformats',
+    'value' => '',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'TinyMCE',
+),'',true,true);
+
+$settings['gallery.tiny.theme_advanced_css_selectors']= $modx->newObject('modSystemSetting');
+$settings['gallery.tiny.theme_advanced_css_selectors']->fromArray(array(
+    'key' => 'gallery.tiny.theme_advanced_selectors',
+    'value' => '',
+    'xtype' => 'textfield',
+    'namespace' => 'gallery',
+    'area' => 'TinyMCE',
+),'',true,true);
+
 return $settings;

@@ -45,6 +45,7 @@ $_lang['gallery.batch_upload_intro'] = '<p>Specify a directory on the filesystem
 $_lang['gallery.batch_upload_tags'] = 'Tags to assign to any items batch uploaded, in comma-separated list format.';
 $_lang['gallery.bytes'] = 'bytes';
 $_lang['gallery.comma_separated_list'] = 'Comma-separated list';
+$_lang['gallery.dropfileshere'] = 'Drop Files here to Upload';
 $_lang['gallery.directory'] = 'Directory';
 $_lang['gallery.directory_desc'] = 'The directory to scan for images.';
 $_lang['gallery.directory_err_create'] = 'Could not create directory: [[+directory]]';
@@ -77,6 +78,7 @@ $_lang['gallery.item_url'] = 'URL';
 $_lang['gallery.item_url_desc'] = 'A URL that the user will go to when clicking this Gallery Item.';
 $_lang['gallery.items'] = 'Items';
 $_lang['gallery.menu_desc'] = 'A dynamic gallery system.';
+$_lang['gallery.multi_item_upload'] = 'Multi-Item Upload';
 $_lang['gallery.parent'] = 'Parent';
 $_lang['gallery.prominent'] = 'Prominent';
 $_lang['gallery.prominent_desc'] = 'Making an Album non-prominent can be used to hide Albums from your Album listing, should you want a private album, or to create non-listed albums.';
@@ -111,3 +113,30 @@ $_lang['setting_gallery.default_batch_upload_path_desc'] = 'The default value to
 
 $_lang['setting_gallery.thumbs_prepend_site_url'] = 'Prepend Site URL to Thumbs';
 $_lang['setting_gallery.thumbs_prepend_site_url_desc'] = 'If true, will prepend the site URL to all thumbnails being sent to phpThumb.';
+
+$_lang['setting_gallery.use_richtext'] = 'Use Rich Text?';
+$_lang['setting_gallery.use_richtext_desc'] = 'Use TinyMCE as Rich Text Editor for item descriptions. Note: this requires the TinyMCE extra being installed.';
+$_lang['setting_gallery.tiny.width'] = 'Editor Width';
+$_lang['setting_gallery.tiny.width_desc'] = 'The width of the Rich Text Editor.';
+$_lang['setting_gallery.tiny.height'] = 'Editor Height';
+$_lang['setting_gallery.tiny.height_desc'] = 'The height of the Rich Text Editor.';
+$_lang['setting_gallery.tiny.buttons1'] = 'Custom Buttons 1';
+$_lang['setting_gallery.tiny.buttons1_desc'] = 'Custom string of Buttons to use on the first row. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.buttons2'] = 'Custom Buttons 2';
+$_lang['setting_gallery.tiny.buttons2_desc'] = 'Custom string of Buttons to use on the second row. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.buttons3'] = 'Custom Buttons 3';
+$_lang['setting_gallery.tiny.buttons3_desc'] = 'Custom string of Buttons to use on the third row. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.buttons4'] = 'Custom Buttons 4';
+$_lang['setting_gallery.tiny.buttons4_desc'] = 'Custom string of Buttons to use on the fourth row. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.buttons5'] = 'Custom Buttons 5';
+$_lang['setting_gallery.tiny.buttons5_desc'] = 'Custom string of Buttons to use on the fifth row. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.custom_plugins'] = 'Custom Plugins';
+$_lang['setting_gallery.tiny.custom_plugins_desc'] = 'Custom string of plugins to load. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.theme'] = 'Editor Theme';
+$_lang['setting_gallery.tiny.theme_desc'] = 'The theme to use with the Rich Text Editor.';
+$_lang['setting_gallery.tiny.theme_advanced_blockformats'] = 'Block Formats';
+$_lang['setting_gallery.tiny.theme_advanced_blockformats_desc'] = 'Block Formats to use in the editor. When empty, will inherit from the TinyMCE Extra.';
+$_lang['setting_gallery.tiny.theme_advanced_css_selectors'] = 'CSS Selectors';
+$_lang['setting_gallery.tiny.theme_advanced_css_selectors_desc'] = 'CSS selectors to use in the editor. When empty, will inherit from the TinyMCE Extra.';
+
+
