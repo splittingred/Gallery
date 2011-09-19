@@ -77,6 +77,7 @@ $_lang['gallery.item_url'] = 'URL';
 $_lang['gallery.item_url_desc'] = 'A URL that the user will go to when clicking this Gallery Item.';
 $_lang['gallery.items'] = 'Items';
 $_lang['gallery.menu_desc'] = 'A dynamic gallery system.';
+$_lang['gallery.multi_item_upload'] = 'Multi-Upload';
 $_lang['gallery.parent'] = 'Parent';
 $_lang['gallery.prominent'] = 'Prominent';
 $_lang['gallery.prominent_desc'] = 'Making an Album non-prominent can be used to hide Albums from your Album listing, should you want a private album, or to create non-listed albums.';
