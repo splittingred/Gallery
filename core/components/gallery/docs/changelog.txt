@@ -1,5 +1,10 @@
 Changelog for Gallery.
 
+Gallery 1.3.0
+====================================
+- [#137] Add mutli-upload to Gallery albums
+- Add richtext (if TinyMCE installed) to Item/Album description page
+
 Gallery 1.2.2
 ====================================
 - [#92] Fix issue when uploading item with html description
