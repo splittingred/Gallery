@@ -18,7 +18,6 @@ if (empty($filenm)) return $modx->error->failure($modx->lexicon('gallery.item_er
 
 /* create item */
 $scriptProperties['active'] = !empty($scriptProperties['active']) ? 1 : 0;
-$modx->log(MODX_LEVEL_ERROR,print_r($scriptProperties,true));
 /** @var galItem $item */
 $item = $modx->newObject('galItem');
 $item->fromArray($scriptProperties);
