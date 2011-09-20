@@ -203,7 +203,7 @@ $settings['gallery.tiny.theme_advanced_blockformats']->fromArray(array(
 
 $settings['gallery.tiny.theme_advanced_css_selectors']= $modx->newObject('modSystemSetting');
 $settings['gallery.tiny.theme_advanced_css_selectors']->fromArray(array(
-    'key' => 'gallery.tiny.theme_advanced_selectors',
+    'key' => 'gallery.tiny.theme_advanced_css_selectors',
     'value' => '',
     'xtype' => 'textfield',
     'namespace' => 'gallery',
