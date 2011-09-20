@@ -85,21 +85,20 @@ if ($useTiny) {
             'theme_advanced_toolbar_align' => 'left',
             'theme_advanced_toolbar_location' => 'top',
 
-            
+
             'height' => $modx->getOption('gallery.tiny.height',null,200),
             'width' => $modx->getOption('gallery.tiny.width',null,'95%'),
-            'custom_buttons1' => (!empty($cb1)) ? $cb1 : $modx->getOption('tiny.custom_buttons1',null,'undo,redo,selectall,separator,pastetext,pasteword,separator,search,replace,separator,nonbreaking,hr,charmap,separator,image,modxlink,unlink,anchor,media,separator,cleanup,removeformat,separator,fullscreen,print,code,help'),
-            'custom_buttons2' => (!empty($cb2)) ? $cb2 : $modx->getOption('tiny.custom_buttons2',null,'bold,italic,underline,strikethrough,sub,sup,separator,bullist,numlist,outdent,indent,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,styleselect,formatselect,separator,styleprops'),
-            'custom_buttons3' => (!empty($cb3)) ? $cb3 : $modx->getOption('tiny.custom_buttons3',null,''),
-            'custom_buttons4' => (!empty($cb4)) ? $cb4 : $modx->getOption('tiny.custom_buttons4',null,''),
-            'custom_buttons5' => (!empty($cb5)) ? $cb5 : $modx->getOption('tiny.custom_buttons5',null,''),
-            'custom_plugins' => (!empty($plugins)) ? $plugins : $modx->getOption('tiny.custom_plugins',null,'style,advimage,advlink,modxlink,searchreplace,print,contextmenu,paste,fullscreen,noneditable,nonbreaking,xhtmlxtras,visualchars,media'),
-            'editor_theme' => (!empty($theme)) ? $theme : $modx->getOption('tiny.editor_theme',null,'cirkuit'),
-            'skin_variant' => $modx->getOption('tiny.skin_variant',null,''),
-            'theme_advanced_blockformats' => (!empty($bfs)) ? $bfs : $modx->getOption('tiny.theme_advanced_blockformats',null,'p,h1,h2,h3,h4,h5,h6,div,blockquote,code,pre,address'),
-            'css_selectors' => (!empty($css)) ? $css : $modx->getOption('tiny.css_selectors',null,''),
+            'tiny.custom_buttons1' => (!empty($cb1)) ? $cb1 : $modx->getOption('tiny.custom_buttons1',null,'undo,redo,selectall,separator,pastetext,pasteword,separator,search,replace,separator,nonbreaking,hr,charmap,separator,image,modxlink,unlink,anchor,media,separator,cleanup,removeformat,separator,fullscreen,print,code,help'),
+            'tiny.custom_buttons2' => (!empty($cb2)) ? $cb2 : $modx->getOption('tiny.custom_buttons2',null,'bold,italic,underline,strikethrough,sub,sup,separator,bullist,numlist,outdent,indent,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,styleselect,formatselect,separator,styleprops'),
+            'tiny.custom_buttons3' => (!empty($cb3)) ? $cb3 : $modx->getOption('tiny.custom_buttons3',null,''),
+            'tiny.custom_buttons4' => (!empty($cb4)) ? $cb4 : $modx->getOption('tiny.custom_buttons4',null,''),
+            'tiny.custom_buttons5' => (!empty($cb5)) ? $cb5 : $modx->getOption('tiny.custom_buttons5',null,''),
+            'tiny.custom_plugins' => (!empty($plugins)) ? $plugins : $modx->getOption('tiny.custom_plugins',null,'style,advimage,advlink,modxlink,searchreplace,print,contextmenu,paste,fullscreen,noneditable,nonbreaking,xhtmlxtras,visualchars,media'),
+            'tiny.editor_theme' => (!empty($theme)) ? $theme : $modx->getOption('tiny.editor_theme',null,'cirkuit'),
+            'tiny.skin_variant' => $modx->getOption('tiny.skin_variant',null,''),
+            'tiny.theme_advanced_blockformats' => (!empty($bfs)) ? $bfs : $modx->getOption('tiny.theme_advanced_blockformats',null,'p,h1,h2,h3,h4,h5,h6,div,blockquote,code,pre,address'),
+            'tiny.css_selectors' => (!empty($css)) ? $css : $modx->getOption('tiny.css_selectors',null,''),
         );
-        
         require_once $tinyCorePath.'tinymce.class.php';
         $tiny = new TinyMCE($modx,$tinyProperties);
         $tiny->setProperties($tinyProperties);
