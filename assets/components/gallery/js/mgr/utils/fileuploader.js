@@ -1,3 +1,12 @@
+function clearSuccess() {
+    elements = Ext.select('.qq-upload-success');
+    elements.remove();
+}
+function clearFailure() {
+    elements = Ext.select('.qq-upload-fail');
+    elements.remove();
+}
+
 /**
  * http://github.com/valums/file-uploader
  * 
@@ -487,25 +496,26 @@ qq.FileUploader = function(o){
         template: '<div class="qq-uploader">' + 
                 '<div class="qq-upload-drop-area"><span>' + _('gallery.dropfileshere') + '</span></div>' +
                 '<div class="qq-upload-button">' + _('file_upload') + '</div>' +
-                '<ul class="qq-upload-list"></ul>' + 
+                '<p><a href="#" onclick="clearSuccess(); return false;">' + _('gallery.clearsuccessful') + '</a> | ' +
+                '<a href="#" onclick="clearFailure(); return false;">' + _('gallery.clearfailure') + '</a></p>' +
+                '<ul class="qq-upload-list"></ul>' +
              '</div>',
 
         // template for one item in file list
         fileTemplate: '<li>' +
-                '<span class="qq-upload-file"></span>' +
                 '<span class="qq-upload-spinner"></span>' +
-                '<span class="qq-upload-size"></span>' +
                 '<a class="qq-upload-cancel" href="#">' + _('cancel') + '</a>' +
+                '<span class="qq-upload-size"></span>' +
+                '<span class="qq-upload-file"></span>' +
                 '<span class="qq-upload-failed-text">' + _('failure') +  '</span>' +
-            '</li>',        
-        
+            '</li>',
         classes: {
             // used to get elements from templates
             button: 'qq-upload-button',
             drop: 'qq-upload-drop-area',
             dropActive: 'qq-upload-drop-area-active',
             list: 'qq-upload-list',
-                        
+
             file: 'qq-upload-file',
             spinner: 'qq-upload-spinner',
             size: 'qq-upload-size',

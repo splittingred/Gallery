@@ -64,15 +64,15 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         if (!data) return false;
         
         var r = data;
-        if (!this.windows.updateItem) {
-            this.windows.updateItem = MODx.load({
-                xtype: 'gal-window-item-update'
-                ,listeners: {
-                    'success': {fn:function() { this.run(); },scope:this}
-                }
-            });
-        }
-        this.windows.updateItem.fp.getForm().reset();
+        /* We'll need a "fresh" window when using Tiny for the description field,
+         * so we don't check if it exists but just load a new window.
+         */
+        this.windows.updateItem = MODx.load({
+            xtype: 'gal-window-item-update'
+            ,listeners: {
+                'success': {fn:function() { this.run(); },scope:this}
+            }
+        });
         this.windows.updateItem.setValues(r);
         this.windows.updateItem.show(e.target);
     }
@@ -276,6 +276,7 @@ GAL.window.UpdateItem = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.item_update')
         ,id: this.ident
+        ,closeAction: 'close'
         ,height: 150
         ,width: '55%'
         ,url: GAL.config.connector_url
