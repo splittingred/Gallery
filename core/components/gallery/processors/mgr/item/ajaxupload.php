@@ -1,18 +1,14 @@
 <?php
-
-$input = fopen("php://input", "r");
-$temp = tmpfile();
-$realSize = stream_copy_to_stream($input, $temp);
-fclose($input);
-
-/*$target = fopen($path, "w");
-fseek($temp, 0, SEEK_SET);
-stream_copy_to_stream($temp, $target);
-fclose($target);*/
+/* @var modX $modx
+ * @var array $scriptProperties
+ */
 
 /* validate form */
 $album = $modx->getOption('album',$scriptProperties,false);
 $filenm = $modx->getOption('qqfile',$scriptProperties,false);
+/* If $filenm is an array, it means we've used IE and we need to use a different name. */
+if (is_array($filenm)) $filenm = $filenm['name'];
+
 if (empty($album)) return $modx->error->failure($modx->lexicon('gallery.album_err_ns'));
 if (empty($filenm)) return $modx->error->failure($modx->lexicon('gallery.item_err_ns'));
 
@@ -56,17 +52,26 @@ if (@file_exists($absolutePath)) {
     @unlink($absolutePath);
 }
 
-$target = fopen($absolutePath, "w");
-fseek($temp, 0, SEEK_SET);
-$bytes = stream_copy_to_stream($temp, $target);
-fclose($target);
-
-if ($bytes == 0) {
-    $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the to '.$absolutePath);
-    $item->remove();
-    return $modx->toJSON(array('error' => 'gallery.item_err_upload'));
+if (!empty($_FILES['qqfile'])) {
+    if (!$item->upload($_FILES['qqfile'],$scriptProperties['album'])) {
+        $item->remove();
+        return $modx->error->failure($modx->lexicon('gallery.item_err_upload'));
+    }
 } else {
-    $item->set('filename',str_replace(' ','',$relativePath));
+    /* Using AJAX upload */
+    $input = fopen("php://input", "r");
+    $target = fopen($absolutePath, "w");
+    $bytes = stream_copy_to_stream($input, $target);
+    fclose($input);
+    fclose($target);
+    
+    if ($bytes == 0) {
+        $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file to '.$absolutePath);
+        $item->remove();
+        return $modx->toJSON(array('error' => 'gallery.item_err_upload'));
+    } else {
+        $item->set('filename',str_replace(' ','',$relativePath));
+    }
 }
 
 $item->save();
@@ -96,7 +101,6 @@ if (isset($scriptProperties['tags'])) {
         $tag->save();
     }
 }
-
 
 /* output to browser */
 return $modx->toJSON(array('success' => true));
