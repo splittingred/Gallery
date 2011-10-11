@@ -1,5 +1,11 @@
 Changelog for Gallery.
 
+Gallery 1.3.1
+====================================
+- Add more styling to the multi-upload window and upload log.
+- [#141] Fix multi-upload compatibility with IE
+- [#140] Add ability to clear multi-upload log for successful / failed uploads.
+
 Gallery 1.3.0
 ====================================
 - [#137] Add multi-upload to Gallery albums
