@@ -1,5 +1,9 @@
 Changelog for Gallery.
 
+bitbox fork 0.1.0
+====================================
+- [#116] Add &gallerifficCss parameter defining a specific css file to use for Galleriffic plugin
+
 Gallery 1.3.0
 ====================================
 - [#137] Add multi-upload to Gallery albums
