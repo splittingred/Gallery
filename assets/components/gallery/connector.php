@@ -27,6 +27,7 @@
  * @package gallery
  */
 if ($_REQUEST['action'] == 'web/phpthumb') {
+	session_cache_limiter('public');
     define('MODX_REQP',false);
 }
 require_once dirname(dirname(dirname(dirname(__FILE__)))).'/config.core.php';
