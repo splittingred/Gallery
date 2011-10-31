@@ -144,6 +144,7 @@ if (file_exists($cacheKey)) {
 }
 
 if (!headers_sent()) {
+	$phpThumb->setOutputFormat();
     header('Content-Type: '.phpthumb_functions::ImageTypeToMIMEtype($phpThumb->thumbnailFormat));
     header('Content-Disposition: inline; filename="'.basename($src).'"');
 }
