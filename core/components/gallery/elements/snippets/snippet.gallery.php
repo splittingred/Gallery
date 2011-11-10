@@ -153,6 +153,8 @@ if (!empty($toPlaceholder)) {
         $toPlaceholder.'.name' => $data['album']['name'],
         $toPlaceholder.'.description' => $data['album']['description'],
         $toPlaceholder.'.total' => $data['total'],
+        $toPlaceholder.'.next' => $data['album']['id'] + 1,
+        $toPlaceholder.'.prev' => $data['album']['id'] - 1,
     ));
 } else {
     $placeholderPrefix = $modx->getOption('placeholderPrefix',$scriptProperties,'gallery.');
@@ -161,6 +163,8 @@ if (!empty($toPlaceholder)) {
         $placeholderPrefix.'name' => $data['album']['name'],
         $placeholderPrefix.'description' => $data['album']['description'],
         $placeholderPrefix.'total' => $data['total'],
+        $placeholderPrefix.'next' => $data['album']['id'] + 1,
+        $placeholderPrefix.'prev' => $data['album']['id'] - 1,
     ));
     return $output;
 }
