@@ -1,5 +1,9 @@
 Changelog for Gallery.
 
+Gallery 1.5.0
+====================================
+- Gallery 1.5+ only supports MODX 2.2+ and greater
+
 Gallery 1.4.0
 ====================================
 - [#145] Add &gallerifficCss property for specifying an alternate CSS file for Galleriffic plugin
