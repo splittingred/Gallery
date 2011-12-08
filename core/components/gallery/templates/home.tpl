@@ -1,0 +1,1 @@
+<div id="gal-panel-home-div"></div>

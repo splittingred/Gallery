@@ -27,7 +27,7 @@
  */
 $_lang['gallery'] = 'Gallery';
 $_lang['gallery.active'] = 'Active';
-$_lang['gallery.active_desc'] = 'If false, this album will not be viewable.';
+$_lang['gallery.active_desc'] = 'If unchecked, this album will not be viewable.';
 $_lang['gallery.album'] = 'Album';
 $_lang['gallery.album_create'] = 'Create Album';
 $_lang['gallery.album_err_nf'] = 'Album not found.';
@@ -41,7 +41,7 @@ $_lang['gallery.album_update'] = 'Update Album';
 $_lang['gallery.albums'] = 'Albums';
 $_lang['gallery.back'] = 'Back';
 $_lang['gallery.batch_upload'] = 'Batch Upload';
-$_lang['gallery.batch_upload_intro'] = '<p>Specify a directory on the filesystem to scan for images. You can use {base_path}, {core_path}, or {assets_path} as placeholders.</p>';
+$_lang['gallery.batch_upload_intro'] = 'Specify a directory on the filesystem to scan for images. You can use {base_path}, {core_path}, or {assets_path} as placeholders.';
 $_lang['gallery.batch_upload_tags'] = 'Tags to assign to any items batch uploaded, in comma-separated list format.';
 $_lang['gallery.bytes'] = 'bytes';
 $_lang['gallery.comma_separated_list'] = 'Comma-separated list';
@@ -61,6 +61,7 @@ $_lang['gallery.height'] = 'Height';
 $_lang['gallery.images_selected'] = '[[+count]] images selected.';
 $_lang['gallery.inactive'] = 'Inactive';
 $_lang['gallery.intro_msg'] = 'Here you can manage your albums. Right-click on an album to view more options.';
+$_lang['gallery.item_active_desc'] = 'Inactive items will not be shown publicly in your albums.';
 $_lang['gallery.item_delete'] = 'Delete Item';
 $_lang['gallery.item_delete_confirm'] = 'Are you sure you want to delete this item entirely? This is irreversible.';
 $_lang['gallery.item_delete_multiple'] = 'Delete Selected Items';
@@ -75,9 +76,11 @@ $_lang['gallery.item_remove'] = 'Remove Item';
 $_lang['gallery.item_remove_album'] = 'Remove Item from Album';
 $_lang['gallery.item_update'] = 'Update Item';
 $_lang['gallery.item_upload'] = 'Upload Item';
+$_lang['gallery.item_upload_file_desc'] = 'The file of the image you wish to upload.';
 $_lang['gallery.item_url'] = 'URL';
 $_lang['gallery.item_url_desc'] = 'A URL that the user will go to when clicking this Gallery Item.';
 $_lang['gallery.items'] = 'Items';
+$_lang['gallery.loading_ellipsis'] = 'Loading...';
 $_lang['gallery.menu_desc'] = 'A dynamic gallery system.';
 $_lang['gallery.multi_item_upload'] = 'Multi-Upload';
 $_lang['gallery.parent'] = 'Parent';
@@ -92,7 +95,7 @@ $_lang['gallery.zip_err_ns'] = 'Please specify a zip file.';
 $_lang['gallery.zip_err_unpack'] = 'Could not unpack zip file. Please check and make sure that your zip file is not corrupted, and that the Gallery files path is correct.';
 $_lang['gallery.zip_file'] = 'Zip File';
 $_lang['gallery.zip_upload'] = 'Zip Upload';
-$_lang['gallery.zip_upload_intro'] = '<p>Specify a zip file to upload for images. Gallery will unzip the file and place the images in it in this Album.</p>';
+$_lang['gallery.zip_upload_intro'] = 'Specify a zip file to upload for images. Gallery will unzip the file and place the images in it in this Album.';
 
 
 $_lang['area_backend'] = 'Backend';

@@ -7,4 +7,4 @@ Ext.extend(GAL,Ext.Component,{
 });
 Ext.reg('gallery',GAL);
 
-var GAL = new GAL();
+GAL = new GAL();

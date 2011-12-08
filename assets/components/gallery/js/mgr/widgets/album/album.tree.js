@@ -16,7 +16,7 @@ GAL.tree.Album = function(config) {
         }]
         ,sortAction: 'mgr/album/sort'
         ,rootVisible: false
-    })
+    });
     GAL.tree.Album.superclass.constructor.call(this,config);    
 };
 Ext.extend(GAL.tree.Album,MODx.tree.Tree,{
@@ -111,45 +111,77 @@ GAL.window.CreateAlbum = function(config) {
         title: _('gallery.album_create')
         ,id: this.ident
         ,height: 150
-        ,width: 475
+        ,width: 650
         ,url: GAL.config.connector_url
         ,action: 'mgr/album/create'
         ,fields: [{
             xtype: 'hidden'
             ,name: 'parent'
         },{
-            xtype: 'statictextfield'
-            ,fieldLabel: _('gallery.parent')
-            ,name: 'parent_name'
-            ,id: 'gal-'+this.ident+'-parent-name'
-            ,width: 200
-        },{
-            xtype: 'textfield'
-            ,fieldLabel: _('name')
-            ,name: 'name'
-            ,id: 'gal-'+this.ident+'-name'
-            ,width: 300
-        },{
-            xtype: 'textarea'
-            ,fieldLabel: _('description')
-            ,name: 'description'
-            ,id: 'gal-'+this.ident+'-description'
-            ,width: 300
-        },{
-            xtype: 'checkbox'
-            ,fieldLabel: _('gallery.active')
-            ,name: 'active'
-            ,id: 'gal-'+this.ident+'-active'
-            ,checked: true
-            ,inputValue: 1
-        },{
-            xtype: 'checkbox'
-            ,fieldLabel: _('gallery.prominent')
-            ,description: _('gallery.prominent_desc')
-            ,name: 'prominent'
-            ,id: 'gal-'+this.ident+'-prominent'
-            ,checked: true
-            ,inputValue: 1
+            layout: 'column'
+            ,border: false
+            ,defaults: {
+                layout: 'form'
+                ,labelAlign: 'top'
+                ,anchor: '100%'
+                ,border: false
+                ,labelSeparator: ''
+            }
+            ,items: [{
+                columnWidth: .5
+                ,items: [{
+                    xtype: config.record['parent'] == 0 ? 'hidden' : 'statictextfield'
+                    ,fieldLabel: _('gallery.parent')
+                    ,name: 'parent_name'
+                    ,id: this.ident+'-parent-name'
+                    ,anchor: '100%'
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('name')
+                    ,name: 'name'
+                    ,id: this.ident+'-name'
+                    ,anchor: '100%'
+                },{
+                    xtype: 'textarea'
+                    ,fieldLabel: _('description')
+                    ,name: 'description'
+                    ,id: this.ident+'-description'
+                    ,anchor: '100%'
+                }]
+            },{
+                columnWidth: .5
+                ,items: [{
+                    xtype: 'checkbox'
+                    ,boxLabel: _('gallery.active')
+                    ,description: MODx.expandHelp ? '' : _('gallery.active_desc')
+                    ,name: 'active'
+                    ,id: this.ident+'-active'
+                    ,hideLabel: true
+                    ,checked: true
+                    ,inputValue: 1
+                },{
+                    xtype: MODx.expandHelp ? 'label' : 'hidden'
+                    ,forId: this.ident+'-active'
+                    ,text: _('gallery.active_desc')
+                    ,cls: 'desc-under'
+
+                },{
+                    xtype: 'checkbox'
+                    ,boxLabel: _('gallery.prominent')
+                    ,description: MODx.expandHelp ? '' : _('gallery.prominent_desc')
+                    ,name: 'prominent'
+                    ,id: this.ident+'-prominent'
+                    ,hideLabel: true
+                    ,checked: true
+                    ,inputValue: 1
+                },{
+                    xtype: MODx.expandHelp ? 'label' : 'hidden'
+                    ,forId: this.ident+'-prominent'
+                    ,text: _('gallery.prominent_desc')
+                    ,cls: 'desc-under'
+
+                }]
+            }]
         }]
     });
     GAL.window.CreateAlbum.superclass.constructor.call(this,config);

@@ -24,9 +24,10 @@
 /**
  * Gallery Connector
  *
+ * @var modX $modx
  * @package gallery
  */
-if ($_REQUEST['action'] == 'web/phpthumb') {
+if (!empty($_REQUEST['action']) && $_REQUEST['action'] == 'web/phpthumb') {
 	@session_cache_limiter('public');
     define('MODX_REQP',false);
 }

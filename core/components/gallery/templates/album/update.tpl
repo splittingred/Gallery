@@ -1,0 +1,1 @@
+<div id="gal-panel-album-div"></div>

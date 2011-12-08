@@ -48,6 +48,7 @@ class Gallery {
             'pagesPath' => $corePath.'elements/pages/',
             'snippetsPath' => $corePath.'elements/snippets/',
             'processorsPath' => $corePath.'processors/',
+            'templatesPath' => $corePath.'templates/',
             'hooksPath' => $corePath.'hooks/',
             'useCss' => true,
             'loadJQuery' => true,

@@ -62,8 +62,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         var node = this.cm.activeNode;
         var data = this.lookup[node.id];
         if (!data) return false;
-        
-        var r = data;
+
         /* We'll need a "fresh" window when using Tiny for the description field,
          * so we don't check if it exists but just load a new window.
          */
@@ -73,7 +72,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
                 'success': {fn:function() { this.run(); },scope:this}
             }
         });
-        this.windows.updateItem.setValues(r);
+        this.windows.updateItem.setValues(data);
         this.windows.updateItem.show(e.target);
     }
     
@@ -283,50 +282,101 @@ GAL.window.UpdateItem = function(config) {
         ,action: 'mgr/item/update'
         ,fileUpload: true
         ,fields: [{
-            xtype: 'statictextfield'
-            ,name: 'id'
-            ,fieldLabel: _('id')
-            ,submitValue: true
-        },{
-            xtype: 'textfield'
-            ,fieldLabel: _('name')
-            ,name: 'name'
-            ,id: 'gal-'+this.ident+'-name'
-            ,width: 300
-        },{
-            xtype: 'textarea'
-            ,fieldLabel: _('description')
-            ,name: 'description'
-            ,id: 'gal-'+this.ident+'-description'
-            ,width: '85%'
-        },{
-            xtype: 'checkbox'
-            ,fieldLabel: _('gallery.active')
-            ,name: 'active'
-            ,description: ''
-            ,id: 'gal-'+this.ident+'-active'
-            ,checked: true
-            ,inputValue: 1
-        },{
-            xtype: 'textfield'
-            ,fieldLabel: _('gallery.tags')
-            ,description: _('gallery.comma_separated_list')
-            ,name: 'tags'
-            ,id: 'gal-'+this.ident+'-tags'
-            ,width: 300
-        },{
-            xtype: 'textfield'
-            ,fieldLabel: _('gallery.item_url')
-            ,description: _('gallery.item_url_desc')
-            ,name: 'url'
-            ,id: 'gal-'+this.ident+'-item-url'
-            ,width: 300
+            layout: 'column'
+            ,border: false
+            ,defaults: {
+                layout: 'form'
+                ,labelAlign: 'top'
+                ,anchor: '100%'
+                ,border: false
+                ,labelSeparator: ''
+            }
+            ,items: [{
+                columnWidth: .5
+                ,items: [{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('name')
+                    ,name: 'name'
+                    ,id: this.ident+'-name'
+                    ,anchor: '100%'
+                },{
+                    xtype: 'textarea'
+                    ,fieldLabel: _('description')
+                    ,name: 'description'
+                    ,id: this.ident+'-description'
+                    ,anchor: '100%'
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('gallery.item_url')
+                    ,description: MODx.expandHelp ? '' : _('gallery.item_url_desc')
+                    ,name: 'url'
+                    ,id: this.ident+'-item-url'
+                    ,anchor: '100%'
+                },{
+                    xtype: MODx.expandHelp ? 'label' : 'hidden'
+                    ,forId: this.ident+'-item-url'
+                    ,text: _('gallery.item_url_desc')
+                    ,cls: 'desc-under'
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('gallery.tags')
+                    ,description: MODx.expandHelp ? '' : _('gallery.comma_separated_list')
+                    ,name: 'tags'
+                    ,id: this.ident+'-tags'
+                    ,anchor: '100%'
+
+                },{
+                    xtype: MODx.expandHelp ? 'label' : 'hidden'
+                    ,forId: this.ident+'-tags'
+                    ,text: _('gallery.comma_separated_list')
+                    ,cls: 'desc-under'
+
+                }]
+
+            },{
+                columnWidth: .5
+                ,items: [{
+                    xtype: 'hidden'
+                    ,name: 'thumbnail'
+                },{
+                    xtype: 'hidden'
+                    ,name: 'image'
+                },{
+                    html: ''
+                    ,id: this.ident+'-preview'
+                },{
+                    xtype: 'statictextfield'
+                    ,name: 'id'
+                    ,fieldLabel: _('id')
+                    ,submitValue: true
+                },{
+                    xtype: 'checkbox'
+                    ,boxLabel: _('gallery.active')
+                    ,description: MODx.expandHelp ? '' : _('gallery.item_active_desc')
+                    ,name: 'active'
+                    ,id: this.ident+'-active'
+                    ,hideLabel: true
+                    ,checked: true
+                    ,inputValue: 1
+                },{
+                    xtype: MODx.expandHelp ? 'label' : 'hidden'
+                    ,forId: this.ident+'-active'
+                    ,text: _('gallery.item_active_desc')
+                    ,cls: 'desc-under'
+
+                }]
+            }]
         }]
     });
     GAL.window.UpdateItem.superclass.constructor.call(this,config);
-    this.on('activate',function() {
-        if (typeof Tiny != 'undefined') { MODx.loadRTE('gal-' + this.ident + '-description'); }
-    });
+    this.on('activate',function(w,e) {
+        if (typeof Tiny != 'undefined') { MODx.loadRTE(this.ident + '-description'); }
+        var d = this.fp.getForm().getValues();
+        var p = Ext.getCmp(this.ident+'-preview');
+        var u = d.image+'&h=200&w=200&zc=1&q=100&f=png';
+        p.update('<div class="gal-item-update-preview"><img src="'+u+'" alt="" onclick="Ext.getCmp(\'gal-album-items-view\').showScreenshot(\''+d.id+'\'); return false;" /></div>');
+
+    },this);
 };
 Ext.extend(GAL.window.UpdateItem,MODx.Window);
 Ext.reg('gal-window-item-update',GAL.window.UpdateItem);
