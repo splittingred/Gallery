@@ -66,7 +66,8 @@ if (!empty($value) && $value != '{}') {
             'f' => 'png',
         )).$filters.$other;
 
-        $value = '<img src="'.$url.'" alt="'.$data['gal_description'].'" title="'.$data['gal_name'].'" class="'.$data['gal_class'].'" />';
+        $class = !empty($data['gal_class']) ? 'class="'.$data['gal_class'].'"' : '';
+        $value = '<img src="'.$url.'" alt="'.$data['gal_description'].'" title="'.$data['gal_name'].'" '.$class.' />';
     } else {
         $value = '';
     }

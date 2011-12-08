@@ -12,9 +12,9 @@ if (!$modx->loadClass('modPhpThumb',$modx->getOption('core_path').'model/phpthum
     $modx->log(modX::LOG_LEVEL_ERROR,'[phpThumbOf] Could not load modPhpThumb class.');
     return '';
 }
+$debug = $modx->getOption('debug',$scriptProperties,false);
 $src = $modx->getOption('src',$scriptProperties,'');
 $src = str_replace('+','%27',urldecode($src));
-
 
 /* explode tag options */
 $ptOptions = $scriptProperties;
