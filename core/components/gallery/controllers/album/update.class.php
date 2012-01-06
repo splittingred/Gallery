@@ -28,7 +28,7 @@
  * @var Gallery $gallery
  */
 class GalleryAlbumUpdateManagerController extends GalleryManagerController {
-    public function getPageTitle() { return $this->modx->lexicon('batcher'); }
+    public function getPageTitle() { return $this->modx->lexicon('gallery.album_update'); }
     public function loadCustomCssJs() {
         $this->addJavascript($this->modx->getOption('manager_url').'assets/modext/core/modx.view.js');
         $this->addJavascript($this->gallery->config['jsUrl'].'mgr/utils/ddview.js');

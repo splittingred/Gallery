@@ -33,7 +33,8 @@ class GalleryAlbumsMediaSource extends modMediaSource implements modMediaSourceI
 
             } else {
                 $c = $this->xpdo->newQuery('galAlbum');
-                $c->sortby('name','DESC');
+                $c->where(array('parent' => 0));
+                $c->sortby('rank','ASC');
                 $albums = $this->xpdo->getCollection('galAlbum',$c);
                 /** @var galAlbum $album */
                 foreach ($albums as $album) {
@@ -52,6 +53,26 @@ class GalleryAlbumsMediaSource extends modMediaSource implements modMediaSourceI
             $id = explode('-',$path);
             $id = (int)$id[1];
 
+            /* get albums */
+
+            $c = $this->xpdo->newQuery('galAlbum');
+            $c->where(array('parent' => $id));
+            $c->sortby('rank','ASC');
+            $albums = $this->xpdo->getCollection('galAlbum',$c);
+            /** @var galAlbum $album */
+            foreach ($albums as $album) {
+                $list[] = array(
+                    'id' => 'album-'.$album->get('id'),
+                    'text' => $album->get('name'),
+                    'cls' => 'icon-album icon-avi',
+                    'type' => 'gallery-album',
+                    'data' => $album->toArray(),
+                    'leaf' => false,
+                    'treeHandler' => 'gal-tree-handler',
+                );
+            }
+
+            /* get items */
             $c = $this->xpdo->newQuery('galItem');
             $c->innerJoin('galAlbumItem','AlbumItems');
             $c->leftJoin('galTag','Tags');
@@ -276,7 +297,7 @@ class GalleryAlbumsMediaSource extends modMediaSource implements modMediaSourceI
 
             /** @TODO Reordering logic */
             /**
-             * Must sort all albums above/below this in rank, since this only sends us the point, source and target
+             * Must sort all items above/below this in rank, since this only sends us the point, source and target
              * and we'll need to recalculate ranks.
              */
 
@@ -291,21 +312,33 @@ class GalleryAlbumsMediaSource extends modMediaSource implements modMediaSourceI
 
         /** Moving album */
         } else if ($from[0] == 'album') {
+            /** @var galAlbum $fromAlbum */
             $fromAlbum = $this->xpdo->getObject('galAlbum',$from[1]);
             if (empty($fromAlbum)) return false;
+            /** @var galAlbum $toAlbum */
             $toAlbum = $this->xpdo->getObject('galAlbum',$to[1]);
             if (empty($toAlbum)) return false;
 
-            /** @TODO Move album logic */
-
-            /**
-             * Must sort all albums above/below this in rank, since this only sends us the point, source and target
-             * and we'll need to recalculate ranks.
-             */
+            switch ($point) {
+                case 'below':
+                    /* move FROM to below TO */
+                    $newRank = $toAlbum->get('rank');
+                    $fromAlbum->reorder($newRank);
+                    break;
+                case 'above':
+                    /* move FROM to above TO */
+                    $newRank = $toAlbum->get('rank')-1;
+                    $fromAlbum->reorder($newRank);
+                    break;
+                case 'append':
+                    /* move FROM inside TO */
+                    $fromAlbum->set('parent',$toAlbum->get('id'));
+                    $fromAlbum->set('rank',$this->xpdo->getCount('galAlbum',array('parent' => $toAlbum->get('id'))));
+                    $fromAlbum->save();
+                    break;
+            }
 
         }
-        /* TODO handle this */
-
         return true;
     }
 

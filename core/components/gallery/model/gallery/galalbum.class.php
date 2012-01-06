@@ -56,4 +56,20 @@ class galAlbum extends xPDOSimpleObject {
         return $removed;
     }
 
+    public function reorder($newRank) {
+        $oldRank = $this->get('rank');
+
+        $this->set('rank',$newRank);
+
+        $movingDown = $newRank > $oldRank;
+        if ($movingDown) {
+            $sql = 'UPDATE '.$this->xpdo->getTableName('galAlbum').' SET rank = rank - 1 WHERE rank >= '.$oldRank.' AND rank <= '.$newRank;
+            $this->xpdo->exec($sql);
+        } else {
+            $sql = 'UPDATE '.$this->xpdo->getTableName('galAlbum').' SET rank = rank + 1 WHERE rank > '.$newRank.' AND rank <= '.$oldRank;
+            $this->xpdo->exec($sql);
+        }
+
+        return $this->save();
+    }
 }
