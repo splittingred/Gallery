@@ -33,7 +33,7 @@ $modx->addPackage('gallery',$corePath.'model/');
 
 if (!empty($this->value)) {
     $data = $modx->fromJSON($this->value);
-    if (is_array($data)) {
+    if (is_array($data) && !empty($data['gal_id'])) {
         $item = $modx->getObject('galItem',$data['gal_id']);
         if ($item) {
             $item->getSize();

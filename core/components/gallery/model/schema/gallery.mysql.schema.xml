@@ -76,5 +76,9 @@
         
         <aggregate alias="Item" class="galItem" local="item" foreign="id" cardinality="one" owner="foreign" />
     </object>
+
+    <object class="galMediaSource" extends="modMediaSource">
+
+    </object>
     
 </model>
