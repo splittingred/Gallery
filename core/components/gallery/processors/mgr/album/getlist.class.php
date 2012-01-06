@@ -30,6 +30,7 @@ class GalleryAlbumGetListProcessor extends modObjectGetListProcessor {
     public $objectType = 'gallery.album';
     public $defaultSortField = 'name';
     public $defaultSortDirection = 'ASC';
+    public $languageTopics = array('gallery:default');
 
     public function prepareQueryAfterCount(xPDOQuery $c) {
         $subc = $this->modx->newQuery('galAlbumItem');

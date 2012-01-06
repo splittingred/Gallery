@@ -20,24 +20,12 @@
  * @package gallery
  */
 /**
- * @var modX $modx
- * 
  * @package gallery
  * @subpackage processors
  */
-/** @var galAlbum $album */
-if (empty($scriptProperties['id'])) return $modx->error->failure($modx->lexicon('gallery.album_err_ns'));
-$album = $modx->getObject('galAlbum',$scriptProperties['id']);
-if (!$album) return $modx->error->failure($modx->lexicon('gallery.album_err_nf'));
-
-$scriptProperties['active'] = !empty($scriptProperties['active']) ? 1 : 0;
-$scriptProperties['prominent'] = !empty($scriptProperties['prominent']) ? 1 : 0;
-$album->fromArray($scriptProperties);
-
-if ($album->save() == false) {
-    return $modx->error->failure($modx->lexicon('gallery.album_err_save'));
+class GalleryAlbumGetProcessor extends modObjectGetProcessor {
+    public $classKey = 'galAlbum';
+    public $objectType = 'gallery.album';
+    public $languageTopics = array('gallery:default');
 }
-
-/* output */
-$albumArray = $album->toArray('',true);
-return $modx->error->success('',$albumArray);
+return 'GalleryAlbumGetProcessor';

@@ -2,7 +2,7 @@
 /**
  * @package gallery
  */
-class galMediaSource extends modMediaSource implements modMediaSourceInterface {
+class GalleryAlbumsMediaSource extends modMediaSource implements modMediaSourceInterface {
     /** @var Gallery $gallery */
     public $gallery;
     /**
@@ -13,7 +13,7 @@ class galMediaSource extends modMediaSource implements modMediaSourceInterface {
     public function initialize() {
         $this->gallery = $this->xpdo->getService('gallery','Gallery',$this->xpdo->getOption('gallery.core_path',null,$this->xpdo->getOption('core_path').'components/gallery/').'model/gallery/');
         if (!($this->gallery instanceof Gallery)) return false;
-        $this->xpdo->lexicon->load('gallery:default');
+        $this->xpdo->lexicon->load('gallery:default','gallery:source');
         return true;
     }
 
@@ -37,8 +37,6 @@ class galMediaSource extends modMediaSource implements modMediaSourceInterface {
                 $albums = $this->xpdo->getCollection('galAlbum',$c);
                 /** @var galAlbum $album */
                 foreach ($albums as $album) {
-                    $albumArray = $album->toArray();
-
                     $list[] = array(
                         'id' => 'album-'.$album->get('id'),
                         'text' => $album->get('name'),
@@ -316,7 +314,8 @@ class galMediaSource extends modMediaSource implements modMediaSourceInterface {
      * @return string
      */
     public function getTypeName() {
-        return 'Gallery Albums';
+        $this->xpdo->lexicon->load('gallery:source');
+        return $this->xpdo->lexicon('gallery.source_name');
     }
 
     /**
@@ -324,7 +323,8 @@ class galMediaSource extends modMediaSource implements modMediaSourceInterface {
      * @return string
      */
     public function getTypeDescription() {
-        return 'Your Gallery Albums.';
+        $this->xpdo->lexicon->load('gallery:source');
+        return $this->xpdo->lexicon('gallery.source_desc');
     }
 
     /**
