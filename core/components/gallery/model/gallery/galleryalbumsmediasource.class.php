@@ -85,7 +85,7 @@ class GalleryAlbumsMediaSource extends modMediaSource implements modMediaSourceI
             $c->where(array(
                 'AlbumItems.album' => $id,
             ));
-            $c->sortby('AlbumItems.rank','DESC');
+            $c->sortby('AlbumItems.rank','ASC');
             $items = $this->xpdo->getCollection('galItem',$c);
             /** @var galItem $item */
             foreach ($items as $item) {
@@ -281,34 +281,41 @@ class GalleryAlbumsMediaSource extends modMediaSource implements modMediaSourceI
         $to = explode('-',$to);
         if (empty($to[1])) return false;
 
-        /* cases */
-        /**
-         * @TODO Finish this.
-         *
-         * Probably will want code in model for easier reuse elsewhere.
-         */
-
         /** If reordering */
         if ($from[0] == 'item' && $to[0] == 'item') {
-            $fromItem = $this->xpdo->getObject('galItem',$from[1]);
+            /** @TODO Eventually find a way to send the item; may need to refactor Revo code to do this. This current
+             * code will break when we add multi-album support for items */
+            /** @var galAlbumItem $fromItem */
+            $fromItem = $this->xpdo->getObject('galAlbumItem',array('item' => $from[1]));
             if (empty($fromItem)) return false;
-            $toItem = $this->xpdo->getObject('galItem',$to[1]);
+            /** @var galAlbumItem $toItem */
+            $toItem = $this->xpdo->getObject('galAlbumItem',array('item' => $to[1]));
             if (empty($toItem)) return false;
 
-            /** @TODO Reordering logic */
-            /**
-             * Must sort all items above/below this in rank, since this only sends us the point, source and target
-             * and we'll need to recalculate ranks.
-             */
+            switch ($point) {
+                case 'below':
+                    /* move FROM to below TO */
+                    $newRank = $toItem->get('rank');
+                    $fromItem->reorder($newRank);
+                    break;
+                case 'above':
+                    /* move FROM to above TO */
+                    $newRank = $toItem->get('rank')-1;
+                    $newRank = $newRank > 0 ? $newRank : 0;
+                    $fromItem->reorder($newRank);
+                    break;
+            }
 
         /** Moving item to different album */
         } else if ($from[0] == 'item' && $to[0] == 'album') {
+            /** @var galItem $fromItem */
             $fromItem = $this->xpdo->getObject('galItem',$from[1]);
             if (empty($fromItem)) return false;
+            /** @var galAlbum $toAlbum */
             $toAlbum = $this->xpdo->getObject('galAlbum',$to[1]);
             if (empty($toAlbum)) return false;
 
-            /** @TODO Move item to different album logic */
+            $fromItem->move($toAlbum->get('id'));
 
         /** Moving album */
         } else if ($from[0] == 'album') {
@@ -332,9 +339,7 @@ class GalleryAlbumsMediaSource extends modMediaSource implements modMediaSourceI
                     break;
                 case 'append':
                     /* move FROM inside TO */
-                    $fromAlbum->set('parent',$toAlbum->get('id'));
-                    $fromAlbum->set('rank',$this->xpdo->getCount('galAlbum',array('parent' => $toAlbum->get('id'))));
-                    $fromAlbum->save();
+                    $fromAlbum->move($toAlbum->get('id'));
                     break;
             }
 
