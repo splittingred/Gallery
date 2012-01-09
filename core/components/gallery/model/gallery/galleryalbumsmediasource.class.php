@@ -292,6 +292,12 @@ class GalleryAlbumsMediaSource extends modMediaSource implements modMediaSourceI
             $toItem = $this->xpdo->getObject('galAlbumItem',array('item' => $to[1]));
             if (empty($toItem)) return false;
 
+            /* if dragging between items in an album */
+            if ($fromItem->get('album') != $toItem->get('album')) {
+                $from = implode('-',$from);
+                return $this->moveObject($from,'album-'.$toItem->get('album'),$point);
+            }
+
             switch ($point) {
                 case 'below':
                     /* move FROM to below TO */

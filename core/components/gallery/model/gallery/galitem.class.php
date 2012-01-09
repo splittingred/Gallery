@@ -199,11 +199,15 @@ class galItem extends xPDOSimpleObject {
         /* move actual file */
         $oldPath = $this->getPath();
         $newPath = $newAlbum->getPath().basename($oldPath);
-        if (!@copy($oldPath,$newPath)) {
-            $this->xpdo->log(modX::LOG_LEVEL_ERROR,'[Gallery] Could not move Item from '.$oldPath.' to '.$newPath);
-            return false;
+        if ($oldPath != $newPath) {
+            if (!@copy($oldPath,$newPath)) {
+                $this->xpdo->log(modX::LOG_LEVEL_ERROR,'[Gallery] Could not move Item from '.$oldPath.' to '.$newPath);
+                return false;
+            }
+            @unlink($oldPath);
         }
-        @unlink($oldPath);
+        $this->set('filename',$newAlbum->get('id').'/'.basename($oldPath));
+        $this->save();
         return true;
     }
 }
