@@ -88,7 +88,7 @@ class Galleriffic extends GalleryPlugin {
     protected function renderCssJs() {
         $useCss = $this->modx->getOption('gallerifficUseCss',$this->config,true);
         if ($useCss) {
-            $this->modx->regClientCSS($this->gallery->config['assetsUrl'].'packages/galleriffic20/css/galleriffic-2.css');
+            $this->modx->regClientCSS($this->modx->getOption('gallerifficCss',$this->config,$this->gallery->config['assetsUrl'].'packages/galleriffic20/css/galleriffic-2.css'));
         }
         $this->modx->regClientStartupScript($this->gallery->config['assetsUrl'].'packages/galleriffic20/js/jquery.galleriffic.js');
         $this->modx->regClientStartupScript($this->gallery->config['assetsUrl'].'packages/galleriffic20/js/jquery.opacityrollover.js');

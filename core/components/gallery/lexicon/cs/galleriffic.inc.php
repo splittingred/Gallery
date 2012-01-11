@@ -24,14 +24,28 @@
  * @subpackage galleriffic
  *
  * @author modxcms.cz
- * @updated 2010-12-25
+ * @updated 2011-12-12
  */
+// $_lang['gallery.download_original'] = 'Download Original';
 $_lang['gallery.download_original'] = 'Stáhnout originál';
-$_lang['gallery.photo_next'] = 'Následující fotka';
-$_lang['gallery.photo_previous'] = 'Předcházející fotka';
-$_lang['gallery.next'] = 'Další';
-$_lang['gallery.prev'] = 'Předchozí';
-$_lang['gallery.slideshow_pause'] = 'Pozastavit prezentaci';
-$_lang['gallery.slideshow_play'] = 'Spustit prezentaci';
-$_lang['gallery.tags'] = 'Tagy';
 
+// $_lang['gallery.photo_next'] = 'Next Photo';
+$_lang['gallery.photo_next'] = 'Následující fotka';
+
+// $_lang['gallery.photo_previous'] = 'Previous Photo';
+$_lang['gallery.photo_previous'] = 'Předcházející fotka';
+
+// $_lang['gallery.next'] = 'Next';
+$_lang['gallery.next'] = 'Další';
+
+// $_lang['gallery.prev'] = 'Prev';
+$_lang['gallery.prev'] = 'Předchozí';
+
+// $_lang['gallery.slideshow_pause'] = 'Pause Slideshow';
+$_lang['gallery.slideshow_pause'] = 'Pozastavit prezentaci';
+
+// $_lang['gallery.slideshow_play'] = 'Play Slideshow';
+$_lang['gallery.slideshow_play'] = 'Spustit prezentaci';
+
+// $_lang['gallery.tags'] = 'Tags';
+$_lang['gallery.tags'] = 'Tagy';

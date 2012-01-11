@@ -70,7 +70,7 @@ $thumbProperties = array_merge(array(
     'far' => (string)$modx->getOption('thumbFar',$scriptProperties,'C'),
     'q' => (int)$modx->getOption('thumbQuality',$scriptProperties,90),
 ),$thumbProperties);
-if ($customthumb = $item->get('customthumb')) {
+if ($customthumb = $itemArray['customthumb']) {
     $itemArray['thumbnail'] = $customthumb;
 } else {
     $itemArray['thumbnail'] = $item->get('thumbnail',$thumbProperties); 

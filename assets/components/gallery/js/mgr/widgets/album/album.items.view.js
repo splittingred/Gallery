@@ -62,18 +62,17 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         var node = this.cm.activeNode;
         var data = this.lookup[node.id];
         if (!data) return false;
-        
-        var r = data;
-        if (!this.windows.updateItem) {
-            this.windows.updateItem = MODx.load({
-                xtype: 'gal-window-item-update'
-                ,listeners: {
-                    'success': {fn:function() { this.run(); },scope:this}
-                }
-            });
-        }
-        this.windows.updateItem.fp.getForm().reset();
-        this.windows.updateItem.setValues(r);
+
+        /* We'll need a "fresh" window when using Tiny for the description field,
+         * so we don't check if it exists but just load a new window.
+         */
+        this.windows.updateItem = MODx.load({
+            xtype: 'gal-window-item-update'
+            ,listeners: {
+                'success': {fn:function() { this.run(); },scope:this}
+            }
+        });
+        this.windows.updateItem.setValues(data);
         this.windows.updateItem.show(e.target);
     }
     
@@ -269,67 +268,3 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
 Ext.reg('gal-view-album-items',GAL.view.AlbumItems);
 
 
-
-GAL.window.UpdateItem = function(config) {
-    config = config || {};
-    this.ident = config.ident || 'gupdit'+Ext.id();
-    Ext.applyIf(config,{
-        title: _('gallery.item_update')
-        ,id: this.ident
-        ,height: 180
-        ,width: 475
-        ,url: GAL.config.connector_url
-        ,action: 'mgr/item/update'
-        ,fileUpload: true
-        ,fields: [{
-            xtype: 'statictextfield'
-            ,name: 'id'
-            ,fieldLabel: _('id')
-            ,submitValue: true
-        },{
-            xtype: 'textfield'
-            ,fieldLabel: _('name')
-            ,name: 'name'
-            ,id: 'gal-'+this.ident+'-name'
-            ,width: 300
-        },{
-            xtype: 'textarea'
-            ,fieldLabel: _('description')
-            ,name: 'description'
-            ,id: 'gal-'+this.ident+'-description'
-            ,width: 300
-        },{
-            xtype: 'checkbox'
-            ,fieldLabel: _('gallery.active')
-            ,name: 'active'
-            ,description: ''
-            ,id: 'gal-'+this.ident+'-active'
-            ,checked: true
-            ,inputValue: 1
-        },{
-            xtype: 'textfield'
-            ,fieldLabel: _('gallery.tags')
-            ,description: _('gallery.comma_separated_list')
-            ,name: 'tags'
-            ,id: 'gal-'+this.ident+'-tags'
-            ,width: 300
-        },{
-            xtype: 'textfield'
-            ,fieldLabel: _('gallery.item_url')
-            ,description: _('gallery.item_url_desc')
-            ,name: 'url'
-            ,id: 'gal-'+this.ident+'-item-url'
-            ,width: 300
-	},{
-	    xtype: 'textfield'
-	    ,fieldLabel: _('gallery.item_customthumb')
-	    ,description: _('gallery.item_customthumb_desc')
-	    ,name: 'customthumb'
-	    ,id: 'gal-'+this.ident+'-item-customthumb'
-	    ,width: 300
-        }]
-    });
-    GAL.window.UpdateItem.superclass.constructor.call(this,config);
-};
-Ext.extend(GAL.window.UpdateItem,MODx.Window);
-Ext.reg('gal-window-item-update',GAL.window.UpdateItem);

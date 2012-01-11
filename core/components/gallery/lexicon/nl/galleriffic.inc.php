@@ -20,14 +20,15 @@
  * @package gallery
  */
 /**
- * Loads the home page.
- *
  * @package gallery
- * @subpackage controllers
+ * @subpackage galleriffic
  */
-$modx->regClientStartupScript($gallery->config['jsUrl'].'mgr/widgets/album/album.tree.js');
-$modx->regClientStartupScript($gallery->config['jsUrl'].'mgr/widgets/home.panel.js');
-$modx->regClientStartupScript($gallery->config['jsUrl'].'mgr/sections/home.js');
-$output = '<div id="gal-panel-home-div"></div>';
+$_lang['gallery.download_original'] = 'Download Originee;';
+$_lang['gallery.photo_next'] = 'Volgende Foto';
+$_lang['gallery.photo_previous'] = 'Vorige Foto';
+$_lang['gallery.next'] = 'Volgende';
+$_lang['gallery.prev'] = 'Vorige';
+$_lang['gallery.slideshow_pause'] = 'Pauzeer Slideshow';
+$_lang['gallery.slideshow_play'] = 'Slideshow Afspelen';
+$_lang['gallery.tags'] = 'Tags';
 
-return $output;

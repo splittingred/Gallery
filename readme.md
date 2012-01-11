@@ -16,4 +16,4 @@ For setting up the custom TV, create a TV with Input and Output types of
 Documentation
 =============
 Please see the official documentation at:
-http://docs.modxcms.com/display/ADDON/Gallery/
+http://rtfm.modx.com/display/ADDON/Gallery/

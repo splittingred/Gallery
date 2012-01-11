@@ -20,9 +20,12 @@
  * @package gallery
  */
 /**
+ * Delete an item entirely
+ *
  * @package gallery
- * @subpackage controllers
  */
-require_once dirname(dirname(__FILE__)).'/model/gallery/gallery.class.php';
-$gallery = new Gallery($modx);
-return $gallery->initialize('mgr');
+class GalleryItemRemoveProcessor extends modObjectRemoveProcessor {
+    public $classKey = 'galItem';
+    public $objectType = 'gallery.item';
+    public $languageTopics = array('gallery:default');
+}

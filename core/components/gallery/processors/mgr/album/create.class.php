@@ -23,14 +23,26 @@
  * @package gallery
  * @subpackage processors
  */
-/* get board */
-if (empty($scriptProperties['id'])) return $modx->error->failure($modx->lexicon('gallery.album_err_ns'));
-$album = $modx->getObject('galAlbum',$scriptProperties['id']);
-if (!$album) return $modx->error->failure($modx->lexicon('gallery.album_err_nf'));
+class GalleryAlbumCreateProcessor extends modObjectCreateProcessor {
+    public $classKey = 'galAlbum';
+    public $objectType = 'gallery.album';
+    public $languageTopics = array('gallery:default');
 
-if ($album->remove() == false) {
-    return $modx->error->failure($modx->lexicon('gallery.album_err_remove'));
+    public function beforeSet() {
+        $this->setCheckbox('active');
+        $this->setCheckbox('prominent');
+        return parent::beforeSet();
+    }
+
+    public function beforeSave() {
+        $name = $this->getProperty('name');
+        if (empty($name)) $this->addFieldError('name',$this->modx->lexicon('gallery.album_err_ns_name'));
+
+        $this->object->set('createdby',$this->modx->user->get('id'));
+        $total = $this->modx->getCount('galAlbum');
+        $this->object->set('rank',(int)$total);
+
+        return parent::beforeSave();
+    }
 }
-
-/* output */
-return $modx->error->success('',$album);
+return 'GalleryAlbumCreateProcessor';

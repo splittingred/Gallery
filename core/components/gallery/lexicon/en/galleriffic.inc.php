@@ -29,6 +29,6 @@ $_lang['gallery.photo_previous'] = 'Previous Photo';
 $_lang['gallery.next'] = 'Next';
 $_lang['gallery.prev'] = 'Prev';
 $_lang['gallery.slideshow_pause'] = 'Pause Slideshow';
-$_lang['gallery.slideshow_play'] = 'Play Sideshow';
+$_lang['gallery.slideshow_play'] = 'Play Slideshow';
 $_lang['gallery.tags'] = 'Tags';
 

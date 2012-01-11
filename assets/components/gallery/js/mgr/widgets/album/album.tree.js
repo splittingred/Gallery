@@ -16,7 +16,7 @@ GAL.tree.Album = function(config) {
         }]
         ,sortAction: 'mgr/album/sort'
         ,rootVisible: false
-    })
+    });
     GAL.tree.Album.superclass.constructor.call(this,config);    
 };
 Ext.extend(GAL.tree.Album,MODx.tree.Tree,{
@@ -101,59 +101,4 @@ Ext.extend(GAL.tree.Album,MODx.tree.Tree,{
     
 });
 Ext.reg('gal-tree-album',GAL.tree.Album);
-
-
-
-GAL.window.CreateAlbum = function(config) {
-    config = config || {};
-    this.ident = config.ident || 'gcalb'+Ext.id();
-    Ext.applyIf(config,{
-        title: _('gallery.album_create')
-        ,id: this.ident
-        ,height: 150
-        ,width: 475
-        ,url: GAL.config.connector_url
-        ,action: 'mgr/album/create'
-        ,fields: [{
-            xtype: 'hidden'
-            ,name: 'parent'
-        },{
-            xtype: 'statictextfield'
-            ,fieldLabel: _('gallery.parent')
-            ,name: 'parent_name'
-            ,id: 'gal-'+this.ident+'-parent-name'
-            ,width: 200
-        },{
-            xtype: 'textfield'
-            ,fieldLabel: _('name')
-            ,name: 'name'
-            ,id: 'gal-'+this.ident+'-name'
-            ,width: 300
-        },{
-            xtype: 'textarea'
-            ,fieldLabel: _('description')
-            ,name: 'description'
-            ,id: 'gal-'+this.ident+'-description'
-            ,width: 300
-        },{
-            xtype: 'checkbox'
-            ,fieldLabel: _('gallery.active')
-            ,name: 'active'
-            ,id: 'gal-'+this.ident+'-active'
-            ,checked: true
-            ,inputValue: 1
-        },{
-            xtype: 'checkbox'
-            ,fieldLabel: _('gallery.prominent')
-            ,description: _('gallery.prominent_desc')
-            ,name: 'prominent'
-            ,id: 'gal-'+this.ident+'-prominent'
-            ,checked: true
-            ,inputValue: 1
-        }]
-    });
-    GAL.window.CreateAlbum.superclass.constructor.call(this,config);
-};
-Ext.extend(GAL.window.CreateAlbum,MODx.Window);
-Ext.reg('gal-window-album-create',GAL.window.CreateAlbum);
 

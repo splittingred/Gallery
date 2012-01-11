@@ -20,30 +20,17 @@
  * @package gallery
  */
 /**
- * Delete an item entirely
+ * Loads the home page.
  *
  * @package gallery
+ * @subpackage controllers
  */
-if (empty($scriptProperties['ids'])) return $modx->error->failure($modx->lexicon('gallery.item_err_ns'));
-
-$separator = $modx->getOption('separator',$scriptProperties,',');
-$ids = explode($separator,$scriptProperties['ids']);
-
-$errors = array();
-foreach ($ids as $id) {
-    /* get item */
-    $item = $modx->getObject('galItem',$id);
-    if (empty($item)) {
-        $errors[] = $modx->lexicon('gallery.item_err_nf').': '.$id;
-        continue;
+class GalleryHomeManagerController extends GalleryManagerController {
+    public function getPageTitle() { return $this->modx->lexicon('gallery'); }
+    public function loadCustomCssJs() {
+        $this->addJavascript($this->gallery->config['jsUrl'].'mgr/widgets/album/album.tree.js');
+        $this->addJavascript($this->gallery->config['jsUrl'].'mgr/widgets/home.panel.js');
+        $this->addLastJavascript($this->gallery->config['jsUrl'].'mgr/sections/home.js');
     }
-
-    /* remove item */
-    if (!$item->remove()) {
-        $errors[] = $modx->lexicon('gallery.item_err_remove').': '.$id;
-    }
+    public function getTemplateFile() { return $this->gallery->config['templatesPath'].'home.tpl'; }
 }
-
-if (!empty($errors)) return $modx->error->failure(implode('<br />',$errors));
-
-return $modx->error->success();

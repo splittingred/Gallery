@@ -20,20 +20,11 @@
  * @package gallery
  */
 /**
- * Loads the header for mgr pages.
- *
  * @package gallery
- * @subpackage controllers
+ * @subpackage lexicon
+ *
+ * @author modxcms.cz
+ * @updated 2011-12-09
  */
-$modx->regClientCSS($gallery->config['cssUrl'].'mgr.css');
-$modx->regClientStartupScript($gallery->config['jsUrl'].'mgr/gallery.js');
-$modx->regClientStartupHTMLBlock('<script type="text/javascript">
-Ext.onReady(function() {
-    GAL.config = '.$modx->toJSON($gallery->config).';
-    GAL.config.connector_url = "'.$gallery->config['connectorUrl'].'";
-    GAL.request = '.$modx->toJSON($_GET).';
-    GAL.action = "'.(!empty($_REQUEST['a']) ? $_REQUEST['a'] : 0).'";
-});
-</script>');
-
-return '';
+// $_lang['gallery.plugin_err_load'] = 'Couldnt load plugin "[[+name]]" from path: [[+path]]';
+$_lang['gallery.plugin_err_load'] = 'Nelze načíst plugin "[[+name]]" z umístění: [[+path]]';

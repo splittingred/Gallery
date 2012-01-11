@@ -20,14 +20,20 @@
  * @package gallery
  */
 /**
+ * @var modX $modx
+ * 
  * @package gallery
  * @subpackage processors
  */
-/* get board */
-if (empty($scriptProperties['id'])) return $modx->error->failure($modx->lexicon('gallery.album_err_ns'));
-$album = $modx->getObject('galAlbum',$scriptProperties['id']);
-if (!$album) return $modx->error->failure($modx->lexicon('gallery.album_err_nf'));
+class GalleryAlbumUpdateProcessor extends modObjectUpdateProcessor {
+    public $classKey = 'galAlbum';
+    public $objectType = 'gallery.album';
+    public $languageTopics = array('gallery:default');
 
-/* output */
-$albumArray = $album->toArray('',true);
-return $modx->error->success('',$albumArray);
+    public function beforeSet() {
+        $this->setCheckbox('active');
+        $this->setCheckbox('prominent');
+        return parent::beforeSet();
+    }
+}
+return 'GalleryAlbumUpdateProcessor';

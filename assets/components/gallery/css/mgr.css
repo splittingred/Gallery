@@ -22,3 +22,9 @@
     border: 1px solid #ddd;
     padding: 5px 5px 3px;
 }
+
+.gal-item-update-preview {
+    margin: 0 auto;
+    text-align: center;
+    padding: 2px;
+}

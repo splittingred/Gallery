@@ -20,20 +20,11 @@
  * @package gallery
  */
 /**
- * Delete an item entirely
+ * Media Source English Lexicon Entries for Gallery
  *
+ * @var array $_lang
  * @package gallery
+ * @subpackage lexicon
  */
-
-/* get item */
-if (empty($scriptProperties['id'])) return $modx->error->failure($modx->lexicon('gallery.item_err_ns'));
-$item = $modx->getObject('galItem',$scriptProperties['id']);
-if (empty($item)) return $modx->error->failure($modx->lexicon('gallery.item_err_nf'));
-
-/* remove item */
-if (!$item->remove()) {
-    return $modx->error->failure($modx->lexicon('gallery.item_err_remove'));
-}
-
-/* output to browser */
-return $modx->error->success('',$item);
+$_lang['gallery.source_name'] = 'Gallery Albums';
+$_lang['gallery.source_desc'] = 'A source that lists all available Gallery Albums.';
