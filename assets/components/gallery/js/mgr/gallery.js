@@ -159,7 +159,19 @@ GAL.window.UpdateItem = function(config) {
                     ,text: _('gallery.comma_separated_list')
                     ,cls: 'desc-under'
 
-                }]
+                },{
+					xtype: 'textfield'
+					,name: 'customthumb'
+					,id: this.ident+'-customthumb'
+					,fieldLabel: _('gallery.item_customthumb')
+					,description: ''
+					,anchor: '100%'
+				},{
+					xtype: MODx.expandHelp ? 'label' : 'hidden'
+					,forId: this.ident+'-customthumb'
+					,text: _('gallery.item_customthumb_desc')
+					,cls: 'desc-under'
+				}]
 
             },{
                 columnWidth: .5
@@ -192,12 +204,7 @@ GAL.window.UpdateItem = function(config) {
                     ,text: _('gallery.item_active_desc')
                     ,cls: 'desc-under'
 
-                },{
-					xtype: 'textfield'
-					,name: 'customthumb'
-					,fieldName: 'Custom thumbnail URL'
-					,anchor: '100%';
-				}]
+                }]
             }]
         }]
     });
@@ -269,7 +276,19 @@ GAL.window.UploadItem = function(config) {
                     ,forId: this.ident+'-item-url'
                     ,text: _('gallery.item_url_desc')
                     ,cls: 'desc-under'
-                }]
+                },{
+					xtype: 'textfield'
+					,name: 'customthumb'
+					,id: this.ident+'-customthumb'
+					,fieldLabel: _('gallery.item_customthumb')
+					,description: ''
+					,anchor: '100%'
+				},{
+					xtype: MODx.expandHelp ? 'label' : 'hidden'
+					,forId: this.ident+'-customthumb'
+					,text: _('gallery.item_customthumb_desc')
+					,cls: 'desc-under'
+				}]
             },{
                 columnWidth: .5
                 ,items: [{
