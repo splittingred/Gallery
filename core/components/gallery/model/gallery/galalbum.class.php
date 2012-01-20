@@ -174,11 +174,10 @@ class galAlbum extends xPDOSimpleObject {
      * @return array
      */
     public function getChildIds ($depth, $albumId = 0) {
-		$this->xpdo->setLogLevel(xPDO::LOG_LEVEL_DEBUG);
         if (!$albumId) {
             $albumId = $this->get('id');
         }
-        $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, __FUNCTION__.' call. Args: '.implode(', ', func_get_args()));
+        
         $childIds = array();
         
         if ($depth != 0) {
