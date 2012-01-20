@@ -167,4 +167,35 @@ class galAlbum extends xPDOSimpleObject {
         }
         return $fileName;
     }
+	
+	/**
+     * Return array with ids of all
+     * children albums up to given depth
+     * @return array
+     */
+    public function getChildIds ($depth, $albumId = 0) {
+		$this->xpdo->setLogLevel(xPDO::LOG_LEVEL_DEBUG);
+        if (!$albumId) {
+            $albumId = $this->get('id');
+        }
+        $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, __FUNCTION__.' call. Args: '.implode(', ', func_get_args()));
+        $childIds = array();
+        
+        if ($depth != 0) {
+            $children = $this->xpdo->getCollection('galAlbum', array('parent' => $albumId));
+            if (count($children)) {
+                foreach ((array) $children as $child) {
+                    $childIds[] = $child->get('id');
+                }
+                foreach ($childIds as $childId) {
+                    $childChildrenIds = $this->getChildIds($depth - 1, $childId);
+                    if ($childChildrenIds)
+                        $childIds = array_merge($childIds, $childChildrenIds);
+                }
+            }
+            $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, '$childIds = '. implode(', ', $childIds));
+            return $childIds;
+        }
+        return false;
+    }
 }

@@ -33,7 +33,7 @@ $modx->lexicon->load('gallery:web');
 
 /* setup default properties */
 $album = $modx->getOption('album',$scriptProperties,false);
-$includeChildAlbums = $modx->getOption('includeChildAlbums', $scriptProperties, false);
+$depth = $modx->getOption('depth', $scriptProperties, 0);
 $plugin = $modx->getOption('plugin',$scriptProperties,'');
 $tag = $modx->getOption('tag',$scriptProperties,'');
 $limit = $modx->getOption('limit',$scriptProperties,0);
@@ -58,6 +58,8 @@ if ($modx->getOption('checkForRequestTagVar',$scriptProperties,true)) {
 }
 if (!empty($_REQUEST[$imageGetParam])) {
   $highlightItem = $_REQUEST[$imageGetParam];
+} else {
+  $highlightItem = 0;
 }
 /* Return nothing if not supplied with album number and/or tag
    of needed gallery images */
@@ -82,26 +84,23 @@ if (!empty($album)) {
     $albumWhere = $albumField == 'name' ? array('name' => $album) : $album;
     /** @var galAlbum $album */
     $album = $modx->getObject('galAlbum',$albumWhere);
-
+	
     if (empty($album)) return '';
-    $c->where(array(
-        'Album.'.$albumField => $album->get($albumField),
-    ));
+	/* Grab the child albums */
+	if ($depth != 0) {
+	  $childAlbumIds = $album->getChildIds($depth);
+	}
+	if (!empty($childAlbumIds)) {
+	  $c->where(array(
+				  'Album.id:IN' => array_merge(
+					array($album->get('id')), $childAlbumIds)));
+	} else {
+	  $c->where(array('Album.id' => $album->get('id')));
+	}
 
     $galleryId = $album->get('id');
     $galleryName = $album->get('name');
     $galleryDescription = $album->get('description');
-
-    /* Grab also child albums if asked for */
-    if ($includeChildAlbums) {
-      $childAlbums = $modx->getCollection('galAlbum', array('parent' => $galleryId));
-      foreach ($childAlbums as $childAlbum) {
-	$id = $childAlbum->get('id');
-	$c->orCondition(array(
-			      'Album.id' => $id,
-			      ));
-	}
-    }
 
     unset($albumWhere,$albumField);
 }
@@ -131,9 +130,9 @@ $c->select(array(
     '('.$tagSql.') AS `tags`'
 ));
 
-if ($includeChildAlbums) {
-  /* First of all, sort by albums */
-  $c->sortby('Album.id', $sortDir);
+if ($depth != 0) {
+  /* Sort by albums then */
+  $c->sortby('Album.id', $dir);
 }
 if (strcasecmp($sort,'rand')==0) {
     $c->sortby('RAND()',$dir);
