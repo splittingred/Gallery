@@ -118,6 +118,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     }
     
     ,run: function(p) {
+        p = p || {};
         var v = {};
         Ext.apply(v,this.store.baseParams);
         Ext.apply(v,p);

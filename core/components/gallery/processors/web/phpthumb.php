@@ -125,7 +125,6 @@ if ($debug) {
     $modx->setLogTarget($oldLogTarget);
 }
 $output = '';
-$modx->setLogTarget('ECHO');
 /* check to see if there's a cached file of this already */
 if (file_exists($cacheKey)) {
     $modx->log(modX::LOG_LEVEL_DEBUG,'[phpThumbOf] Using cached file found for thumb: '.$cacheKey);
