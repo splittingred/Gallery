@@ -313,6 +313,7 @@ var galAlbumDropHandler = new galAlbumDropHandlerClass();
 /* because im an idiot and forgot win show events in the insert element window */
 function galTreeWorkaround(props) {
     var w = Ext.getCmp('modx-window-insert-element');
+    w.modps = [];
     if (w) {
         for (var k in props) {
             var fld = Ext.getCmp('modx-iprop-'+k);
