@@ -51,7 +51,7 @@ Ext.extend(galTreeHandlerClass,Ext.Component,{
             ,handler: this.updateAlbum
             ,scope: this
         },{
-            text: 'Upload'
+            text: _('gallery.upload')
             ,menu: {
                 items: [{
                     text: _('gallery.item_upload')

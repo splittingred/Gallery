@@ -89,6 +89,7 @@ $_lang['gallery.prominent_desc'] = 'Making an Album non-prominent can be used to
 $_lang['gallery.refresh'] = 'Refresh';
 $_lang['gallery.tags'] = 'Tags';
 $_lang['gallery.title'] = 'Title';
+$_lang['gallery.upload'] = 'Upload';
 $_lang['gallery.width'] = 'Width';
 $_lang['gallery.xpdozip_err_nf'] = 'Could not load xPDOZip class.';
 $_lang['gallery.zip_err_ns'] = 'Please specify a zip file.';

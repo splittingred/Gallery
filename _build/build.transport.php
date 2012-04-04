@@ -231,6 +231,9 @@ if (empty($menu)) {
     $vehicle->resolve('php',array(
         'source' => $sources['resolvers'] . 'resolve.albumfiles.php',
     ));
+    $vehicle->resolve('php',array(
+        'source' => $sources['resolvers'] . 'resolve.extpack.php',
+    ));
     $builder->putVehicle($vehicle);
     $modx->log(modX::LOG_LEVEL_INFO,'Packaged in menu.');
 }
