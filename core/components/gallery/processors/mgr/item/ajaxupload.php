@@ -26,7 +26,7 @@ if (!$item->save()) {
 
 /* Upload */
 $albumDir = $album.'/';
-$targetDir = $modx->getOption('gallery.files_path').$albumDir;
+$targetDir = $modx->call('galAlbum','getFilesPath',array(&$modx)).$albumDir;
 
 $cacheManager = $modx->getCacheManager();
 /* if directory doesnt exist, create it */

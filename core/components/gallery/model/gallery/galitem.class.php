@@ -29,7 +29,7 @@ class galItem extends xPDOSimpleObject {
                 $value = $this->getPhpThumbUrl();
                 if (empty($format)) $format = array();
                 $format['src'] = $this->getSiteUrl();
-                $format['src'] .= $this->xpdo->getOption('gallery.files_url').$this->get('filename');
+                $format['src'] .= $this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$this->get('filename');
                 $url = $value.'&'.http_build_query($format,'','&');
                 if ($this->xpdo->getOption('xhtml_urls',null,false)) {
                     $value = str_replace('&','&amp;',$url);
@@ -41,18 +41,18 @@ class galItem extends xPDOSimpleObject {
             case 'image':
                 if (empty($format)) $format = array();
                 $format['src'] = $this->getSiteUrl();
-                $format['src'] .= $this->xpdo->getOption('gallery.files_url').$this->get('filename');
+                $format['src'] .= $this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$this->get('filename');
 
                 $value = $this->getPhpThumbUrl().'&'.http_build_query($format,'','&');
                 $value = $this->xpdo->getOption('xhtml_urls',null,false) ? str_replace('&','&amp;',$value) : $value;
                 break;
             case 'absoluteImage':
                 $siteUrl = $this->getSiteUrl();
-                $value = $siteUrl.$this->xpdo->getOption('gallery.files_url').$this->get('filename');
+                $value = $siteUrl.$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$this->get('filename');
                 break;
             case 'relativeImage':
                 $baseUrl = $this->getOption('base_url');
-                $path = $this->xpdo->getOption('gallery.files_url').$this->get('filename');
+                $path = $this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$this->get('filename');
                 if ($baseUrl == '/') {
                     $value = ltrim($path,'/');
                 } else {
@@ -60,12 +60,12 @@ class galItem extends xPDOSimpleObject {
                 }
                 break;
             case 'filesize':
-                $filename = $this->xpdo->getOption('gallery.files_path').$this->get('filename');
+                $filename = $this->xpdo->call('galAlbum','getFilesPath',array(&$this->xpdo)).$this->get('filename');
                 $value = @filesize($filename);
                 $value = $this->formatFileSize($value);
                 break;
             case 'image_path':
-                $value = $this->xpdo->getOption('gallery.files_path').$this->get('filename');
+                $value = $this->xpdo->call('galAlbum','getFilesPath',array(&$this->xpdo)).$this->get('filename');
                 break;
             default:
                 $value = parent::get($k,$format,$formatTemplate);
@@ -77,7 +77,7 @@ class galItem extends xPDOSimpleObject {
     public function getPath($absolute = true) {
         $path = $this->get('filename');
         if ($absolute) {
-            $path = $this->xpdo->getOption('gallery.files_path',null,$this->xpdo->getOption('base_path',null,MODX_BASE_PATH).'assets/gallery/').$path;
+            $path = $this->xpdo->call('galAlbum','getFilesPath',array(&$this->xpdo)).$path;
         }
         return $path;
     }
@@ -153,7 +153,7 @@ class galItem extends xPDOSimpleObject {
     public function remove(array $ancestors = array()) {
         $filename = $this->get('filename');
         if (!empty($filename)) {
-            $filename = $this->xpdo->getOption('gallery.files_path').$filename;
+            $filename = $this->xpdo->call('galAlbum','getFilesPath',array(&$this->xpdo)).$filename;
             if (!@unlink($filename)) {
                 $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to remove the attachment file at: '.$filename);
             }

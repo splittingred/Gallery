@@ -85,7 +85,7 @@ abstract class galImport {
      */
     public function setTarget($albumId,array $options = array()) {
         $this->albumId = $albumId;
-        $this->target = $this->modx->getOption('gallery.files_path').$albumId.'/';
+        $this->target = $this->modx->call('galAlbum','getFilesPath',array(&$this->modx)).$albumId.'/';
         /* get sanitized base path and current path */
         $cacheManager = $this->modx->getCacheManager();
         /* if directory doesnt exist, create it */

@@ -77,8 +77,44 @@ class galAlbum extends xPDOSimpleObject {
     public function getPath($absolute = true) {
         $path = $this->get('id').'/';
         if ($absolute) {
-            $path = $this->xpdo->getOption('gallery.files_path',null,$this->xpdo->getOption('base_path',null,MODX_BASE_PATH).'assets/gallery/').$path;
+            $path = $this->xpdo->call('galAlbum','getFilesPath',array(&$this->xpdo)).$path;
         }
+        return $path;
+    }
+
+    public static function getFilesPath(xPDO &$modx) {
+        $path = $modx->getOption('gallery.files_path',null,$modx->getOption('base_path',null,MODX_BASE_PATH).'assets/gallery/');
+        $path = str_replace(array(
+            '[[++assets_path]]',
+            '{assets_path}',
+            '[[++base_path]]',
+            '{base_path}',
+            '[[++core_path]]',
+            '{core_path}',
+        ),array(
+            $modx->getOption('assets_path',null,MODX_BASE_PATH.'assets/'),
+            $modx->getOption('assets_path',null,MODX_BASE_PATH.'assets/'),
+            $modx->getOption('base_path',null,MODX_BASE_PATH),
+            $modx->getOption('base_path',null,MODX_BASE_PATH),
+            $modx->getOption('core_path',null,MODX_CORE_PATH),
+            $modx->getOption('core_path',null,MODX_CORE_PATH),
+        ),$path);
+        return $path;
+    }
+
+    public static function getFilesUrl(xPDO &$modx) {
+        $path = $modx->getOption('gallery.files_url',null,$modx->getOption('base_url',null,MODX_BASE_URL).'assets/gallery/');
+        $path = str_replace(array(
+            '[[++assets_url]]',
+            '{assets_url}',
+            '[[++base_url]]',
+            '{base_url}',
+        ),array(
+            $modx->getOption('assets_url',null,MODX_BASE_URL.'assets/'),
+            $modx->getOption('assets_url',null,MODX_BASE_URL.'assets/'),
+            $modx->getOption('base_url',null,MODX_BASE_URL),
+            $modx->getOption('base_url',null,MODX_BASE_URL),
+        ),$path);
         return $path;
     }
 

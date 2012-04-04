@@ -164,6 +164,8 @@ $thumbProperties = array_merge(array(
 ),$thumbProperties);
 
 $idx = 0;
+$filesUrl = $modx->call('galAlbum','getFilesUrl',array(&$modx));
+$filesPath = $modx->call('galAlbum','getFilesPath',array(&$modx));
 /** @var galItem $item */
 foreach ($items as $item) {
     $itemArray = $item->toArray();
@@ -173,9 +175,9 @@ foreach ($items as $item) {
         $itemArray['cls'] .= ' '.$activeCls;
     }
     $itemArray['filename'] = basename($item->get('filename'));
-    $itemArray['image_absolute'] = $modx->getOption('gallery.files_url').$item->get('filename');
+    $itemArray['image_absolute'] = $filesUrl.$item->get('filename');
     $itemArray['fileurl'] = $itemArray['image_absolute'];
-    $itemArray['filepath'] = $modx->getOption('gallery.files_path').$item->get('filename');
+    $itemArray['filepath'] = $filesPath.$item->get('filename');
     $itemArray['filesize'] = $item->get('filesize');
     $itemArray['thumbnail'] = $item->get('thumbnail',$thumbProperties);
     $itemArray['image'] = $item->get('thumbnail',$imageProperties);

@@ -54,7 +54,7 @@ $modx->getService('fileHandler','modFileHandler');
 $fullpath = $modx->fileHandler->sanitizePath($directory);
 
 
-$targetDir = $modx->getOption('gallery.files_path').$scriptProperties['album'].'/';
+$targetDir = $modx->call('galAlbum','getFilesPath',array(&$modx)).$scriptProperties['album'].'/';
 
 $cacheManager = $modx->getCacheManager();
 /* if directory doesnt exist, create it */
