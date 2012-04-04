@@ -184,7 +184,7 @@ GAL.panel.AlbumItems = function(config) {
             ,cls: 'browser-view'
             ,region: 'center'
             ,width: '75%'
-            ,height: 450
+            ,minHeight: 450
             ,autoScroll: true
             ,border: false
             ,items: [{
