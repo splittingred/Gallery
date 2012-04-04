@@ -49,6 +49,9 @@ if ($parent != '') {
         'parent' => (int)$parent,
     ));
 }
+$c->where(array(
+    'active' => 1,
+));
 $c->sortby($sort,$dir);
 if ($limit > 0) {
     $c->limit($limit,$start);
