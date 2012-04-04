@@ -3,6 +3,7 @@ Changelog for Gallery.
 Gallery 1.5.0
 ====================================
 - Gallery 1.5+ only supports MODX 2.2+ and greater
+- [#164] Trim item/album names on save
 
 Gallery 1.4.0
 ====================================

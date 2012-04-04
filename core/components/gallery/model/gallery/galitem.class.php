@@ -95,6 +95,23 @@ class galItem extends xPDOSimpleObject {
         }
         return $url;
     }
+
+    /**
+     * Override set to trim string fields
+     *
+     * {@inheritDoc}
+     */
+    public function set($k, $v= null, $vType= '') {
+        switch ($k) {
+            case 'name':
+            case 'description':
+                if (is_string($v)) {
+                    $v = trim($v);
+                }
+                break;
+        }
+        return parent::set($k,$v,$vType);
+    }
     
     /**
      * Upload a file to an album

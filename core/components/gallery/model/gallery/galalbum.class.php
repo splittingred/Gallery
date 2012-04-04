@@ -24,6 +24,23 @@
  */
 class galAlbum extends xPDOSimpleObject {
 
+    /**
+     * Override set to trim string fields
+     *
+     * {@inheritDoc}
+     */
+    public function set($k, $v= null, $vType= '') {
+        switch ($k) {
+            case 'name':
+            case 'description':
+                if (is_string($v)) {
+                    $v = trim($v);
+                }
+                break;
+        }
+        return parent::set($k,$v,$vType);
+    }
+
     public function save($cacheFlag= null) {
         if ($this->isNew() && !$this->get('createdon')) {
             $this->set('createdon', strftime('%Y-%m-%d %H:%M:%S'));
