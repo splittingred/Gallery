@@ -21,6 +21,17 @@ switch ($modx->event->name) {
     case 'OnManagerPageBeforeRender':
         $gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/gallery/',$scriptProperties);
         if (!($gallery instanceof Gallery)) return '';
+
+        $snippetIds = '';
+        $gallerySnippet = $modx->getObject('modSnippet',array('name' => 'Gallery'));
+        if ($gallerySnippet) {
+            $snippetIds .= 'GAL.snippetGallery = "'.$gallerySnippet->get('id').'";'."\n";
+        }
+        $galleryItemSnippet = $modx->getObject('modSnippet',array('name' => 'GalleryItem'));
+        if ($galleryItemSnippet) {
+            $snippetIds .= 'GAL.snippetGalleryItem = "'.$galleryItemSnippet->get('id').'";'."\n";
+        }
+
         $jsDir = $modx->getOption('gallery.assets_url',null,$modx->getOption('assets_url').'components/gallery/').'js/mgr/';
         $modx->controller->addLexiconTopic('gallery:default');
         $modx->controller->addJavascript($jsDir.'gallery.js');
@@ -28,6 +39,7 @@ switch ($modx->event->name) {
         $modx->controller->addHtml('<script type="text/javascript">
         Ext.onReady(function() {
             GAL.config.connector_url = "'.$gallery->config['connectorUrl'].'";
+            '.$snippetIds.'
         });
         </script>');
         break;

@@ -211,3 +211,5 @@ $properties = array(
         'lexicon' => 'gallery:properties',
     ),
 );
+
+return $properties;

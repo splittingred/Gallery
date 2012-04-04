@@ -57,7 +57,7 @@ $_lang['gallery.thumbquality_desc'] = 'The "q" value for phpThumb for the thumbn
 $_lang['gallery.thumbtpl_desc'] = 'The Chunk to use as a tpl for each thumbnail.';
 $_lang['gallery.thumbwidth_desc'] = 'The width of the generated thumbnails, in pixels.';
 $_lang['gallery.thumbzoomcrop_desc'] = 'Whether or not the thumbnail will be zoom-cropped.';
-$_lang['gallery.usecss_desc'];
+$_lang['gallery.usecss_desc'] = 'Whether or not to use the pre-provided CSS for the snippet.';
 
 /* GalleryAlbums Snippet */
 $_lang['galleryalbums.albumrequestvar_desc'] = 'If checkForRequestAlbumVar is set to true, will look for a REQUEST var with this name to select the album.';

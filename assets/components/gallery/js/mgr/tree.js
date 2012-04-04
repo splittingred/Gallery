@@ -239,25 +239,87 @@ Ext.extend(galTreeHandlerClass,Ext.Component,{
         if (!target.attributes.type) return false;
         if (target.attributes.type == 'gallery-album' && dropNode.attributes.type == 'gallery-item' && dropEvent.point != 'append') return false;
         if (dropNode.attributes.type == 'gallery-album' && target.attributes.type == 'gallery-item') return false;
-
+        /* workaround b/c im an idiot and prevent dropping of non-leaf nodes */
+        dropNode.attributes.leaf = true;
+        target.attributes.leaf = true;
         return true;
     }
 });
 Ext.reg('gal-tree-handler',galTreeHandlerClass);
 var galTreeHandler = new galTreeHandlerClass();
 
-
-var galTreeDropHandlerClass = function(config) {
+var galItemDropHandlerClass = function(config) {
     config = config || {};
     Ext.apply(config,{
         id: 'gallery-item-drop-handler'
     });
-    galTreeDropHandlerClass.superclass.constructor.call(this,config);
+    galItemDropHandlerClass.superclass.constructor.call(this,config);
 };
-Ext.extend(galTreeDropHandlerClass,Ext.Component,{
+Ext.extend(galItemDropHandlerClass,Ext.Component,{
     handle: function(target,opt) {
-        MODx.insertIntoContent(target.node.attributes.data.relativeImage,opt);
+        var na = target.node.attributes;
+        var cfg = {
+            ddTargetEl: opt.ddTargetEl
+            ,cfg: opt.cfg
+            ,iframe: opt.cfg.iframe
+            ,iframeEl: opt.cfg.iframeEl
+            ,onInsert: opt.cfg.onInsert
+            ,panel: opt.cfg.panel
+            ,classKey: 'modSnippet'
+            ,pk: GAL.snippetGalleryItem
+            ,name: 'GalleryItem'
+        };
+        GAL.elProps = {
+            id: na.data.id
+        };
+        MODx.loadInsertElement(cfg);
+        setTimeout("galTreeWorkaround(GAL.elProps);",600);
         return true;
     }
 });
-var galTreeDropHandler = new galTreeDropHandlerClass();
+var galItemDropHandler = new galItemDropHandlerClass();
+
+var galAlbumDropHandlerClass = function(config) {
+    config = config || {};
+    Ext.apply(config,{
+        id: 'gallery-album-drop-handler'
+    });
+    galAlbumDropHandlerClass.superclass.constructor.call(this,config);
+};
+Ext.extend(galAlbumDropHandlerClass,Ext.Component,{
+    handle: function(target,opt) {
+        var na = target.node.attributes;
+        var cfg = {
+            ddTargetEl: opt.ddTargetEl
+            ,cfg: opt.cfg
+            ,iframe: opt.cfg.iframe
+            ,iframeEl: opt.cfg.iframeEl
+            ,onInsert: opt.cfg.onInsert
+            ,panel: opt.cfg.panel
+            ,classKey: 'modSnippet'
+            ,pk: GAL.snippetGallery
+            ,name: 'Gallery'
+        };
+        GAL.elProps = {
+            album: na.data.id
+        };
+        MODx.loadInsertElement(cfg);
+        setTimeout("galTreeWorkaround(GAL.elProps);",600);
+        return true;
+    }
+});
+var galAlbumDropHandler = new galAlbumDropHandlerClass();
+
+/* because im an idiot and forgot win show events in the insert element window */
+function galTreeWorkaround(props) {
+    var w = Ext.getCmp('modx-window-insert-element');
+    if (w) {
+        for (var k in props) {
+            var fld = Ext.getCmp('modx-iprop-'+k);
+            if (fld) {
+                fld.setValue(props[k]);
+                w.changeProp(k);
+            }
+        }
+    }
+}
