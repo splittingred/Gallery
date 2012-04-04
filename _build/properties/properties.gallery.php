@@ -83,6 +83,14 @@ $properties = array(
         'lexicon' => 'gallery:properties',
     ),
     array(
+        'name' => 'itemCls',
+        'desc' => 'gallery.activecls_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 'gal-item-active',
+        'lexicon' => 'gallery:properties',
+    ),
+    array(
         'name' => 'toPlaceholder',
         'desc' => 'gallery.toplaceholder_desc',
         'type' => 'textfield',

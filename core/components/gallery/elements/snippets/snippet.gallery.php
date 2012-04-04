@@ -47,6 +47,8 @@ $imageGetParam = $modx->getOption('imageGetParam',$scriptProperties,'galItem');
 $albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
 $tagRequestVar = $modx->getOption('tagRequestVar',$scriptProperties,'galTag');
 $itemCls = $modx->getOption('itemCls',$scriptProperties,'gal-item');
+$activeCls = $modx->getOption('activeCls',$scriptProperties,'gal-item-active');
+$highlightItem = $modx->getOption($imageGetParam,$_REQUEST,false);
 
 /* check for REQUEST vars if property set */
 if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,true)) {
@@ -167,6 +169,9 @@ foreach ($items as $item) {
     $itemArray = $item->toArray();
     $itemArray['idx'] = $idx;
     $itemArray['cls'] = $itemCls;
+    if ($itemArray['id'] == $highlightItem) {
+        $itemArray['cls'] .= ' '.$activeCls;
+    }
     $itemArray['filename'] = basename($item->get('filename'));
     $itemArray['image_absolute'] = $modx->getOption('gallery.files_url').$item->get('filename');
     $itemArray['fileurl'] = $itemArray['image_absolute'];

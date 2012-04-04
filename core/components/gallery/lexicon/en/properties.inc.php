@@ -20,10 +20,12 @@
  * @package gallery
  */
 /**
+ * @var array $_lang
  * @package gallery
  * @subpackage lexicon
  */
 /* Gallery Snippet */
+$_lang['gallery.activecls_desc'] = 'The CSS class to add when the active item (the item specified in the GalleryItem snippet) is displayed.';
 $_lang['gallery.album_desc'] = 'Will load only items from this album. Can be either the name or ID of the Album.';
 $_lang['gallery.albumrequestvar_desc'] = 'If checkForRequestAlbumVar is set to true, will look for a REQUEST var with this name to select the album.';
 $_lang['gallery.checkforrequestalbumvar_desc'] = 'If 1, if a REQUEST var of "album" is found, will use that as the album property for the snippet.';
