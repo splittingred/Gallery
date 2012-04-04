@@ -29,3 +29,4 @@ class GalleryItemRemoveProcessor extends modObjectRemoveProcessor {
     public $objectType = 'gallery.item';
     public $languageTopics = array('gallery:default');
 }
+return 'GalleryItemRemoveProcessor';

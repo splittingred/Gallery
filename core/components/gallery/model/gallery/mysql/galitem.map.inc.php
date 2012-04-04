@@ -12,6 +12,7 @@ $xpdo_meta_map['galItem']= array (
     'description' => NULL,
     'mediatype' => 'image',
     'url' => NULL,
+    'customthumb' => NULL,
     'createdon' => NULL,
     'createdby' => 0,
     'active' => 0,
@@ -51,6 +52,11 @@ $xpdo_meta_map['galItem']= array (
       'default' => 'image',
     ),
     'url' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+    ),
+    'customthumb' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',

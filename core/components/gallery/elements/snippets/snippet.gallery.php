@@ -33,6 +33,7 @@ $modx->lexicon->load('gallery:web');
 
 /* setup default properties */
 $album = $modx->getOption('album',$scriptProperties,false);
+$depth = $modx->getOption('depth', $scriptProperties, 0);
 $plugin = $modx->getOption('plugin',$scriptProperties,'');
 $tag = $modx->getOption('tag',$scriptProperties,'');
 $limit = $modx->getOption('limit',$scriptProperties,0);
@@ -55,6 +56,13 @@ if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,true)) {
 if ($modx->getOption('checkForRequestTagVar',$scriptProperties,true)) {
     if (!empty($_REQUEST[$tagRequestVar])) $tag = $_REQUEST[$tagRequestVar];
 }
+if (!empty($_REQUEST[$imageGetParam])) {
+  $highlightItem = $_REQUEST[$imageGetParam];
+} else {
+  $highlightItem = 0;
+}
+/* Return nothing if not supplied with album number and/or tag
+   of needed gallery images */
 if (empty($album) && empty($tag)) return '';
 
 /* build query */
@@ -76,13 +84,24 @@ if (!empty($album)) {
     $albumWhere = $albumField == 'name' ? array('name' => $album) : $album;
     /** @var galAlbum $album */
     $album = $modx->getObject('galAlbum',$albumWhere);
+	
     if (empty($album)) return '';
-    $c->where(array(
-        'Album.'.$albumField => $album->get($albumField),
-    ));
+	/* Grab the child albums */
+	if ($depth != 0) {
+	  $childAlbumIds = $album->getChildIds($depth);
+	}
+	if (!empty($childAlbumIds)) {
+	  $c->where(array(
+				  'Album.id:IN' => array_merge(
+					array($album->get('id')), $childAlbumIds)));
+	} else {
+	  $c->where(array('Album.id' => $album->get('id')));
+	}
+
     $galleryId = $album->get('id');
     $galleryName = $album->get('name');
     $galleryDescription = $album->get('description');
+
     unset($albumWhere,$albumField);
 }
 if (!empty($tag)) { /* pull by tag */
@@ -110,6 +129,11 @@ $c->select(array('galItem.*'));
 $c->select(array(
     '('.$tagSql.') AS `tags`'
 ));
+
+if ($depth != 0) {
+  /* Sort by albums then */
+  $c->sortby('Album.id', $dir);
+}
 if (strcasecmp($sort,'rand')==0) {
     $c->sortby('RAND()',$dir);
 } else {
@@ -167,12 +191,19 @@ foreach ($items as $item) {
     $itemArray = $item->toArray();
     $itemArray['idx'] = $idx;
     $itemArray['cls'] = $itemCls;
+    if ($itemArray['id'] == $highlightItem) {
+      $itemArray['cls'] .= ' current';
+    }
     $itemArray['filename'] = basename($item->get('filename'));
     $itemArray['image_absolute'] = $modx->getOption('gallery.files_url').$item->get('filename');
     $itemArray['fileurl'] = $itemArray['image_absolute'];
     $itemArray['filepath'] = $modx->getOption('gallery.files_path').$item->get('filename');
     $itemArray['filesize'] = $item->get('filesize');
-    $itemArray['thumbnail'] = $item->get('thumbnail',$thumbProperties);
+    if ($customthumb = $itemArray['customthumb']){
+        $itemArray['thumbnail'] = $customthumb;
+    } else {
+        $itemArray['thumbnail'] = $item->get('thumbnail',$thumbProperties);
+    }
     $itemArray['image'] = $item->get('thumbnail',$imageProperties);
     if (!empty($album)) $itemArray['album'] = $album->get('id');
     if (!empty($tag)) $itemArray['tag'] = $tag;

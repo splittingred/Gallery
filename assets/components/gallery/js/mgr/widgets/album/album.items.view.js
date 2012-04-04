@@ -4,7 +4,7 @@ GAL.view.AlbumItems = function(config) {
     this._initTemplates();
     Ext.applyIf(config,{
         url: GAL.config.connector_url
-        ,fields: ['id','album','name','description','mediatype','url','createdon','createdby','filename','filesize','thumbnail','image','image_width','image_height','tags','active','rank','absoluteImage','relativeImage','menu']
+        ,fields: ['id','album','name','description','mediatype','url','customthumb','createdon','createdby','filename','filesize','thumbnail','image','image_width','image_height','tags','active','rank','absoluteImage','relativeImage','menu']
         ,ident: 'galbit'
         ,id: 'gal-album-items-view'
         ,baseParams: {

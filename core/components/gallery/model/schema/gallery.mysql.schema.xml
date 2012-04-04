@@ -9,6 +9,7 @@
         <field key="description" dbtype="text" phptype="string" />
         <field key="mediatype" dbtype="varchar" precision="40" phptype="string" null="false" default="image" /><!-- image/video -->
         <field key="url" dbtype="text" phptype="string" />
+        <field key="customthumb" dbtype="text" phptype="string" /> <!-- custom thumbnail path -->
 
         <field key="createdon" dbtype="datetime" phptype="datetime" null="true" />
         <field key="createdby" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />

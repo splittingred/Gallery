@@ -135,7 +135,7 @@ class galAlbum extends xPDOSimpleObject {
         return $exists;
     }
 
-    public function uploadItem($filePath,$name) {
+    public function uploadItem($filePath,$name,$itemId) {
         $fileName = false;
 
         $albumDir = $this->getPath(false);
@@ -153,7 +153,7 @@ class galAlbum extends xPDOSimpleObject {
 
         /* upload the file */
         $extension = pathinfo($name,PATHINFO_EXTENSION);
-        $shortName = $this->get('id').'.'.$extension;
+        $shortName = $itemId.'.'.$extension;
         $relativePath = $albumDir.$shortName;
         $absolutePath = $targetDir.$shortName;
 
@@ -166,5 +166,35 @@ class galAlbum extends xPDOSimpleObject {
             $fileName = str_replace(' ','',$relativePath);
         }
         return $fileName;
+    }
+	
+	/**
+     * Return array with ids of all
+     * children albums up to given depth
+     * @return array
+     */
+    public function getChildIds ($depth, $albumId = 0) {
+        if (!$albumId) {
+            $albumId = $this->get('id');
+        }
+        
+        $childIds = array();
+        
+        if ($depth != 0) {
+            $children = $this->xpdo->getCollection('galAlbum', array('parent' => $albumId));
+            if (count($children)) {
+                foreach ((array) $children as $child) {
+                    $childIds[] = $child->get('id');
+                }
+                foreach ($childIds as $childId) {
+                    $childChildrenIds = $this->getChildIds($depth - 1, $childId);
+                    if ($childChildrenIds)
+                        $childIds = array_merge($childIds, $childChildrenIds);
+                }
+            }
+            $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, '$childIds = '. implode(', ', $childIds));
+            return $childIds;
+        }
+        return false;
     }
 }
