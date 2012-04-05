@@ -239,9 +239,6 @@ Ext.extend(galTreeHandlerClass,Ext.Component,{
         if (!target.attributes.type) return false;
         if (target.attributes.type == 'gallery-album' && dropNode.attributes.type == 'gallery-item' && dropEvent.point != 'append') return false;
         if (dropNode.attributes.type == 'gallery-album' && target.attributes.type == 'gallery-item') return false;
-        /* workaround b/c im an idiot and prevent dropping of non-leaf nodes */
-        dropNode.attributes.leaf = true;
-        target.attributes.leaf = true;
         return true;
     }
 });
@@ -322,5 +319,18 @@ function galTreeWorkaround(props) {
                 w.changeProp(k);
             }
         }
+    }
+};
+
+/* because im an idiot and prevented drag/drop of non-leaf nodes in modx core */
+setTimeout('galleryFixLeafDrag();',1200);
+function galleryFixLeafDrag() {
+    var t = Ext.getCmp('modx-file-tree');
+    if (t) {
+        t.on('startdrag',function(t,n,e) {
+            if (n.attributes.type == 'gallery-album') {
+                n.attributes.leaf = true;
+            }
+        },this);
     }
 }

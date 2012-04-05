@@ -21,7 +21,8 @@
  */
 /**
  * Events for GalleryCustomTV plugin
- * 
+ *
+ * @var modX $modx
  * @package gallery
  * @subpackage build
  */
@@ -33,6 +34,7 @@ $evs = array(
     'OnTVOutputRenderList',
     'OnTVOutputRenderPropertiesList',
     'OnDocFormPrerender',
+    'OnManagerPageBeforeRender',
 );
 
 foreach ($evs as $ev) {

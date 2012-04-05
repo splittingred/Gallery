@@ -33,10 +33,11 @@ if ($object->xpdo) {
         case xPDOTransport::ACTION_UPGRADE:
             /** @var modX $modx */
             $modx =& $object->xpdo;
-            $modelPath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/');
+            $modelPath = $modx->getOption('gallery.core_path');
             if (empty($modelPath)) {
-                $modelPath = '[[++core_path]]components/gallery/model/';
+                $modelPath = '[[++core_path]]components/gallery/';
             }
+            $modelPath = rtrim($modelPath,'/').'/model/';
             if ($modx instanceof modX) {
                 $modx->addExtensionPackage('gallery',$modelPath);
             }
