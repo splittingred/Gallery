@@ -155,10 +155,41 @@ GAL.panel.AlbumItems = function(config) {
         ,style: 'overflow: auto;'
     });
     this.view.pagingBar = new Ext.PagingToolbar({
-        pageSize: 24
+        pageSize: config.pageSize || (parseInt(MODx.config.default_per_page) || 20)
         ,store: this.view.store
         ,displayInfo: true
         ,autoLoad: true
+        ,items: [
+            '-'
+        	,_('per_page')+':'
+        	,{
+		        xtype: 'textfield'
+		        ,value: config.pageSize || (parseInt(MODx.config.default_per_page) || 20)
+		        ,width: 40
+		        ,listeners: {
+		            'change': {fn:function(tf,nv,ov) {
+		                if (Ext.isEmpty(nv)) return false;
+		                nv = parseInt(nv);
+		                this.view.pagingBar.pageSize = nv;
+		                this.view.store.load({params:{
+		                    start:0
+		                    ,limit: nv
+		                }});
+		            },scope:this}
+		            ,'render': {fn: function(cmp) {
+		                new Ext.KeyMap(cmp.getEl(), {
+		                    key: Ext.EventObject.ENTER
+		                    ,fn: function() {
+		                        this.fireEvent('change',this.getValue());
+		                        this.blur();
+		                        return true;}
+		                    ,scope: cmp
+		                });
+		            },scope:this}
+		        }
+	    	}
+	    	,'-'
+	    ]
     });
     var dv = this.view;
     
