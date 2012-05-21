@@ -22,13 +22,16 @@ Ext.extend(MODx.DataView.dropZone, Ext.dd.DropZone,{
     ,onNodeOut : function(target, dd, e, data) {
         Ext.fly(target).removeClass('x-view-selected');
     }
-    ,onNodeOver : function(target, dd, e, data) { 
-        return Ext.dd.DropZone.prototype.dropAllowed;
+    ,onNodeOver : function(target, dd, e, data) {
+        return Ext.dd.DropZone.prototype.dropAllowed && (target != data.nodes[0]);
     }
     
     ,onNodeDrop : function(target, dd, e, data) {
         var targetNode = this.view.getRecord(target);
         var sourceNode = this.view.getRecord(data.nodes[0]);
+        if (sourceNode == targetNode){
+            return false;
+        }
         this.view.fireEvent('sort',{
             target: targetNode
             ,source: sourceNode
