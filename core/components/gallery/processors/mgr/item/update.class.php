@@ -33,7 +33,7 @@ class GalleryItemUpdateProcessor extends modObjectUpdateProcessor {
     public $languageTopics = array('gallery:default');
 
     public function beforeSet() {
-        $this->setCheckbox('active');
+        $this->setCheckbox('active',true);
         return parent::beforeSet();
     }
 

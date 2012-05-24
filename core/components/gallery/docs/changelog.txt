@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 1.6.0
 ====================================
+- [#192] Fix issues with deactivating items, albums
 - [#198] Fix sort of albums due to urldecode issue
 - Better optimization of DB fields
 - [#197], [#188] Fix issues with upload and file names

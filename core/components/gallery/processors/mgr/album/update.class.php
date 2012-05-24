@@ -31,8 +31,8 @@ class GalleryAlbumUpdateProcessor extends modObjectUpdateProcessor {
     public $languageTopics = array('gallery:default');
 
     public function beforeSet() {
-        $this->setCheckbox('active');
-        $this->setCheckbox('prominent');
+        $this->setCheckbox('active',true);
+        $this->setCheckbox('prominent',true);
         return parent::beforeSet();
     }
 }
