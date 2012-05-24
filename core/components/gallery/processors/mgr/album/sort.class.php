@@ -16,7 +16,7 @@ class GalleryAlbumSortProcessor extends modObjectProcessor {
     public function initialize() {
         $data = $this->getProperty('data');
         if (empty($data)) return $this->modx->lexicon('invalid_data');
-        $this->data = is_array($data) ? $data : urldecode($this->modx->fromJSON($data));
+        $this->data = is_array($data) ? $data : $this->modx->fromJSON(urldecode($data));
 
         return parent::initialize();
     }
