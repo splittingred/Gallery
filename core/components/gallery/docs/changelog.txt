@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 1.6.0
 ====================================
+- [#205] Add per page box to paging bar in album items view
 - [#108] Improve drag/drop reorder of items in manager by supressing refresh
 - [#192] Fix issues with deactivating items, albums
 - [#198] Fix sort of albums due to urldecode issue

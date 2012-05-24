@@ -155,10 +155,41 @@ GAL.panel.AlbumItems = function(config) {
         ,style: 'overflow: auto;'
     });
     this.view.pagingBar = new Ext.PagingToolbar({
-        pageSize: 24
+        pageSize: config.pageSize || (parseInt(MODx.config.default_per_page) || 24)
         ,store: this.view.store
         ,displayInfo: true
         ,autoLoad: true
+        ,items: [
+            '-'
+        	,_('per_page')+':'
+        	,{
+		        xtype: 'textfield'
+		        ,value: config.pageSize || (parseInt(MODx.config.default_per_page) || 20)
+		        ,width: 40
+		        ,listeners: {
+		            'change': {fn:function(tf,nv,ov) {
+		                if (Ext.isEmpty(nv)) return false;
+		                nv = parseInt(nv);
+		                this.view.pagingBar.pageSize = nv;
+		                this.view.store.load({params:{
+		                    start:0
+		                    ,limit: nv
+		                }});
+		            },scope:this}
+		            ,'render': {fn: function(cmp) {
+		                new Ext.KeyMap(cmp.getEl(), {
+		                    key: Ext.EventObject.ENTER
+		                    ,fn: function() {
+		                        this.fireEvent('change',this.getValue());
+		                        this.blur();
+		                        return true;}
+		                    ,scope: cmp
+		                });
+		            },scope:this}
+		        }
+	    	}
+	    	,'-'
+	    ]
     });
     var dv = this.view;
     
@@ -231,24 +262,6 @@ GAL.panel.AlbumItems = function(config) {
 Ext.extend(GAL.panel.AlbumItems,MODx.Panel,{
     windows: {}
 
-    ,handleSort: function(o) {
-        var s = this.view.store;
-        console.log(o);
-        return;
-        var origRec = s.getAt(o.sourceId);
-        var lastRec = s.getAt(o.targetId);
-
-        MODx.Ajax.request({
-            url: this.config.url
-            ,params: {
-                action: 'item/sort'
-                ,album: this.config.album
-                ,source: o.sourceIndex
-                ,target: o.targetIndex
-            }
-        });
-    }
-    
     ,uploadMultiItems: function(btn,e) {
         var r = {
             album: this.config.album
