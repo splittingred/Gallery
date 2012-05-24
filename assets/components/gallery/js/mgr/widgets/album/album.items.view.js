@@ -37,11 +37,6 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
                 ,source: o.source.id
                 ,target: o.target.id
             }
-            ,listeners: {
-                'success':{fn:function(r) {
-                    this.run();
-                },scope:this}
-            }
         });
     }
 

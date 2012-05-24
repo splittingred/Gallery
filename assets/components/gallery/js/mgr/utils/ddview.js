@@ -29,6 +29,9 @@ Ext.extend(MODx.DataView.dropZone, Ext.dd.DropZone,{
     ,onNodeDrop : function(target, dd, e, data) {
         var targetNode = this.view.getRecord(target);
         var sourceNode = this.view.getRecord(data.nodes[0]);
+        var targetElement = Ext.get(target);
+        var sourceElement = Ext.get(data.nodes[0]);
+        sourceElement.insertBefore(targetElement);
         this.view.fireEvent('sort',{
             target: targetNode
             ,source: sourceNode
