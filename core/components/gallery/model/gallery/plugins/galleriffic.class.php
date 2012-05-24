@@ -90,8 +90,21 @@ class Galleriffic extends GalleryPlugin {
         if ($useCss) {
             $this->modx->regClientCSS($this->modx->getOption('gallerifficCss',$this->config,$this->gallery->config['assetsUrl'].'packages/galleriffic20/css/galleriffic-2.css'));
         }
-        $this->modx->regClientStartupScript($this->gallery->config['assetsUrl'].'packages/galleriffic20/js/jquery.galleriffic.js');
-        $this->modx->regClientStartupScript($this->gallery->config['assetsUrl'].'packages/galleriffic20/js/jquery.opacityrollover.js');
+
+        $renderJsOnStartup = (boolean) $this->modx->getOption('gallerifficRenderJsOnStartup',$this->config,true);
+
+
+        if($renderJsOnStartup){
+            $regJsOn   = 'regClientStartupScript';
+            $regHTMLOn = 'regClientStartupHTMLBlock';
+        }
+        else{
+            $regJsOn   = 'regClientScript';
+            $regHTMLOn = 'regClientHTMLBlock';
+        }
+
+        $this->modx->$regJsOn($this->gallery->config['assetsUrl'].'packages/galleriffic20/js/jquery.galleriffic.js');
+        $this->modx->$regJsOn($this->gallery->config['assetsUrl'].'packages/galleriffic20/js/jquery.opacityrollover.js');
 
 
         $jsTpl = $this->modx->getOption('gallerifficJsTpl',$this->config,'GallerifficJS');
@@ -99,6 +112,6 @@ class Galleriffic extends GalleryPlugin {
             'options' => $this->modx->toJSON($this->config),
         );
         $output = $this->gallery->getChunk($jsTpl,$properties);
-        $this->modx->regClientStartupHTMLBlock($output);
+        $this->modx->$regHTMLOn($output);
     }
 }
