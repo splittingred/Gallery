@@ -23,12 +23,13 @@ Ext.extend(MODx.DataView.dropZone, Ext.dd.DropZone,{
         Ext.fly(target).removeClass('x-view-selected');
     }
     ,onNodeOver : function(target, dd, e, data) { 
-        return Ext.dd.DropZone.prototype.dropAllowed;
+        return Ext.dd.DropZone.prototype.dropAllowed && (target != data.nodes[0]);
     }
     
     ,onNodeDrop : function(target, dd, e, data) {
         var targetNode = this.view.getRecord(target);
         var sourceNode = this.view.getRecord(data.nodes[0]);
+        if (sourceNode == targetNode) { return false; }
         var targetElement = Ext.get(target);
         var sourceElement = Ext.get(data.nodes[0]);
         sourceElement.insertBefore(targetElement);

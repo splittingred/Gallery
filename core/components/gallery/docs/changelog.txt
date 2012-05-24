@@ -7,6 +7,7 @@ Gallery 1.6.0
 - [#198] Fix sort of albums due to urldecode issue
 - Better optimization of DB fields
 - [#197], [#188] Fix issues with upload and file names
+- [#208] Prevent sorting in drag/drop when target and source is the same
 
 Gallery 1.5.0
 ====================================
