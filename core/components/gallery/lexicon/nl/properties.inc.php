@@ -55,7 +55,7 @@ $_lang['gallery.thumbquality_desc'] = 'De kwaliteitsinstelling voor phpThumb.';
 $_lang['gallery.thumbtpl_desc'] = 'De Chunk om te gebruiken voor de thumbnails.';
 $_lang['gallery.thumbwidth_desc'] = 'De breedte van de gegenereerd thumbnails in pixels.';
 $_lang['gallery.thumbzoomcrop_desc'] = 'Of de thumbnail wel of niet gebruik moet maken van de zoom-crop functie.';
-$_lang['gallery.usecss_desc'];
+$_lang['gallery.usecss_desc'] = 'Gebruik de bijgevoegde CSS?';
 
 /* GalleryAlbums Snippet */
 $_lang['galleryalbums.albumrequestvar_desc'] = 'Als checkForRequestAlbumVar waar is, zal dit zoeken naar een REQUEST variabele met deze naam om het album te selecteren.';
