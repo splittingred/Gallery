@@ -127,7 +127,7 @@ class galItem extends xPDOSimpleObject {
         $album = $this->xpdo->getObject('galAlbum',$albumId);
         if (empty($album)) return false;
 
-        $fileName = $album->uploadItem($file['tmp_name'],$file['name']);
+        $fileName = $album->uploadItem($this,$file['tmp_name'],$file['name']);
         if (empty($fileName)) {
             return false;
         }

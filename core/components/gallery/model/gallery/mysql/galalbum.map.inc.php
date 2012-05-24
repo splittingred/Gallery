@@ -4,7 +4,9 @@
  */
 $xpdo_meta_map['galAlbum']= array (
   'package' => 'gallery',
+  'version' => NULL,
   'table' => 'gallery_albums',
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'parent' => 0,
@@ -95,23 +97,103 @@ $xpdo_meta_map['galAlbum']= array (
       'default' => '',
     ),
   ),
-  'aggregates' => 
+  'indexes' => 
   array (
-    'Parent' => 
+    'parent' => 
     array (
-      'class' => 'galAlbum',
-      'local' => 'parent',
-      'foreign' => 'id',
-      'cardinality' => 'one',
-      'owner' => 'foreign',
+      'alias' => 'parent',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'parent' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
     ),
-    'CreatedBy' => 
+    'name' => 
     array (
-      'class' => 'modUser',
-      'local' => 'createdby',
-      'foreign' => 'id',
-      'cardinality' => 'one',
-      'owner' => 'foreign',
+      'alias' => 'name',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'name' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'createdby' => 
+    array (
+      'alias' => 'createdby',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'createdby' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'rank' => 
+    array (
+      'alias' => 'rank',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'rank' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'active' => 
+    array (
+      'alias' => 'active',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'active' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'prominent' => 
+    array (
+      'alias' => 'prominent',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'prominent' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
     ),
   ),
   'composites' => 
@@ -139,6 +221,25 @@ $xpdo_meta_map['galAlbum']= array (
       'foreign' => 'parent',
       'cardinality' => 'many',
       'owner' => 'local',
+    ),
+  ),
+  'aggregates' => 
+  array (
+    'Parent' => 
+    array (
+      'class' => 'galAlbum',
+      'local' => 'parent',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
+    'CreatedBy' => 
+    array (
+      'class' => 'modUser',
+      'local' => 'createdby',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
     ),
   ),
 );

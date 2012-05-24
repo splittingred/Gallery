@@ -4,7 +4,9 @@
  */
 $xpdo_meta_map['galItem']= array (
   'package' => 'gallery',
+  'version' => NULL,
   'table' => 'gallery_items',
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'name' => '',
@@ -102,15 +104,55 @@ $xpdo_meta_map['galItem']= array (
       'default' => 'tl',
     ),
   ),
-  'aggregates' => 
+  'indexes' => 
   array (
-    'CreatedBy' => 
+    'name' => 
     array (
-      'class' => 'modUser',
-      'local' => 'createdby',
-      'foreign' => 'id',
-      'cardinality' => 'one',
-      'owner' => 'foreign',
+      'alias' => 'name',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'name' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'active' => 
+    array (
+      'alias' => 'active',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'active' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'mediatype' => 
+    array (
+      'alias' => 'mediatype',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'mediatype' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
     ),
   ),
   'composites' => 
@@ -130,6 +172,17 @@ $xpdo_meta_map['galItem']= array (
       'foreign' => 'item',
       'cardinality' => 'many',
       'owner' => 'local',
+    ),
+  ),
+  'aggregates' => 
+  array (
+    'CreatedBy' => 
+    array (
+      'class' => 'modUser',
+      'local' => 'createdby',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
     ),
   ),
 );

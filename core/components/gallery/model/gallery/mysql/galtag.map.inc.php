@@ -4,7 +4,9 @@
  */
 $xpdo_meta_map['galTag']= array (
   'package' => 'gallery',
+  'version' => NULL,
   'table' => 'gallery_tags',
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'item' => 0,
@@ -30,6 +32,41 @@ $xpdo_meta_map['galTag']= array (
       'null' => false,
       'default' => '',
       'index' => 'index',
+    ),
+  ),
+  'indexes' => 
+  array (
+    'item' => 
+    array (
+      'alias' => 'item',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'item' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'tag' => 
+    array (
+      'alias' => 'tag',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'tag' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
     ),
   ),
   'aggregates' => 

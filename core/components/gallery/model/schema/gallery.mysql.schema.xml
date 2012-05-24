@@ -17,6 +17,16 @@
         <field key="duration" dbtype="varchar" precision="40" phptype="string" null="false" default="" />
         <field key="streamer" dbtype="text" phptype="string" />
         <field key="watermark_pos" dbtype="varchar" precision="10" phptype="string" null="false" default="tl" /><!-- BR, BL, TR, TL, C, R, L, T, B, * -->
+
+        <index alias="name" name="name" primary="false" unique="false" type="BTREE">
+            <column key="name" length="" collation="A" null="false" />
+        </index>
+        <index alias="active" name="active" primary="false" unique="false" type="BTREE">
+            <column key="active" length="" collation="A" null="false" />
+        </index>
+        <index alias="mediatype" name="mediatype" primary="false" unique="false" type="BTREE">
+            <column key="mediatype" length="" collation="A" null="false" />
+        </index>
                 
         <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign" />
         <composite alias="AlbumItems" class="galAlbumItem" local="id" foreign="item" cardinality="many" owner="local" />
@@ -36,7 +46,26 @@
         <field key="active" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
         <field key="prominent" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
         <field key="watermark" dbtype="varchar" precision="255" phptype="string" null="false" default="" /> 
-        
+
+        <index alias="parent" name="parent" primary="false" unique="false" type="BTREE">
+            <column key="parent" length="" collation="A" null="false" />
+        </index>
+        <index alias="name" name="name" primary="false" unique="false" type="BTREE">
+            <column key="name" length="" collation="A" null="false" />
+        </index>
+        <index alias="createdby" name="createdby" primary="false" unique="false" type="BTREE">
+            <column key="createdby" length="" collation="A" null="false" />
+        </index>
+        <index alias="rank" name="rank" primary="false" unique="false" type="BTREE">
+            <column key="rank" length="" collation="A" null="false" />
+        </index>
+        <index alias="active" name="active" primary="false" unique="false" type="BTREE">
+            <column key="active" length="" collation="A" null="false" />
+        </index>
+        <index alias="prominent" name="prominent" primary="false" unique="false" type="BTREE">
+            <column key="prominent" length="" collation="A" null="false" />
+        </index>
+
         <aggregate alias="Parent" class="galAlbum" local="parent" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign" />
         <composite alias="AlbumItems" class="galAlbumItem" local="id" foreign="album" cardinality="many" owner="local" />
@@ -51,7 +80,17 @@
         <field key="item" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
         <field key="album" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
         <field key="rank" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
-        
+
+        <index alias="item" name="item" primary="false" unique="false" type="BTREE">
+            <column key="item" length="" collation="A" null="false" />
+        </index>
+        <index alias="album" name="album" primary="false" unique="false" type="BTREE">
+            <column key="album" length="" collation="A" null="false" />
+        </index>
+        <index alias="rank" name="rank" primary="false" unique="false" type="BTREE">
+            <column key="rank" length="" collation="A" null="false" />
+        </index>
+
         <aggregate alias="Album" class="galAlbum" local="album" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="Item" class="galItem" local="item" foreign="id" cardinality="one" owner="foreign" />
     </object>
@@ -62,7 +101,14 @@
     <object class="galAlbumContext" table="gallery_album_contexts" extends="xPDOSimpleObject">
         <field key="album" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
         <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="web" index="index" />
-        
+
+        <index alias="album" name="album" primary="false" unique="false" type="BTREE">
+            <column key="album" length="" collation="A" null="false" />
+        </index>
+        <index alias="context_key" name="context_key" primary="false" unique="false" type="BTREE">
+            <column key="context_key" length="" collation="A" null="false" />
+        </index>
+
         <aggregate alias="Album" class="galAlbum" local="album" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="Context" class="modContext" local="context_key" foreign="key" cardinality="one" owner="foreign" />
     </object>
@@ -73,7 +119,14 @@
     <object class="galTag" table="gallery_tags" extends="xPDOSimpleObject">
         <field key="item" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
         <field key="tag" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="index" />
-        
+
+        <index alias="item" name="item" primary="false" unique="false" type="BTREE">
+            <column key="item" length="" collation="A" null="false" />
+        </index>
+        <index alias="tag" name="tag" primary="false" unique="false" type="BTREE">
+            <column key="tag" length="" collation="A" null="false" />
+        </index>
+
         <aggregate alias="Item" class="galItem" local="item" foreign="id" cardinality="one" owner="foreign" />
     </object>
 

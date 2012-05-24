@@ -188,7 +188,7 @@ class galAlbum extends xPDOSimpleObject {
         return $exists;
     }
 
-    public function uploadItem($filePath,$name) {
+    public function uploadItem(galItem $item,$filePath,$name) {
         $fileName = false;
 
         $albumDir = $this->getPath(false);
@@ -206,7 +206,7 @@ class galAlbum extends xPDOSimpleObject {
 
         /* upload the file */
         $extension = pathinfo($name,PATHINFO_EXTENSION);
-        $shortName = $this->get('id').'.'.$extension;
+        $shortName = $item->get('id').'.'.$extension;
         $relativePath = $albumDir.$shortName;
         $absolutePath = $targetDir.$shortName;
 

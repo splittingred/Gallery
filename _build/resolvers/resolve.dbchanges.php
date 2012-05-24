@@ -22,6 +22,9 @@
 /**
  * Resolve changes to db model
  *
+ * @var xPDOObject $object
+ * @var array $options
+ *
  * @package gallery
  * @subpackage build
  */
@@ -32,11 +35,29 @@ if ($object->xpdo) {
             $modx =& $object->xpdo;
             $modelPath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/';
             $modx->addPackage('gallery',$modelPath);
+            $manager = $modx->getManager();
+            $oldLogLevel = $modx->getLogLevel();
+            $modx->setLogLevel(0);
 
-            $modx->exec("ALTER TABLE {$modx->getTableName('galAlbum')} ADD `parent` int(10) unsigned NOT NULL default '0' AFTER `id`");
-            $modx->exec("ALTER TABLE {$modx->getTableName('galAlbum')} ADD INDEX `parent` (`parent`)");
+            $manager->addField('galAlbum','parent',array('after' => 'id'));
+            $manager->addIndex('galAlbum','parent');
+            $manager->addField('galItem','url',array('after' => 'mediatype'));
 
-            $modx->exec("ALTER TABLE {$modx->getTableName('galItem')} ADD `url` TEXT AFTER `mediatype`");
+            /* 1.6.0+ */
+            $manager->addField('galItem','slug',array('after' => 'mediatype'));
+            $manager->addIndex('galItem','slug');
+            $manager->addIndex('galItem','name');
+            $manager->addIndex('galItem','active');
+            $manager->addIndex('galItem','mediatype');
+
+            $manager->addIndex('galAlbum','rank');
+            $manager->addIndex('galAlbum','active');
+            $manager->addIndex('galAlbum','prominent');
+
+            $manager->addIndex('galAlbumItem','rank');
+
+
+            $modx->setLogLevel($oldLogLevel);
             break;
     }
 }

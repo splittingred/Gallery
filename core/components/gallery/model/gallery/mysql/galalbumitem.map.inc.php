@@ -4,7 +4,9 @@
  */
 $xpdo_meta_map['galAlbumItem']= array (
   'package' => 'gallery',
+  'version' => NULL,
   'table' => 'gallery_album_items',
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'item' => 0,
@@ -41,6 +43,57 @@ $xpdo_meta_map['galAlbumItem']= array (
       'phptype' => 'integer',
       'null' => false,
       'default' => 0,
+    ),
+  ),
+  'indexes' => 
+  array (
+    'item' => 
+    array (
+      'alias' => 'item',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'item' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'album' => 
+    array (
+      'alias' => 'album',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'album' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'rank' => 
+    array (
+      'alias' => 'rank',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'rank' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
     ),
   ),
   'aggregates' => 

@@ -1,5 +1,10 @@
 Changelog for Gallery.
 
+Gallery 1.6.0
+====================================
+- Better optimization of DB fields
+- [#197], [#188] Fix issues with upload and file names
+
 Gallery 1.5.0
 ====================================
 - Gallery 1.5+ only supports MODX 2.2+ and greater
