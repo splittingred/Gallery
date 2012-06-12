@@ -184,6 +184,7 @@ foreach ($items as $item) {
     if (!empty($album)) $itemArray['album'] = $album->get('id');
     if (!empty($tag)) $itemArray['tag'] = $tag;
     $itemArray['linkToImage'] = $linkToImage;
+    $itemArray['url'] = $item->get('url');
     $itemArray['imageGetParam'] = $imageGetParam;
     $itemArray['albumRequestVar'] = $albumRequestVar;
     $itemArray['tagRequestVar'] = $tagRequestVar;
