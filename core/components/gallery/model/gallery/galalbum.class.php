@@ -49,6 +49,7 @@ class galAlbum extends xPDOSimpleObject {
         if ($saved) {
             if ($this->xpdo->getCacheManager()) {
                 $this->xpdo->cacheManager->delete('gallery/album/'.$this->get('id'));
+                $this->xpdo->cacheManager->delete('gallery/album/list/');
             }
         }
         return $saved;
@@ -259,5 +260,64 @@ class galAlbum extends xPDOSimpleObject {
         }
 
         return $item;
+    }
+
+    public static function getList(modX &$modx,array $scriptProperties = array()) {
+        $cacheKey = 'gallery/album/list/'.md5(serialize($scriptProperties));
+        if ($modx->getCacheManager() && $cache = $modx->cacheManager->get($cacheKey)) {
+            $albums = array();
+            foreach ($cache as $data) {
+                /** @var galAlbum $album */
+                $album = $modx->newObject('galAlbum');
+                $album->fromArray($data,'',true,true);
+                $albums[] = $album;
+            }
+        } else {
+            $sort = $modx->getOption('sort',$scriptProperties,'rank');
+            $dir = $modx->getOption('dir',$scriptProperties,'DESC');
+            $limit = $modx->getOption('limit',$scriptProperties,10);
+            $start = $modx->getOption('start',$scriptProperties,0);
+            $parent = $modx->getOption('parent',$scriptProperties,0);
+            $showInactive = $modx->getOption('showInactive',$scriptProperties,false);
+            $prominentOnly = $modx->getOption('prominentOnly',$scriptProperties,true);
+
+            /* implement tree-style albums*/
+            if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,false)) {
+                $albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
+                if (!empty($_REQUEST[$albumRequestVar])) $parent = $_REQUEST[$albumRequestVar];
+            }
+
+            /* add random sorting for albums */
+            if (in_array(strtolower($sort),array('random','rand()','rand'))) {
+                $sort = 'RAND()';
+                $dir = '';
+            }
+            $c = $modx->newQuery('galAlbum');
+            if (!$showInactive) {
+                $c->where(array(
+                    'active' => true,
+                ));
+            }
+            if ($prominentOnly) {
+                $c->where(array(
+                    'prominent' => true,
+                ));
+            }
+            if (empty($showAll)) {
+                $c->where(array(
+                    'parent' => $parent,
+                ));
+            }
+            $c->sortby($sort,$dir);
+            if ($limit > 0) { $c->limit($limit,$start); }
+            $albums = $modx->getCollection('galAlbum',$c);
+
+            $cache = array();
+            foreach ($albums as $album) {
+                $cache[] = $album->toArray('',true);
+            }
+            $modx->cacheManager->set($cacheKey,$cache);
+        }
+        return $albums;
     }
 }

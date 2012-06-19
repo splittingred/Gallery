@@ -32,31 +32,15 @@ if (!($gallery instanceof Gallery)) return '';
 /* setup default properties */
 $rowTpl = $modx->getOption('rowTpl',$scriptProperties,'galAlbumRowTpl');
 $rowCls = $modx->getOption('rowCls',$scriptProperties,'');
-$showInactive = $modx->getOption('showInactive',$scriptProperties,false);
-$prominentOnly = $modx->getOption('prominentOnly',$scriptProperties,true);
 $toPlaceholder = $modx->getOption('toPlaceholder',$scriptProperties,false);
-$sort = $modx->getOption('sort',$scriptProperties,'rank');
-$dir = $modx->getOption('dir',$scriptProperties,'DESC');
-$limit = $modx->getOption('limit',$scriptProperties,10);
-$start = $modx->getOption('start',$scriptProperties,0);
-$parent = $modx->getOption('parent',$scriptProperties,0);
 $showAll = $modx->getOption('showAll',$scriptProperties,false);
 $albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
 $albumCoverSort = $modx->getOption('albumCoverSort',$scriptProperties,'rank');
 $albumCoverSortDir = $modx->getOption('albumCoverSortDir',$scriptProperties,'ASC');
 $showName = $modx->getOption('showName',$scriptProperties,true);
 
-
-/* implement tree-style albums*/
-if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,false)) {
-    if (!empty($_REQUEST[$albumRequestVar])) $parent = $_REQUEST[$albumRequestVar];
-}
-
-/* add random sorting for albums */
-if (in_array(strtolower($sort),array('random','rand()','rand'))) {
-    $sort = 'RAND()';
-    $dir = '';
-}
+/* build query */
+$albums = $modx->call('galAlbum','getList',array(&$modx,$scriptProperties));
 
 /* handle sorting for album cover */
 if ($albumCoverSort == 'rank') {
@@ -66,27 +50,6 @@ if (in_array(strtolower($albumCoverSort),array('random','rand()','rand'))) {
     $albumCoverSort = 'RAND()';
     $albumCoverSortDir = '';
 }
-
-/* build query */
-$c = $modx->newQuery('galAlbum');
-if (!$showInactive) {
-    $c->where(array(
-        'active' => true,
-    ));
-}
-if ($prominentOnly) {
-    $c->where(array(
-        'prominent' => true,
-    ));
-}
-if (empty($showAll)) {
-    $c->where(array(
-        'parent' => $parent,
-    ));
-}
-$c->sortby($sort,$dir);
-if ($limit > 0) { $c->limit($limit,$start); }
-$albums = $modx->getCollection('galAlbum',$c);
 
 /* get thumb properties for album cover */
 $thumbProperties = $modx->getOption('thumbProperties',$scriptProperties,'');
