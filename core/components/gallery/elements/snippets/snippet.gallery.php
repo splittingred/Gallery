@@ -106,11 +106,11 @@ if (!$showInactive) {
 }
 
 $count = $modx->getCount('galItem',$c);
-$c->select(array('galItem.*'));
+$c->select($modx->getSelectColumns('galItem','galItem'));
 $c->select(array(
-    '('.$tagSql.') AS `tags`'
+    '('.$tagSql.') AS tags',
 ));
-if (strcasecmp($sort,'rand')==0) {
+if (in_array(strtolower($sort),array('random','rand()','rand'))) {
     $c->sortby('RAND()',$dir);
 } else {
     $c->sortby($sortAlias.'.'.$sort,$dir);
