@@ -40,6 +40,10 @@ abstract class GalleryPlugin {
         return $scriptProperties;
     }
 
+    public function renderItem(array &$scriptProperties) {
+
+    }
+
     public function toInt(&$array,array $properties = array()) {
         foreach ($properties as $property) {
             if (isset($array[$property])) {

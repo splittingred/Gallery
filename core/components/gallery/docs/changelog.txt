@@ -2,7 +2,9 @@ Changelog for Gallery.
 
 Gallery 1.5.1
 ====================================
-- Added parameter &checkForRequestAlbumVar to change parameter &parent when you want to show child albums of current album
+- Add Slimbox2 as a front-end plugin
+- Add url to the item attributes for each item
+- Add parameter &checkForRequestAlbumVar to change parameter &parent when you want to show child albums of current album
 
 Gallery 1.5.0
 ====================================

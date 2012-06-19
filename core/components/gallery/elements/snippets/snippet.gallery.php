@@ -42,11 +42,9 @@ $sortAlias = $modx->getOption('sortAlias',$scriptProperties,'galItem');
 if ($sort == 'rank') $sortAlias = 'AlbumItems';
 $dir = $modx->getOption('dir',$scriptProperties,'ASC');
 $showInactive = $modx->getOption('showInactive',$scriptProperties,false);
-$linkToImage = $modx->getOption('linkToImage',$scriptProperties,false);
 $imageGetParam = $modx->getOption('imageGetParam',$scriptProperties,'galItem');
 $albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
 $tagRequestVar = $modx->getOption('tagRequestVar',$scriptProperties,'galTag');
-$itemCls = $modx->getOption('itemCls',$scriptProperties,'gal-item');
 $activeCls = $modx->getOption('activeCls',$scriptProperties,'gal-item-active');
 $highlightItem = $modx->getOption($imageGetParam,$_REQUEST,false);
 
@@ -166,6 +164,10 @@ $thumbProperties = array_merge(array(
 $idx = 0;
 $filesUrl = $modx->call('galAlbum','getFilesUrl',array(&$modx));
 $filesPath = $modx->call('galAlbum','getFilesPath',array(&$modx));
+$itemCls = $modx->getOption('itemCls',$scriptProperties,'gal-item');
+$imageAttributes = $modx->getOption('imageAttributes',$scriptProperties,'');
+$linkAttributes = $modx->getOption('linkAttributes',$scriptProperties,'');
+$linkToImage = $modx->getOption('linkToImage',$scriptProperties,false);
 /** @var galItem $item */
 foreach ($items as $item) {
     $itemArray = $item->toArray();
@@ -181,6 +183,8 @@ foreach ($items as $item) {
     $itemArray['filesize'] = $item->get('filesize');
     $itemArray['thumbnail'] = $item->get('thumbnail',$thumbProperties);
     $itemArray['image'] = $item->get('thumbnail',$imageProperties);
+    $itemArray['image_attributes'] = $imageAttributes;
+    $itemArray['link_attributes'] = $linkAttributes;
     if (!empty($album)) $itemArray['album'] = $album->get('id');
     if (!empty($tag)) $itemArray['tag'] = $tag;
     $itemArray['linkToImage'] = $linkToImage;
@@ -189,6 +193,9 @@ foreach ($items as $item) {
     $itemArray['albumRequestVar'] = $albumRequestVar;
     $itemArray['tagRequestVar'] = $tagRequestVar;
     $itemArray['tag'] = '';
+    if ($plugin) {
+        $plugin->renderItem($itemArray);
+    }
 
     $output .= $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
     $idx++;
