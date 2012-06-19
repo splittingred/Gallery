@@ -44,6 +44,11 @@ $albumCoverSort = $modx->getOption('albumCoverSort',$scriptProperties,'rank');
 $albumCoverSortDir = $modx->getOption('albumCoverSortDir',$scriptProperties,'ASC');
 $showName = $modx->getOption('showName',$scriptProperties,true);
 
+/* implement tree-style albums*/
+if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,false)) {
+    if (!empty($_REQUEST[$albumRequestVar])) $parent = $_REQUEST[$albumRequestVar];
+}
+
 /* add random sorting for albums */
 if (in_array(strtolower($sort),array('random','rand()','rand'))) {
     $sort = 'RAND()';
