@@ -1,5 +1,9 @@
 Changelog for Gallery.
 
+Gallery 1.5.1
+====================================
+- Added parameter &checkForRequestAlbumVar to change parameter &parent when you want to show child albums of current album
+
 Gallery 1.5.0
 ====================================
 - [#205] Add per page box to paging bar in album items view
