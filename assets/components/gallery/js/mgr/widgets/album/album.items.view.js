@@ -64,7 +64,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         this.windows.updateItem = MODx.load({
             xtype: 'gal-window-item-update'
             ,listeners: {
-                'success': {fn:function() { this.run(); },scope:this}
+                'success': {fn:function() { this.store.reload(); },scope:this}
             }
         });
         this.windows.updateItem.setValues(data);
@@ -84,7 +84,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
                 ,id: data.id
             }
             ,listeners: {
-                'success': {fn:function(r) { this.run(); },scope:this}
+                'success': {fn:function(r) { this.store.reload(); },scope:this}
             }
         });
     }
@@ -106,7 +106,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
                 ,ids: ids.substr(1)
             }
             ,listeners: {
-                'success': {fn:function(r) { this.run(); },scope:this}
+                'success': {fn:function(r) { this.store.reload(); },scope:this}
             }
         });
         return true;
@@ -123,16 +123,14 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     }
         
     ,sortBy: function(sel) {
-        var v = sel.getValue();
-        this.store.baseParams.sorter = v;
-        this.run();
+        this.store.baseParams.sorter = sel.getValue();
+        this.store.reload();
         return true;
     }
     
     ,sortDir: function(sel) {
-        var v = sel.getValue();
-        this.store.baseParams.dir = v;
-        this.run();
+        this.store.baseParams.dir = sel.getValue();
+        this.store.reload();
     }
     
     ,showDetails : function(){
