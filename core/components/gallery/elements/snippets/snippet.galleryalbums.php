@@ -22,6 +22,8 @@
 /**
  * Loads a list of Albums
  *
+ * @var modX $modx
+ * @var Gallery $gallery
  * @package gallery
  */
 $gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/gallery/',$scriptProperties);
@@ -100,19 +102,14 @@ $thumbProperties = array_merge(array(
 /* iterate */
 $output = array();
 $idx = 0;
+/** @var galAlbum $album */
 foreach ($albums as $album) {
     $albumArray = $album->toArray();
-    $c = $modx->newQuery('galItem');
-    $c->innerJoin('galAlbumItem','AlbumItems');
-    $c->where(array(
-        'AlbumItems.album' => $album->get('id'),
-    ));
-    $c->sortby($albumCoverSort,$albumCoverSortDir);
-    $c->limit(1);
-    $coverItem = $modx->getObject('galItem',$c);
-    
+
+    $coverItem = $album->getCoverItem($albumCoverSort,$albumCoverSortDir);
     if ($coverItem) {
         $albumArray['image'] = $coverItem->get('thumbnail',$thumbProperties);
+        $albumArray['total'] = $coverItem->get('total');
     }
 
     $albumArray['cls'] = $rowCls;

@@ -46,6 +46,11 @@ class galAlbum extends xPDOSimpleObject {
             $this->set('createdon', strftime('%Y-%m-%d %H:%M:%S'));
         }
         $saved= parent :: save($cacheFlag);
+        if ($saved) {
+            if ($this->xpdo->getCacheManager()) {
+                $this->xpdo->cacheManager->delete('gallery/album/'.$this->get('id'));
+            }
+        }
         return $saved;
     }
 
@@ -219,5 +224,40 @@ class galAlbum extends xPDOSimpleObject {
             $fileName = str_replace(' ','',$relativePath);
         }
         return $fileName;
+    }
+
+    /**
+     * Get the cover item
+     *
+     * @param string $albumCoverSort
+     * @param string $albumCoverSortDir
+     * @return galItem
+     */
+    public function getCoverItem($albumCoverSort = 'rank',$albumCoverSortDir = 'ASC') {
+        $cache = false;
+        $cacheKey = 'gallery/album/'.$this->get('id').'/cover-'.md5($albumCoverSort.$albumCoverSortDir);
+        if ($this->xpdo->getCacheManager()) {
+            $cache = $this->xpdo->cacheManager->get($cacheKey);
+        }
+        if (!$cache) {
+            $c = $this->xpdo->newQuery('galItem');
+            $c->innerJoin('galAlbumItem','AlbumItems');
+            $c->where(array(
+                'AlbumItems.album' => $this->get('id'),
+            ));
+            $c->sortby($albumCoverSort,$albumCoverSortDir);
+            $count = $this->xpdo->getCount('galItem', $c);
+            $c->limit(1);
+            /** @var galItem $item */
+            $item = $this->xpdo->getObject('galItem',$c);
+            $item->set('total',$count);
+            $cache = $item->toArray();
+            $this->xpdo->cacheManager->set($cacheKey,$cache);
+        } else {
+            $item = $this->xpdo->newObject('galItem');
+            $item->fromArray($cache,'',true,true);
+        }
+
+        return $item;
     }
 }
