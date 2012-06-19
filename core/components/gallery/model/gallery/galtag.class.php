@@ -22,4 +22,14 @@
 /**
  * @package gallery
  */
-class galTag extends xPDOSimpleObject {}
+class galTag extends xPDOSimpleObject {
+    public function save($cacheFlag=null) {
+        $saved = parent::save($cacheFlag);
+        if ($saved) {
+            if ($this->xpdo->getCacheManager()) {
+                $this->xpdo->cacheManager->delete('gallery/item/list/');
+            }
+        }
+        return $saved;
+    }
+}

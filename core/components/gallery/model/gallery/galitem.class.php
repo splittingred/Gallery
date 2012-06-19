@@ -147,6 +147,11 @@ class galItem extends xPDOSimpleObject {
             }
         }
         $saved= parent :: save($cacheFlag);
+        if ($saved) {
+            if ($this->xpdo->getCacheManager()) {
+                $this->xpdo->cacheManager->delete('gallery/item/list/');
+            }
+        }
         return $saved;
     }
 
@@ -226,5 +231,119 @@ class galItem extends xPDOSimpleObject {
         $this->set('filename',$newAlbum->get('id').'/'.basename($oldPath));
         $this->save();
         return true;
+    }
+
+    public static function getList(modX &$modx,array $scriptProperties = array()) {
+        $cacheKey = 'gallery/item/list/'.md5(serialize($scriptProperties));
+        if ($modx->getCacheManager() && $cache = $modx->cacheManager->get($cacheKey)) {
+            $items = array();
+            foreach ($cache['items'] as $data) {
+                /** @var galItem $item */
+                $item = $modx->newObject('galItem');
+                $item->fromArray($data,'',true,true);
+                $items[] = $item;
+            }
+
+            $data = array(
+                'items' => $items,
+                'total' => $cache['total'],
+                'album' => $cache['album'],
+            );
+        } else {
+
+            $album = $modx->getOption('album',$scriptProperties,false);
+            $tag = $modx->getOption('tag',$scriptProperties,'');
+            $limit = $modx->getOption('limit',$scriptProperties,0);
+            $start = $modx->getOption('start',$scriptProperties,0);
+            $sort = $modx->getOption('sort',$scriptProperties,'rank');
+            $sortAlias = $modx->getOption('sortAlias',$scriptProperties,'galItem');
+            if ($sort == 'rank') $sortAlias = 'AlbumItems';
+            $dir = $modx->getOption('dir',$scriptProperties,'ASC');
+            $showInactive = $modx->getOption('showInactive',$scriptProperties,false);
+            $activeAlbum = array(
+                'id' => '',
+                'name' => '',
+                'description' => '',
+            );
+
+            $tagc = $modx->newQuery('galTag');
+            $tagc->setClassAlias('TagsJoin');
+            $tagc->select('GROUP_CONCAT('.$modx->getSelectColumns('galTag','TagsJoin','',array('tag')).')');
+            $tagc->where($modx->getSelectColumns('galTag','TagsJoin','',array('item')).' = '.$modx->getSelectColumns('galItem','galItem','',array('id')));
+            $tagc->prepare();
+            $tagSql = $tagc->toSql();
+
+            $c = $modx->newQuery('galItem');
+            $c->innerJoin('galAlbumItem','AlbumItems');
+            $c->innerJoin('galAlbum','Album',$modx->getSelectColumns('galAlbumItem','AlbumItems','',array('album')).' = '.$modx->getSelectColumns('galAlbum','Album','',array('id')));
+
+            /* pull by album */
+            if (!empty($album)) {
+                $albumField = is_numeric($album) ? 'id' : 'name';
+
+                $albumWhere = $albumField == 'name' ? array('name' => $album) : $album;
+                /** @var galAlbum $album */
+                $album = $modx->getObject('galAlbum',$albumWhere);
+                if (empty($album)) return '';
+                $c->where(array(
+                    'Album.'.$albumField => $album->get($albumField),
+                ));
+                $activeAlbum['id'] = $album->get('id');
+                $activeAlbum['name'] = $album->get('name');
+                $activeAlbum['description'] = $album->get('description');
+                unset($albumWhere,$albumField);
+            }
+            if (!empty($tag)) { /* pull by tag */
+                $c->innerJoin('galTag','Tags');
+                $c->where(array(
+                    'Tags.tag' => $tag,
+                ));
+                if (empty($album)) {
+                    $activeAlbum['id'] = 0;
+                    $activeAlbum['name'] = $tag;
+                    $activeAlbum['description'] = '';
+                }
+            }
+            $c->where(array(
+                'galItem.mediatype' => $modx->getOption('mediatype',$scriptProperties,'image'),
+            ));
+            if (!$showInactive) {
+                $c->where(array(
+                    'galItem.active' => true,
+                ));
+            }
+
+            $count = $modx->getCount('galItem',$c);
+            $c->select($modx->getSelectColumns('galItem','galItem'));
+            $c->select(array(
+                '('.$tagSql.') AS tags',
+            ));
+            if (in_array(strtolower($sort),array('random','rand()','rand'))) {
+                $c->sortby('RAND()',$dir);
+            } else {
+                $c->sortby($sortAlias.'.'.$sort,$dir);
+            }
+            if (!empty($limit)) $c->limit($limit,$start);
+            $items = $modx->getCollection('galItem',$c);
+
+            $data = array(
+                'items' => $items,
+                'total' => $count,
+                'album' => $activeAlbum,
+            );
+
+            $cache = array(
+                'items' => array(),
+                'total' => $count,
+                'album' => $activeAlbum,
+            );
+            /** @var galItem $item */
+            foreach ($items as $item) {
+                $cache['items'][] = $item->toArray('',true);
+            }
+
+            $modx->cacheManager->set($cacheKey,$cache);
+        }
+        return $data;
     }
 }

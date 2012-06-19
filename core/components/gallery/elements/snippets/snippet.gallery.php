@@ -31,94 +31,22 @@ $gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_
 if (!($gallery instanceof Gallery)) return '';
 $modx->lexicon->load('gallery:web');
 
-/* setup default properties */
-$album = $modx->getOption('album',$scriptProperties,false);
-$plugin = $modx->getOption('plugin',$scriptProperties,'');
-$tag = $modx->getOption('tag',$scriptProperties,'');
-$limit = $modx->getOption('limit',$scriptProperties,0);
-$start = $modx->getOption('start',$scriptProperties,0);
-$sort = $modx->getOption('sort',$scriptProperties,'rank');
-$sortAlias = $modx->getOption('sortAlias',$scriptProperties,'galItem');
-if ($sort == 'rank') $sortAlias = 'AlbumItems';
-$dir = $modx->getOption('dir',$scriptProperties,'ASC');
-$showInactive = $modx->getOption('showInactive',$scriptProperties,false);
+/* check for REQUEST vars if property set */
 $imageGetParam = $modx->getOption('imageGetParam',$scriptProperties,'galItem');
 $albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
 $tagRequestVar = $modx->getOption('tagRequestVar',$scriptProperties,'galTag');
-$activeCls = $modx->getOption('activeCls',$scriptProperties,'gal-item-active');
-$highlightItem = $modx->getOption($imageGetParam,$_REQUEST,false);
-
-/* check for REQUEST vars if property set */
 if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,true)) {
-    if (!empty($_REQUEST[$albumRequestVar])) $album = $_REQUEST[$albumRequestVar];
+    if (!empty($_REQUEST[$albumRequestVar])) $scriptProperties['album'] = $_REQUEST[$albumRequestVar];
 }
 if ($modx->getOption('checkForRequestTagVar',$scriptProperties,true)) {
-    if (!empty($_REQUEST[$tagRequestVar])) $tag = $_REQUEST[$tagRequestVar];
+    if (!empty($_REQUEST[$tagRequestVar])) $scriptProperties['tag'] = $_REQUEST[$tagRequestVar];
 }
-if (empty($album) && empty($tag)) return '';
+if (empty($scriptProperties['album']) && empty($scriptProperties['tag'])) return '';
 
-/* build query */
-$tagc = $modx->newQuery('galTag');
-$tagc->setClassAlias('TagsJoin');
-$tagc->select('GROUP_CONCAT('.$modx->getSelectColumns('galTag','TagsJoin','',array('tag')).')');
-$tagc->where($modx->getSelectColumns('galTag','TagsJoin','',array('item')).' = '.$modx->getSelectColumns('galItem','galItem','',array('id')));
-$tagc->prepare();
-$tagSql = $tagc->toSql();
-
-$c = $modx->newQuery('galItem');
-$c->innerJoin('galAlbumItem','AlbumItems');
-$c->innerJoin('galAlbum','Album',$modx->getSelectColumns('galAlbumItem','AlbumItems','',array('album')).' = '.$modx->getSelectColumns('galAlbum','Album','',array('id')));
-
-/* pull by album */
-if (!empty($album)) {
-    $albumField = is_numeric($album) ? 'id' : 'name';
-
-    $albumWhere = $albumField == 'name' ? array('name' => $album) : $album;
-    /** @var galAlbum $album */
-    $album = $modx->getObject('galAlbum',$albumWhere);
-    if (empty($album)) return '';
-    $c->where(array(
-        'Album.'.$albumField => $album->get($albumField),
-    ));
-    $galleryId = $album->get('id');
-    $galleryName = $album->get('name');
-    $galleryDescription = $album->get('description');
-    unset($albumWhere,$albumField);
-}
-if (!empty($tag)) { /* pull by tag */
-    $c->innerJoin('galTag','Tags');
-    $c->where(array(
-        'Tags.tag' => $tag,
-    ));
-    if (empty($album)) {
-        $galleryId = 0;
-        $galleryName = $tag;
-        $galleryDescription = '';
-    }
-}
-$c->where(array(
-    'galItem.mediatype' => $modx->getOption('mediatype',$scriptProperties,'image'),
-));
-if (!$showInactive) {
-    $c->where(array(
-        'galItem.active' => true,
-    ));
-}
-
-$count = $modx->getCount('galItem',$c);
-$c->select($modx->getSelectColumns('galItem','galItem'));
-$c->select(array(
-    '('.$tagSql.') AS tags',
-));
-if (in_array(strtolower($sort),array('random','rand()','rand'))) {
-    $c->sortby('RAND()',$dir);
-} else {
-    $c->sortby($sortAlias.'.'.$sort,$dir);
-}
-if (!empty($limit)) $c->limit($limit,$start);
-$items = $modx->getCollection('galItem',$c);
+$data = $modx->call('galItem','getList',array(&$modx,$scriptProperties));
 
 /* load plugins */
+$plugin = $modx->getOption('plugin',$scriptProperties,'');
 if (!empty($plugin)) {
     $pluginPath = $modx->getOption('pluginPath',$scriptProperties,'');
     if (empty($pluginPath)) {
@@ -139,8 +67,6 @@ if (!empty($plugin)) {
 }
 
 /* iterate */
-$output = '';
-
 $imageProperties = $modx->getOption('imageProperties',$scriptProperties,'');
 $imageProperties = !empty($imageProperties) ? $modx->fromJSON($imageProperties) : array();
 $imageProperties = array_merge(array(
@@ -162,14 +88,17 @@ $thumbProperties = array_merge(array(
 ),$thumbProperties);
 
 $idx = 0;
+$output = array();
 $filesUrl = $modx->call('galAlbum','getFilesUrl',array(&$modx));
 $filesPath = $modx->call('galAlbum','getFilesPath',array(&$modx));
 $itemCls = $modx->getOption('itemCls',$scriptProperties,'gal-item');
 $imageAttributes = $modx->getOption('imageAttributes',$scriptProperties,'');
 $linkAttributes = $modx->getOption('linkAttributes',$scriptProperties,'');
 $linkToImage = $modx->getOption('linkToImage',$scriptProperties,false);
+$activeCls = $modx->getOption('activeCls',$scriptProperties,'gal-item-active');
+$highlightItem = $modx->getOption($imageGetParam,$_REQUEST,false);
 /** @var galItem $item */
-foreach ($items as $item) {
+foreach ($data['items'] as $item) {
     $itemArray = $item->toArray();
     $itemArray['idx'] = $idx;
     $itemArray['cls'] = $itemCls;
@@ -185,8 +114,8 @@ foreach ($items as $item) {
     $itemArray['image'] = $item->get('thumbnail',$imageProperties);
     $itemArray['image_attributes'] = $imageAttributes;
     $itemArray['link_attributes'] = $linkAttributes;
-    if (!empty($album)) $itemArray['album'] = $album->get('id');
-    if (!empty($tag)) $itemArray['tag'] = $tag;
+    if (!empty($scriptProperties['album'])) $itemArray['album'] = $scriptProperties['album'];
+    if (!empty($scriptProperties['tag'])) $itemArray['tag'] = $scriptProperties['tag'];
     $itemArray['linkToImage'] = $linkToImage;
     $itemArray['url'] = $item->get('url');
     $itemArray['imageGetParam'] = $imageGetParam;
@@ -197,19 +126,20 @@ foreach ($items as $item) {
         $plugin->renderItem($itemArray);
     }
 
-    $output .= $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
+    $output[] = $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
     $idx++;
 }
+$output = implode("\n",$output);
 
 /* if set, place in a container tpl */
 $containerTpl = $modx->getOption('containerTpl',$scriptProperties,false);
 if (!empty($containerTpl)) {
     $ct = $gallery->getChunk($containerTpl,array(
         'thumbnails' => $output,
-        'album_name' => $galleryName,
-        'album_description' => $galleryDescription,
+        'album_name' => $data['album']['name'],
+        'album_description' => $data['album']['description'],
         'albumRequestVar' => $albumRequestVar,
-        'albumId' => $galleryId,
+        'albumId' => $data['album']['id'],
     ));
     if (!empty($ct)) $output = $ct;
 }
@@ -219,18 +149,18 @@ $toPlaceholder = $modx->getOption('toPlaceholder',$scriptProperties,false);
 if (!empty($toPlaceholder)) {
     $modx->toPlaceholders(array(
         $toPlaceholder => $output,
-        $toPlaceholder.'.id' => $galleryId,
-        $toPlaceholder.'.name' => $galleryName,
-        $toPlaceholder.'.description' => $galleryDescription,
-        $toPlaceholder.'.total' => $count,
+        $toPlaceholder.'.id' => $data['album']['id'],
+        $toPlaceholder.'.name' => $data['album']['name'],
+        $toPlaceholder.'.description' => $data['album']['description'],
+        $toPlaceholder.'.total' => $data['total'],
     ));
 } else {
     $placeholderPrefix = $modx->getOption('placeholderPrefix',$scriptProperties,'gallery.');
     $modx->toPlaceholders(array(
-        $placeholderPrefix.'id' => $galleryId,
-        $placeholderPrefix.'name' => $galleryName,
-        $placeholderPrefix.'description' => $galleryDescription,
-        $placeholderPrefix.'total' => $count,
+        $placeholderPrefix.'id' => $data['album']['id'],
+        $placeholderPrefix.'name' => $data['album']['name'],
+        $placeholderPrefix.'description' => $data['album']['description'],
+        $placeholderPrefix.'total' => $data['total'],
     ));
     return $output;
 }

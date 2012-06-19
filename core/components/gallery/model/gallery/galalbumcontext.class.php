@@ -22,4 +22,17 @@
 /**
  * @package gallery
  */
-class galAlbumContext extends xPDOSimpleObject {}
+class galAlbumContext extends xPDOSimpleObject {
+
+
+    public function save($cacheFlag=null) {
+        $saved = parent::save($cacheFlag);
+        if ($saved) {
+            if ($this->xpdo->getCacheManager()) {
+                $this->xpdo->cacheManager->delete('gallery/album/'.$this->get('album_id'));
+                $this->xpdo->cacheManager->delete('gallery/item/list/');
+            }
+        }
+        return $saved;
+    }
+}

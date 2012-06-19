@@ -43,6 +43,7 @@ class galAlbumItem extends xPDOSimpleObject {
         if ($saved) {
             if ($this->xpdo->getCacheManager()) {
                 $this->xpdo->cacheManager->delete('gallery/album/'.$this->get('album_id'));
+                $this->xpdo->cacheManager->delete('gallery/item/list/');
             }
         }
         return $saved;
