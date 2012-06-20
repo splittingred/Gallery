@@ -252,9 +252,14 @@ class galAlbum extends xPDOSimpleObject {
             $c->limit(1);
             /** @var galItem $item */
             $item = $this->xpdo->getObject('galItem',$c);
-            $item->set('total',$count);
-            $cache = $item->toArray();
-            $this->xpdo->cacheManager->set($cacheKey,$cache);
+            if($item) {
+                $item->set('total',$count);
+	            $cache = $item->toArray();
+	            $this->xpdo->cacheManager->set($cacheKey,$cache);
+	        }
+	        else {
+		        // Dummy cover here?
+	        }
         } else {
             $item = $this->xpdo->newObject('galItem');
             $item->fromArray($cache,'',true,true);
