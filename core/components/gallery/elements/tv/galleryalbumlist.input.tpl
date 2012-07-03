@@ -16,7 +16,7 @@ Ext.onReady(function() {
         ,'<div style="clear: both;"></div></div></tpl>'
     );
 
-    MODx.load({{/literal}
+    var fld = MODx.load({{/literal}
         xtype: 'combo'
         ,store: galStore{$tv->id}
         ,displayField: 'name'
@@ -44,8 +44,15 @@ Ext.onReady(function() {
         {/if}
         ,forceSelection: {if $params.forceSelection && $params.forceSelection != 'false'}true{else}false{/if}
         ,msgTarget: 'under'
+        ,listeners: { 'select': { fn:MODx.fireResourceFormChange, scope:this}}
         
     {literal}});
+
+    var pr = Ext.getCmp('modx-panel-resource');
+    if (pr) {
+        pr.getForm().add(fld);
+    }
+    MODx.makeDroppable(fld);
 });
 // ]]>
 </script>

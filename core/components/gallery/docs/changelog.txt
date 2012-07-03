@@ -2,6 +2,7 @@ Changelog for Gallery.
 
 Gallery 1.5.2
 ====================================
+- [#219] Ensure that GalleryAlbums custom TV marks resource edit form dirty and enables save button
 - [#214] Enable Gallery Album browsing via MODX.Browser window
 - [#217] Add default cover when using GalleryAlbums with cover displays and no item is in the album
 
