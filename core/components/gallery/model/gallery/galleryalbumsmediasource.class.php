@@ -115,7 +115,97 @@ class GalleryAlbumsMediaSource extends modMediaSource implements modMediaSourceI
      * @param string $path
      * @return array
      */
-    public function getObjectsInContainer($path) { }
+    public function getObjectsInContainer($path) {
+        $properties = $this->getPropertyList();
+        $list = array();
+        if ($path == '/') {
+            // Nothing to do?  Perhaps displaying all gallery items, or a list of albums might be good.
+        }
+        else {
+            $id = explode('-',$path);
+            $id = (int)$id[1];
+
+            /* get items */
+            $c = $this->xpdo->newQuery('galItem');
+            $c->innerJoin('galAlbumItem','AlbumItems');
+            $c->leftJoin('galTag','Tags');
+            $c->select($this->xpdo->getSelectColumns('galItem','galItem'));
+            $c->select(array(
+                'AlbumItems.rank',
+                '(SELECT GROUP_CONCAT(Tags.tag) FROM '.$this->xpdo->getTableName('galTag').' Tags WHERE Tags.item = galItem.id) AS tags',
+            ));
+            $c->select(array());
+            $c->where(array(
+                'AlbumItems.album' => $id,
+            ));
+            $c->sortby('AlbumItems.rank','ASC');
+            $items = $this->xpdo->getCollection('galItem',$c);
+            /** @var galItem $item */
+            foreach ($items as $item) {
+                $itemArray = $item->toArray();
+                $itemArray['image'] = $item->get('image');
+                $itemArray['absoluteImage'] = $item->get('absoluteImage');
+                $itemArray['relativeImage'] = $item->get('relativeImage');
+                
+                $imageWidth = $this->ctx->getOption('filemanager_image_width', 400);
+                $imageHeight = $this->ctx->getOption('filemanager_image_height', 300);
+                $thumbHeight = $this->ctx->getOption('filemanager_thumb_height', 60);
+                $thumbWidth = $this->ctx->getOption('filemanager_thumb_width', 80);
+
+                $size = @getimagesize($itemArray['image']);
+                if (is_array($size)) {
+                    $imageWidth = $size[0] > 800 ? 800 : $size[0];
+                    $imageHeight = $size[1] > 600 ? 600 : $size[1];
+                }
+
+                /* ensure max h/w */
+                if ($thumbWidth > $imageWidth) $thumbWidth = $imageWidth;
+                if ($thumbHeight > $imageHeight) $thumbHeight = $imageHeight;
+
+                /* generate thumb/image URLs */
+                $thumbQuery = http_build_query(array(
+                    'src' => $itemArray['image'],
+                    'w' => $thumbWidth,
+                    'h' => $thumbHeight,
+                    'f' => $thumbnailType,
+                    'q' => $thumbnailQuality,
+                    'HTTP_MODAUTH' => $modAuth,
+                    'wctx' => $this->ctx->get('key'),
+                    'source' => $this->get('id'),
+                ));
+                $imageQuery = http_build_query(array(
+                    'src' => $itemArray['image'],
+                    'w' => $imageWidth,
+                    'h' => $imageHeight,
+                    'HTTP_MODAUTH' => $modAuth,
+                    'f' => $thumbnailType,
+                    'q' => $thumbnailQuality,
+                    'wctx' => $this->ctx->get('key'),
+                    'source' => $this->get('id'),
+                ));
+                $thumb = $this->ctx->getOption('connectors_url', MODX_CONNECTORS_URL).'system/phpthumb.php?'.urldecode($thumbQuery);
+                $image = $this->ctx->getOption('connectors_url', MODX_CONNECTORS_URL).'system/phpthumb.php?'.urldecode($imageQuery);
+
+                $list[] = array(
+                    'id' => 'item-'.$item->get('id'),
+                    'name' => $item->get('name'),
+                    'cls' => 'icon-album-item icon-jpg',
+                    'type' => 'gallery-item',
+                    'leaf' => true,
+                    'image' => $image,
+                    'image_width' => $imageWidth,
+                    'image_height' => $imageHeight,
+                    'thumb' => $thumb,
+                    'thumb_width' => $thumbWidth,
+                    'thumb_height' => $thumbHeight,
+                    'url' => $itemArray['image'],
+                    'relativeUrl' => $itemArray['relativeImage'],
+                    'fullRelativeUrl' => $itemArray['relativeImage'],
+                );
+            }
+        }
+        return $list;
+    }
 
     /**
      * Create a container at the passed location with the passed name
