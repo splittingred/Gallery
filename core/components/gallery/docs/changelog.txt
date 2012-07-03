@@ -1,5 +1,9 @@
 Changelog for Gallery.
 
+Gallery 1.5.2
+====================================
+- [#217] Add default cover when using GalleryAlbums with cover displays and no item is in the album
+
 Gallery 1.5.1
 ====================================
 - Add DB caching to Gallery and GalleryAlbums snippets, reducing page load times

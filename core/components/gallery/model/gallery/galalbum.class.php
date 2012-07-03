@@ -241,7 +241,7 @@ class galAlbum extends xPDOSimpleObject {
         if ($this->xpdo->getCacheManager()) {
             $cache = $this->xpdo->cacheManager->get($cacheKey);
         }
-        if (!$cache) {
+        if (!$cache || true) {
             $c = $this->xpdo->newQuery('galItem');
             $c->innerJoin('galAlbumItem','AlbumItems');
             $c->where(array(
@@ -250,8 +250,22 @@ class galAlbum extends xPDOSimpleObject {
             $c->sortby($albumCoverSort,$albumCoverSortDir);
             $count = $this->xpdo->getCount('galItem', $c);
             $c->limit(1);
+
             /** @var galItem $item */
             $item = $this->xpdo->getObject('galItem',$c);
+            if (empty($item)) {
+                $assetsUrl = $this->xpdo->getOption('gallery.assets_url',null,$this->xpdo->getOption('assets_url',null,MODX_ASSETS_URL).'gallery/');
+                if (strpos($assetsUrl,'http') === false && defined('MODX_URL_SCHEME') && defined('MODX_HTTP_HOST')) {
+                    $assetsUrl = MODX_URL_SCHEME.MODX_HTTP_HOST.$assetsUrl;
+                }
+                $item = $this->xpdo->newObject('galItem');
+                $item->fromArray(array(
+                    'name' => '',
+                    'filename' => $assetsUrl.'images/album-empty.jpg',
+                    'absolute_filename' => true,
+                    'active' => true,
+                ));
+	        }
             $item->set('total',$count);
             $cache = $item->toArray();
             $this->xpdo->cacheManager->set($cacheKey,$cache);

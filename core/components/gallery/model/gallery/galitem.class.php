@@ -28,8 +28,13 @@ class galItem extends xPDOSimpleObject {
             case 'thumbnail':
                 $value = $this->getPhpThumbUrl();
                 if (empty($format)) $format = array();
-                $format['src'] = $this->getSiteUrl();
-                $format['src'] .= $this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$this->get('filename');
+                $filename = $this->get('filename');
+                if ($this->get('absolute_filename')) {
+                    $format['src'] = $filename;
+                } else {
+                    $format['src'] = $this->getSiteUrl();
+                    $format['src'] .= $this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
+                }
                 $url = $value.'&'.http_build_query($format,'','&');
                 if ($this->xpdo->getOption('xhtml_urls',null,false)) {
                     $value = str_replace('&','&amp;',$url);
@@ -40,9 +45,13 @@ class galItem extends xPDOSimpleObject {
                 break;
             case 'image':
                 if (empty($format)) $format = array();
-                $format['src'] = $this->getSiteUrl();
-                $format['src'] .= $this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$this->get('filename');
-
+                $filename = $this->get('filename');
+                if ($this->get('absolute_filename')) {
+                    $format['src'] = $filename;
+                } else {
+                    $format['src'] = $this->getSiteUrl();
+                    $format['src'] .= $this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
+                }
                 $value = $this->getPhpThumbUrl().'&'.http_build_query($format,'','&');
                 $value = $this->xpdo->getOption('xhtml_urls',null,false) ? str_replace('&','&amp;',$value) : $value;
                 break;
