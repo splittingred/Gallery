@@ -261,6 +261,7 @@ class galItem extends xPDOSimpleObject {
         } else {
 
             $album = $modx->getOption('album',$scriptProperties,false);
+            $depth = $modx->getOption('depth',$scriptProperties,false);
             $tag = $modx->getOption('tag',$scriptProperties,'');
             $limit = $modx->getOption('limit',$scriptProperties,0);
             $start = $modx->getOption('start',$scriptProperties,0);
@@ -297,6 +298,12 @@ class galItem extends xPDOSimpleObject {
                 $c->where(array(
                     'Album.'.$albumField => $album->get($albumField),
                 ));
+                /* Also display some sublevels of albums if asked for */
+                if ($depth) {
+                    $childAlbums = $album->getChildIds($depth);
+                    if ($childAlbums)
+                        $c->orCondition(array('Album.id:IN' => $childAlbums));
+                }
                 $activeAlbum['id'] = $album->get('id');
                 $activeAlbum['name'] = $album->get('name');
                 $activeAlbum['description'] = $album->get('description');

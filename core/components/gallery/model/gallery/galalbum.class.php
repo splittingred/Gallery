@@ -335,4 +335,33 @@ class galAlbum extends xPDOSimpleObject {
         }
         return $albums;
     }
+
+    /**
+     * Return array with ids of children albums up to given depth
+     * 
+     * @param int    $depth    How many sublevels of albums to get. Set to -1 to grab all the sublevels.
+     * @return array           An array of IDs of children of this album (if found any, otherwise false).
+     */
+    public function getChildIds ($depth) {
+        $childIds = array();
+        
+        if ($depth) {
+            $children = $this->getMany('Children');
+            if (count($children)) {
+                foreach ((array) $children as $child) {
+                    $childIds[] = $child->get('id');
+                }
+                if ($depth > 1 || $depth < 0) {
+                    foreach ($children as $child) {
+                        $childChildrenIds = $child->getChildIds($depth - 1);
+                        if ($childChildrenIds)
+                            $childIds = array_merge($childIds, $childChildrenIds);
+                    }
+                }
+                return $childIds;
+            }
+            /* If no children found */
+            return false;
+        }
+    }
 }
