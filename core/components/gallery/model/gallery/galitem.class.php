@@ -262,6 +262,7 @@ class galItem extends xPDOSimpleObject {
 
             $album = $modx->getOption('album',$scriptProperties,false);
             $depth = $modx->getOption('depth',$scriptProperties,false);
+            $groupByAlbum = $modx->getOption('groupByAlbum',$scriptProperties,true); // Only if using &depth
             $tag = $modx->getOption('tag',$scriptProperties,'');
             $limit = $modx->getOption('limit',$scriptProperties,0);
             $start = $modx->getOption('start',$scriptProperties,0);
@@ -334,6 +335,10 @@ class galItem extends xPDOSimpleObject {
             $c->select(array(
                 '('.$tagSql.') AS tags',
             ));
+            /* If &depth option is in use, group by albums first */
+            if ($depth && $groupByAlbum) {
+                $c->sortby('Album.rank', 'ASC');
+            }
             if (in_array(strtolower($sort),array('random','rand()','rand'))) {
                 $c->sortby('RAND()',$dir);
             } else {
