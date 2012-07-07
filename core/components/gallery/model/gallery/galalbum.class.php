@@ -343,25 +343,25 @@ class galAlbum extends xPDOSimpleObject {
      * @return array           An array of IDs of children of this album (if found any, otherwise false).
      */
     public function getChildIds ($depth) {
+        // Depth may have reached zero in recursion
+        if (empty($depth)) return false;
+
         $childIds = array();
-        
-        if ($depth) {
-            $children = $this->getMany('Children');
-            if (count($children)) {
-                foreach ((array) $children as $child) {
-                    $childIds[] = $child->get('id');
-                }
-                if ($depth > 1 || $depth < 0) {
-                    foreach ($children as $child) {
-                        $childChildrenIds = $child->getChildIds($depth - 1);
-                        if ($childChildrenIds)
-                            $childIds = array_merge($childIds, $childChildrenIds);
-                    }
-                }
-                return $childIds;
+        $children = $this->getMany('Children');
+        if (count($children)) {
+            foreach ((array) $children as $child) {
+                $childIds[] = $child->get('id');
             }
-            /* If no children found */
-            return false;
+            if ($depth > 1 || $depth < 0) {
+                foreach ($children as $child) {
+                    $childChildrenIds = $child->getChildIds($depth - 1);
+                    if ($childChildrenIds)
+                        $childIds = array_merge($childIds, $childChildrenIds);
+                }
+            }
+            return $childIds;
         }
+        /* If no children found */
+        return false;
     }
 }
