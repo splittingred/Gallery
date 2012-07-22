@@ -21,6 +21,7 @@
  */
 /**
  * German Lexicon Entries for Galleriffic plugin
+ * Translated by Martin Gartner (gadgetto) / bitego.com
  *
  * @package gallery
  * @subpackage galleriffic

@@ -21,6 +21,7 @@
  */
 /**
  * Media Source German Lexicon Entries for Gallery
+ * Translated by Martin Gartner (gadgetto) / bitego.com
  *
  * @var array $_lang
  * @package gallery

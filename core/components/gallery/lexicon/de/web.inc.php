@@ -21,6 +21,7 @@
  */
 /**
  * German Lexicon Entries
+ * Translated by Martin Gartner (gadgetto) / bitego.com
  *
  * @package gallery
  * @subpackage lexicon

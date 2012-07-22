@@ -21,6 +21,7 @@
  */
 /**
  * Custom TV German Lexicon Entries for Gallery
+ * Translated by Martin Gartner (gadgetto) / bitego.com
  *
  * @package gallery
  * @subpackage lexicon
