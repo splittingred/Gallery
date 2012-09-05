@@ -355,4 +355,31 @@ class Gallery {
         $this->debugTimer = false;
         return $totalTime;
     }
+    
+    /**
+     * Recursion
+     * Return all childs and subchilds for selected album
+     *
+     * @access public
+     * @param GalAlbumItem $album Album for which is selecting childs
+     * @param array $albumsWithSubs Array with results
+     * @param string $sort Element to sort by
+     * @param string $dir Sort direction
+     * @param int $deep Depth of actual album
+     */
+    public function getAllChilds($album, &$albumsWithSubs, $sort, $dir, $deep){
+        $c = $this->modx->newQuery('galAlbum');
+        $c->where(array(
+            'parent' => $album->get('id'),
+            'active' => 1,
+        ));
+        $c->sortby($sort,$dir);
+        $album->set('name', str_repeat('&nbsp;&nbsp;', ($deep == -1)? 0 : $deep).$album->get('name'));
+        $subAlbums = $this->modx->getCollection('galAlbum',$c);
+        
+        foreach($subAlbums as $subAlbum){
+            $albumsWithSubs[] = $subAlbum;
+            $this->getAllChilds($subAlbum, $albumsWithSubs, $sort, $dir, $deep+1);
+        }
+    }
 }
