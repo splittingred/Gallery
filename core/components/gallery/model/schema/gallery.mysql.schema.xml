@@ -39,6 +39,7 @@
     <object class="galAlbum" table="gallery_albums" extends="xPDOSimpleObject">
         <field key="parent" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
         <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="index" />
+        <field key="year" dbtype="varchar" precision="255" phptype="string" />
         <field key="description" dbtype="text" phptype="string" />
         <field key="createdon" dbtype="datetime" phptype="datetime" null="true" />
         <field key="createdby" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />

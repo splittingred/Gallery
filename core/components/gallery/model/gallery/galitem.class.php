@@ -300,6 +300,7 @@ class galItem extends xPDOSimpleObject {
                 $activeAlbum['id'] = $album->get('id');
                 $activeAlbum['name'] = $album->get('name');
                 $activeAlbum['description'] = $album->get('description');
+                $activeAlbum['year'] = $album->get('year');
                 unset($albumWhere,$albumField);
             }
             if (!empty($tag)) { /* pull by tag */

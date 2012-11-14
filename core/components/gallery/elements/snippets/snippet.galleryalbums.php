@@ -57,7 +57,7 @@ $thumbProperties = !empty($thumbProperties) ? $modx->fromJSON($thumbProperties) 
 $thumbProperties = array_merge(array(
     'w' => (int)$modx->getOption('thumbWidth',$scriptProperties,100),
     'h' => (int)$modx->getOption('thumbHeight',$scriptProperties,100),
-    'zc' => (boolean)$modx->getOption('thumbZoomCrop',$scriptProperties,1),
+    'zc' => (string)$modx->getOption('thumbZoomCrop',$scriptProperties,1),
     'far' => (string)$modx->getOption('thumbFar',$scriptProperties,'C'),
     'q' => (int)$modx->getOption('thumbQuality',$scriptProperties,90),
 ),$thumbProperties);

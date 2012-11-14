@@ -293,6 +293,7 @@ class galAlbum extends xPDOSimpleObject {
             $limit = $modx->getOption('limit',$scriptProperties,10);
             $start = $modx->getOption('start',$scriptProperties,0);
             $parent = $modx->getOption('parent',$scriptProperties,0);
+	    $id = $modx->getOption('id',$scriptProperties,false);
             $showInactive = $modx->getOption('showInactive',$scriptProperties,false);
             $prominentOnly = $modx->getOption('prominentOnly',$scriptProperties,true);
 
@@ -325,6 +326,12 @@ class galAlbum extends xPDOSimpleObject {
             }
             $c->sortby($sort,$dir);
             if ($limit > 0) { $c->limit($limit,$start); }
+	    if (!empty($id)) {
+		    $c->where(array(
+		    	'id' => $id,
+	    	    ));
+	    }
+
             $albums = $modx->getCollection('galAlbum',$c);
 
             $cache = array();
