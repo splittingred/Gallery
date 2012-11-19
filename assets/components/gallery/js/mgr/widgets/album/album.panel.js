@@ -1,6 +1,6 @@
 GAL.panel.Album = function(config) {
     config = config || {};
-        
+
     Ext.apply(config,{
         id: 'gal-panel-album'
         ,url: GAL.config.connector_url
@@ -51,6 +51,7 @@ GAL.panel.Album = function(config) {
                             ,fieldLabel: _('description')
                             ,name: 'description'
                             ,anchor: '100%'
+                            ,id: 'gal-album-description'
                         }]
                     },{
                         columnWidth: .4
@@ -112,6 +113,7 @@ Ext.extend(GAL.panel.Album,MODx.FormPanel,{
     initialized: false
     ,setup: function() {
         if (!this.config.album || this.initialized) return;
+        if (typeof Tiny != 'undefined') { MODx.loadRTE('gal-album-description'); }
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
@@ -142,7 +144,7 @@ Ext.reg('gal-panel-album',GAL.panel.Album);
 
 GAL.panel.AlbumItems = function(config) {
     config = config || {};
-    
+
     this.view = MODx.load({
         id: 'gal-album-items-view'
         ,xtype: 'gal-view-album-items'
@@ -192,13 +194,13 @@ GAL.panel.AlbumItems = function(config) {
 	    ]
     });
     var dv = this.view;
-    
-    
+
+
     dv.on('render', function() {
         dv.dragZone = new MODx.DataView.dragZone(dv);
         dv.dropZone = new MODx.DataView.dropZone(dv);
     });
-    
+
     Ext.applyIf(config,{
         id: 'gal-panel-album-items'
         ,cls: 'browser-win'
@@ -257,7 +259,7 @@ GAL.panel.AlbumItems = function(config) {
         }]
     });
     GAL.panel.AlbumItems.superclass.constructor.call(this,config);
-    
+
 };
 Ext.extend(GAL.panel.AlbumItems,MODx.Panel,{
     windows: {}

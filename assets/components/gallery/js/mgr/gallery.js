@@ -91,7 +91,12 @@ GAL.window.CreateAlbum = function(config) {
         }]
     });
     GAL.window.CreateAlbum.superclass.constructor.call(this,config);
+    this.on('activate',function() {
+        if (typeof Tiny != 'undefined') { MODx.loadRTE(this.ident + '-description'); }
+    });
+
 };
+
 Ext.extend(GAL.window.CreateAlbum,MODx.Window);
 Ext.reg('gal-window-album-create',GAL.window.CreateAlbum);
 
