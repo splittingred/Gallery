@@ -24,7 +24,7 @@
  *
  * @var modX $modx
  * @var Gallery $gallery
- * 
+ *
  * @package gallery
  */
 $gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/gallery/',$scriptProperties);
@@ -153,6 +153,7 @@ if (!empty($toPlaceholder)) {
         $toPlaceholder.'.name' => $data['album']['name'],
         $toPlaceholder.'.description' => $data['album']['description'],
         $toPlaceholder.'.total' => $data['total'],
+        $toPlaceholder.'.coverId' => $data['coverId'],
     ));
 } else {
     $placeholderPrefix = $modx->getOption('placeholderPrefix',$scriptProperties,'gallery.');
@@ -161,6 +162,7 @@ if (!empty($toPlaceholder)) {
         $placeholderPrefix.'name' => $data['album']['name'],
         $placeholderPrefix.'description' => $data['album']['description'],
         $placeholderPrefix.'total' => $data['total'],
+        $placeHolderPrefix.'.coverId' => $data['coverId'],
     ));
     return $output;
 }

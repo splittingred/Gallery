@@ -121,7 +121,7 @@ class galItem extends xPDOSimpleObject {
         }
         return parent::set($k,$v,$vType);
     }
-    
+
     /**
      * Upload a file to an album
      *
@@ -257,6 +257,7 @@ class galItem extends xPDOSimpleObject {
                 'items' => $items,
                 'total' => $cache['total'],
                 'album' => $cache['album'],
+                'coverId' => $cache['coverId'],
             );
         } else {
 
@@ -273,6 +274,7 @@ class galItem extends xPDOSimpleObject {
                 'id' => '',
                 'name' => '',
                 'description' => '',
+                'coverId' => '',
             );
 
             $tagc = $modx->newQuery('galTag');
@@ -339,12 +341,14 @@ class galItem extends xPDOSimpleObject {
                 'items' => $items,
                 'total' => $count,
                 'album' => $activeAlbum,
+                'coverId' => $album->getCoverItem()->id,
             );
 
             $cache = array(
                 'items' => array(),
                 'total' => $count,
                 'album' => $activeAlbum,
+                'coverId' => $album->getCoverItem()->id,
             );
             /** @var galItem $item */
             foreach ($items as $item) {
