@@ -76,12 +76,19 @@ $encoding = $modx->getOption('modx_charset',null,'UTF-8');
 /* iterate */
 $images = array();
 $errors = array();
+$files = array();
 foreach (new DirectoryIterator($fullpath) as $file) {
     if (in_array($file,array('.','..','.svn','_notes'))) continue;
     if (!$file->isReadable() || $file->isDir()) continue;
 
-    $fileName = $file->getFilename();
-    $filePathName = $file->getPathname();
+    $files[$file->getFilename()] = array(
+        'pathname' => $file->getPathname()
+    );
+}
+ksort($files);
+foreach ($files as $f_name => $file) {
+    $fileName = $f_name;
+    $filePathName = $file['pathname'];
 
     $fileExtension = pathinfo($filePathName,PATHINFO_EXTENSION);
     $fileExtension = $use_multibyte ? mb_strtolower($fileExtension,$encoding) : strtolower($fileExtension);
