@@ -264,6 +264,9 @@ class galItem extends xPDOSimpleObject {
             $tag = $modx->getOption('tag',$scriptProperties,'');
             $limit = $modx->getOption('limit',$scriptProperties,0);
             $start = $modx->getOption('start',$scriptProperties,0);
+            /* Fix to make it work with getPage which uses "offset" instead of "start" */
+            $offset = $modx->getOption('offset',$scriptProperties,0);
+            if ($offset > 0) { $start = $offset; }
             $sort = $modx->getOption('sort',$scriptProperties,'rank');
             $sortAlias = $modx->getOption('sortAlias',$scriptProperties,'galItem');
             if ($sort == 'rank') $sortAlias = 'AlbumItems';

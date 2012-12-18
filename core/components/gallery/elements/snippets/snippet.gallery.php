@@ -44,6 +44,8 @@ if ($modx->getOption('checkForRequestTagVar',$scriptProperties,true)) {
 if (empty($scriptProperties['album']) && empty($scriptProperties['tag'])) return '';
 
 $data = $modx->call('galItem','getList',array(&$modx,$scriptProperties));
+$totalVar = $modx->getOption('totalVar', $scriptProperties, 'total');
+$modx->setPlaceholder($totalVar,$data['total']);
 
 /* load plugins */
 $plugin = $modx->getOption('plugin',$scriptProperties,'');
