@@ -45,7 +45,8 @@
         <field key="rank" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" />
         <field key="active" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
         <field key="prominent" dbtype="tinyint" precision="1" phptype="integer" attributes="unsigned" null="false" default="0" />
-        <field key="watermark" dbtype="varchar" precision="255" phptype="string" null="false" default="" /> 
+        <field key="watermark" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+	    <field key="cover_filename" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
 
         <index alias="parent" name="parent" primary="false" unique="false" type="BTREE">
             <column key="parent" length="" collation="A" null="false" />

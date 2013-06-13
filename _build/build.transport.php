@@ -34,8 +34,8 @@ set_time_limit(0);
 /* define package */
 define('PKG_NAME','Gallery');
 define('PKG_NAME_LOWER','gallery');
-define('PKG_VERSION','1.5.2');
-define('PKG_RELEASE','pl');
+define('PKG_VERSION','1.5.3');
+define('PKG_RELEASE','a2');
 
 /* define sources */
 $root = dirname(dirname(__FILE__)).'/';

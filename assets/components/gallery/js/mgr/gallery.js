@@ -321,6 +321,59 @@ GAL.window.UploadItem = function(config) {
 Ext.extend(GAL.window.UploadItem,MODx.Window);
 Ext.reg('gal-window-item-upload',GAL.window.UploadItem);
 
+GAL.window.UploadCover = function(config) {
+    config = config || {};
+    this.ident = config.ident || 'gupit'+Ext.id();
+    Ext.applyIf(config,{
+        title: _('gallery.cover_upload')
+        ,id: this.ident
+        ,height: 150
+        ,width: 350
+        ,minWidth: 350
+        ,saveBtnText:_('gallery.upload_cover')
+        ,url: GAL.config.connector_url
+        ,action: 'mgr/album/uploadcover'
+        ,fileUpload: true
+        ,fields: [{
+            xtype: 'hidden'
+            ,name: 'albumid'
+        },{
+            layout: 'column'
+            ,border: false
+            ,defaults: {
+                layout: 'form'
+                ,labelAlign: 'top'
+                ,border: false
+                ,cls:'main-wrapper'
+                ,labelSeparator: ''
+            }
+            ,items: [{
+                columnWidth: 1
+                ,items: [{
+                    xtype:'hidden'
+                    ,name:'id'
+                },{
+                    xtype: 'textfield'
+                    ,inputType: 'file'
+                    ,fieldLabel: _('gallery.file')
+                    ,description: MODx.expandHelp ? '' : _('gallery.item_upload_file_desc')
+                    ,name: 'file'
+                    ,id: this.ident+'-file'
+                    ,anchor: '100%'
+                },{
+                    xtype:'panel'
+                    ,fieldLabel: _('gallery.current_cover')
+                    ,html: ''
+                    ,id: this.ident+'-preview'
+                }]
+            }]
+        }]
+    });
+    GAL.window.UploadCover.superclass.constructor.call(this,config);
+};
+Ext.extend(GAL.window.UploadCover,MODx.Window);
+Ext.reg('gal-window-cover-update',GAL.window.UploadCover);
+
 
 GAL.window.UploadMultiItems = function(config) {
     config = config || {};
