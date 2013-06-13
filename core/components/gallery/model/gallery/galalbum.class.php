@@ -228,6 +228,112 @@ class galAlbum extends xPDOSimpleObject {
         return $fileName;
     }
 
+    public function getCoverUrl() {
+        $value='';
+        if($this->get('cover_filename')!='') {
+            $assetsUrl = $this->xpdo->getOption('gallery.assets_url',null,$this->xpdo->getOption('assets_url',null,MODX_ASSETS_URL).'components/gallery/');
+            $assetsUrl .= 'connector.php?action=web/phpthumb';
+            if (empty($format)) $format = array();
+            $format['w']=100;
+            $format['h']=100;
+            $format['zc']=1;
+            $filename = $this->get('cover_filename');
+            $format['src'] = '';
+            if ($this->xpdo->getOption('gallery.thumbs_prepend_site_url',null,false)) {
+                $format['src'] = MODX_URL_SCHEME.$_SERVER['HTTP_HOST'];
+            }
+            $format['src'] .= $this->getFilesUrl($this->xpdo).$filename;
+            $url = $assetsUrl.'&'.http_build_query($format,'','&');
+            if ($this->xpdo->getOption('xhtml_urls',null,false)) {
+                $value = str_replace('&','&amp;',$url);
+                $value = str_replace('&amp;amp;','&amp;',$value);
+            } else {
+                $value =  $url;
+            }
+        }
+        return $value;
+    }
+
+    private function cleanCoverCache() {
+        $assetsPath = $this->xpdo->getOption('gallery.assets_path',null,$this->xpdo->getOption('assets_path').'components/gallery/');
+        $cacheDir = $assetsPath.'cache/';
+        $filepath=str_replace(array('/','\\'),'_',$this->getPath()).'cover\.';
+        try {
+            $hDir=opendir($cacheDir);
+            while($file=readdir($hDir)) {
+                if(preg_match('#^'.$filepath.'#i',$file)) {
+                    @unlink($cacheDir.$file);
+                }
+            }
+        } catch(Exception $e) {
+            if($hDir)
+                closedir($hDir);
+            echo $e;
+        }
+    }
+
+    public function setCoverFile($item) {
+        $fileName = false;
+        $albumDir = $this->getPath(false);
+        $targetDir = $this->getPath();
+
+        /* if directory doesnt exist, create it */
+        if (!$this->ensurePathExists()) {
+            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$targetDir);
+            return $fileName;
+        }
+        if (!$this->isPathWritable()) {
+            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
+            return $fileName;
+        }
+
+        $this->cleanCoverCache();
+
+        if($item instanceof galItem) {
+            /* upload the file */
+            $filePath=$item->getPath();
+            $extension = pathinfo($filePath,PATHINFO_EXTENSION);
+            $shortName = 'cover.'.$extension;
+            $relativePath = $albumDir.$shortName;
+            $absolutePath = $targetDir.$shortName;
+            if (@file_exists($absolutePath)) {
+                @unlink($absolutePath);
+            }
+            if (!@copy($filePath,$absolutePath)) {
+                $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to copy the file: '.$filePath.' to '.$absolutePath);
+            } else {
+                $fileName = str_replace(' ','',$relativePath);
+            }
+            return $fileName;
+        } elseif (is_array($item)) {
+            /* upload the file */
+            $filePath=$item['name'];
+            $extension = pathinfo($filePath,PATHINFO_EXTENSION);
+            $shortName = 'cover.'.$extension;
+            $relativePath = $albumDir.$shortName;
+            $absolutePath = $targetDir.$shortName;
+
+            if (@file_exists($absolutePath)) {
+                @unlink($absolutePath);
+            }
+            if (!@move_uploaded_file($item['tmp_name'],$absolutePath)) {
+                $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
+            } else {
+                $fileName = str_replace(' ','',$relativePath);
+            }
+            return $fileName;
+        }
+        return false;
+    }
+
+    public function setCoverItem($item) {
+        if($filename=$this->setCoverFile($item)) {
+            $this->set('cover_filename',$filename);
+            return $this->save();
+        }
+        return false;
+    }
+
     /**
      * Get the cover item
      *
@@ -242,33 +348,52 @@ class galAlbum extends xPDOSimpleObject {
             $cache = $this->xpdo->cacheManager->get($cacheKey);
         }
         if (!$cache || true) {
-            $c = $this->xpdo->newQuery('galItem');
-            $c->innerJoin('galAlbumItem','AlbumItems');
-            $c->where(array(
-                'AlbumItems.album' => $this->get('id'),
-            ));
-            $c->sortby($albumCoverSort,$albumCoverSortDir);
-            $count = $this->xpdo->getCount('galItem', $c);
-            $c->limit(1);
-
-            /** @var galItem $item */
-            $item = $this->xpdo->getObject('galItem',$c);
-            if (empty($item)) {
-                $assetsUrl = $this->xpdo->getOption('gallery.assets_url',null,$this->xpdo->getOption('assets_url',null,MODX_ASSETS_URL).'gallery/');
-                if (strpos($assetsUrl,'http') === false && defined('MODX_URL_SCHEME') && defined('MODX_HTTP_HOST')) {
-                    $assetsUrl = MODX_URL_SCHEME.MODX_HTTP_HOST.$assetsUrl;
-                }
+            if($this->get('cover_filename')!='') {
+                $c = $this->xpdo->newQuery('galItem');
+                $c->innerJoin('galAlbumItem','AlbumItems');
+                $c->where(array(
+                    'AlbumItems.album' => $this->get('id'),
+                ));
+                $count = $this->xpdo->getCount('galItem', $c);
                 $item = $this->xpdo->newObject('galItem');
                 $item->fromArray(array(
-                    'name' => '',
-                    'filename' => $assetsUrl.'images/album-empty.jpg',
+                    'name' => 'Cover',
+                    'filename' => $this->getFilesUrl($this->xpdo).$this->get('cover_filename'),
                     'absolute_filename' => true,
                     'active' => true,
                 ));
-	        }
-            $item->set('total',$count);
-            $cache = $item->toArray();
-            $this->xpdo->cacheManager->set($cacheKey,$cache);
+                $item->set('total',$count);
+                $cache = $item->toArray();
+                $this->xpdo->cacheManager->set($cacheKey,$cache);
+            } else {
+                $c = $this->xpdo->newQuery('galItem');
+                $c->innerJoin('galAlbumItem','AlbumItems');
+                $c->where(array(
+                    'AlbumItems.album' => $this->get('id'),
+                ));
+                $c->sortby($albumCoverSort,$albumCoverSortDir);
+                $count = $this->xpdo->getCount('galItem', $c);
+                $c->limit(1);
+
+                /** @var galItem $item */
+                $item = $this->xpdo->getObject('galItem',$c);
+                if (empty($item)) {
+                    $assetsUrl = $this->xpdo->getOption('gallery.assets_url',null,$this->xpdo->getOption('assets_url',null,MODX_ASSETS_URL).'gallery/');
+                    if (strpos($assetsUrl,'http') === false && defined('MODX_URL_SCHEME') && defined('MODX_HTTP_HOST')) {
+                        $assetsUrl = MODX_URL_SCHEME.MODX_HTTP_HOST.$assetsUrl;
+                    }
+                    $item = $this->xpdo->newObject('galItem');
+                    $item->fromArray(array(
+                        'name' => '',
+                        'filename' => $assetsUrl.'images/album-empty.jpg',
+                        'absolute_filename' => true,
+                        'active' => true,
+                    ));
+                }
+                $item->set('total',$count);
+                $cache = $item->toArray();
+                $this->xpdo->cacheManager->set($cacheKey,$cache);
+            }
         } else {
             $item = $this->xpdo->newObject('galItem');
             $item->fromArray($cache,'',true,true);

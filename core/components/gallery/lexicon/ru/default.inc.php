@@ -45,6 +45,7 @@ $_lang['gallery.batch_upload_intro'] = '<p>Укажите каталог для 
 $_lang['gallery.batch_upload_tags'] = 'Метки которые будут назначенны всем элементам при пакетной загрузке, в виде списка разделённого запятыми.';
 $_lang['gallery.bytes'] = 'bytes';
 $_lang['gallery.comma_separated_list'] = 'Список меток разделённый запятыми.';
+$_lang['gallery.cover_filename'] = 'Обложка альбома';
 $_lang['gallery.directory'] = 'Каталог';
 $_lang['gallery.directory_desc'] = 'Каталог для поиска элементов.';
 $_lang['gallery.directory_err_nf'] = 'Каталог не найден.';
@@ -79,7 +80,12 @@ $_lang['gallery.refresh'] = 'Обновить';
 $_lang['gallery.tags'] = 'Метки';
 $_lang['gallery.title'] = 'Название';
 $_lang['gallery.width'] = 'Ширина';
-
+$_lang['gallery.upload_cover'] = 'Загрузить обложку';
+$_lang['gallery.view_cover'] = 'Посмотреть';
+$_lang['gallery.set_as_cover'] = 'Сделать обложкой альбома';
+$_lang['gallery.current_cover'] = 'Текущая обложка альбома';
+$_lang['gallery.cover_upload'] = 'Загрузка обложки';
+$_lang['gallery.delete_cover'] = 'Удалить обложку';
 
 $_lang['area_backend'] = 'Настройки бэкенда Gallery';
 

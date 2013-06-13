@@ -27,5 +27,11 @@ class GalleryAlbumGetProcessor extends modObjectGetProcessor {
     public $classKey = 'galAlbum';
     public $objectType = 'gallery.album';
     public $languageTopics = array('gallery:default');
+
+	public function cleanup() {
+		$arResult=$this->object->toArray();
+		$arResult['cover_filename_url']=$this->object->getCoverUrl();
+		return $this->success('',$arResult);
+	}
 }
 return 'GalleryAlbumGetProcessor';
