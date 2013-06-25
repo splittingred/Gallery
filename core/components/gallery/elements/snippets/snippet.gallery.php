@@ -98,6 +98,9 @@ $linkToImage = $modx->getOption('linkToImage',$scriptProperties,false);
 $activeCls = $modx->getOption('activeCls',$scriptProperties,'gal-item-active');
 $highlightItem = $modx->getOption($imageGetParam,$_REQUEST,false);
 /** @var galItem $item */
+
+if (!is_array($data)) return '';
+
 foreach ($data['items'] as $item) {
     $itemArray = $item->toArray();
     $itemArray['idx'] = $idx;
