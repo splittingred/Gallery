@@ -195,35 +195,55 @@ class galAlbum extends xPDOSimpleObject {
         return $exists;
     }
 
-    public function uploadItem(galItem $item,$filePath,$name) {
+    public function uploadItem(galItem $item,$filePath,$name,$mediaSource) {
         $fileName = false;
 
         $albumDir = $this->getPath(false);
-        $targetDir = $this->getPath();
+        $targetDir = '/'.str_ireplace(MODX_BASE_PATH, '', $this->getPath());
+
+        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] albumDir: '.$albumDir);
+        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] targetDir: '.$targetDir);
+        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] filePath: '.$filePath);
+        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] relFilePath: '.$filePath);
+        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] name: '.$name);
 
         /* if directory doesnt exist, create it */
-        if (!$this->ensurePathExists()) {
-           $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$targetDir);
-           return $fileName;
+        if (!$mediaSource->createContainer($targetDir,'/')) {
+            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory (possibly already exists?): '.$targetDir);
+            // return $fileName;
         }
-        if (!$this->isPathWritable()) {
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
-            return $fileName;
-        }
+        // if (!$this->isPathWritable()) {
+        //     $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
+        //     return $fileName;
+        // }
 
         /* upload the file */
+
         $extension = pathinfo($name,PATHINFO_EXTENSION);
         $shortName = $item->get('id').'.'.$extension;
         $relativePath = $albumDir.$shortName;
         $absolutePath = $targetDir.$shortName;
 
-        if (@file_exists($absolutePath)) {
-            @unlink($absolutePath);
-        }
-        if (!@move_uploaded_file($filePath,$absolutePath)) {
+        // if (@file_exists($absolutePath)) {
+        //     @unlink($absolutePath);
+        // }
+        // if (!@move_uploaded_file($filePath,$absolutePath)) {
+        //     $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
+        // } else {
+        // }
+        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] shortName: '.$shortName);
+        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] newName: '.$relativePath);
+
+        $fileName = str_replace(' ','',$relativePath);
+
+        $file = array("name" => $shortName, "tmp_name" => $filePath,"error" => "0"); // emulate a $_FILES object
+
+        $upErrors = $mediaSource->uploadObjectsToContainer($targetDir,array($file));
+        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Filename: '.$fileName);
+
+        if($upErrors) {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
-        } else {
-            $fileName = str_replace(' ','',$relativePath);
+            return false;
         }
         return $fileName;
     }

@@ -23,10 +23,10 @@
  * @package gallery
  */
 class galItem extends xPDOSimpleObject {
-    private $mediaSource;
+    private $mediaSource = false;
 
     private function getMediaSource() {
-
+        if($this->mediaSource) return $this->mediaSource;
         //get modMediaSource
         $media = new modMediaSource($this->xpdo); //$this->xpdo->loadClass('sources.modMediaSource');
         $mediaSource = $this->xpdo->getOption('gallery.mediaSource',null,1);
@@ -37,7 +37,7 @@ class galItem extends xPDOSimpleObject {
 
         $this->mediaSource = $def;
 
-
+        return $this->mediaSource;
     }
 
     public function get($k, $format = null, $formatTemplate= null) {
@@ -147,14 +147,13 @@ class galItem extends xPDOSimpleObject {
      * @return boolean
      */
     public function upload($file,$albumId) {
-        $this->getMediaSource();
         if (empty($file) || empty($file['tmp_name']) || empty($file['name'])) return false;
         if (in_array($this->get('id'),array(0,null,''))) return false;
         /** @var galAlbum $album */
         $album = $this->xpdo->getObject('galAlbum',$albumId);
         if (empty($album)) return false;
 
-        $fileName = $album->uploadItem($this,$file['tmp_name'],$file['name']);
+        $fileName = $album->uploadItem($this,$file['tmp_name'], $file['name'], $this->getMediaSource());
         if (empty($fileName)) {
             return false;
         }
