@@ -90,6 +90,15 @@ $settings['gallery.thumbs_prepend_site_url']->fromArray(array(
     'area' => '',
 ),'',true,true);
 
+$settings['gallery.mediaSource']= $modx->newObject('modSystemSetting');
+$settings['gallery.mediaSource']->fromArray(array(
+    'key' => 'gallery.mediaSource',
+    'value' => 1,
+    'xtype' => 'modx-combo-source',
+    'namespace' => 'gallery',
+    'area' => '',
+),'',true,true);
+
 /*
 $settings['gallery.']= $modx->newObject('modSystemSetting');
 $settings['gallery.']->fromArray(array(
