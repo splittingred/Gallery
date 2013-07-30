@@ -69,9 +69,7 @@ if (!empty($_FILES['qqfile'])) {
 
     $file = array("name" => $relativePath, "tmp_name" => $randomFilename, "error" => "0"); // emulate a $_FILES object
 
-    $opts = $item->upload($file,$scriptProperties['album']);
     $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Album Type: '.$scriptProperties['album']);
-    $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Upload Type: '.$opts);
 
 
     if ($bytes == 0 || !$item->upload($file,$scriptProperties['album'])) {
