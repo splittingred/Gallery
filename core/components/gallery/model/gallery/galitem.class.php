@@ -117,6 +117,14 @@ class galItem extends xPDOSimpleObject {
             case 'image_path':
                 $value = $this->xpdo->call('galAlbum','getFilesPath',array(&$this->xpdo)).$this->get('filename');
                 break;
+            case 'base_url':
+                $ms = $this->getMediaSource();
+                $value='';
+                if($ms->getBaseUrl() != '/') {
+                    $value = $ms->getBaseUrl();
+                }
+
+                break;
             default:
                 $value = parent::get($k,$format,$formatTemplate);
                 break;
