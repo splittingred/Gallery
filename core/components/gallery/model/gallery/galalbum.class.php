@@ -201,21 +201,10 @@ class galAlbum extends xPDOSimpleObject {
         $albumDir = $this->getPath(false);
         $targetDir = str_ireplace(MODX_BASE_PATH, '', $this->getPath());
 
-        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] albumDir: '.$albumDir);
-        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] targetDir: '.$targetDir);
-        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] filePath: '.$filePath);
-        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] relFilePath: '.$filePath);
-        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] name: '.$name);
-
         /* if directory doesnt exist, create it */
         if (!$mediaSource->createContainer($targetDir,'/')) {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory (possibly already exists?): '.$targetDir);
-            // return $fileName;
         }
-        // if (!$this->isPathWritable()) {
-        //     $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
-        //     return $fileName;
-        // }
 
         /* upload the file */
 
@@ -224,13 +213,6 @@ class galAlbum extends xPDOSimpleObject {
         $relativePath = $albumDir.$shortName;
         $absolutePath = $targetDir.$shortName;
 
-        // if (@file_exists($absolutePath)) {
-        //     @unlink($absolutePath);
-        // }
-        // if (!@move_uploaded_file($filePath,$absolutePath)) {
-        //     $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
-        // } else {
-        // }
         $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] shortName: '.$shortName);
         $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] newName: '.$relativePath);
 
@@ -238,7 +220,7 @@ class galAlbum extends xPDOSimpleObject {
 
         $file = array("name" => $shortName, "tmp_name" => $filePath,"error" => "0"); // emulate a $_FILES object
 
-        $upErrors = false;
+        $success = true;
         // modFileMediaSource class uses move_uploaded_file - because we create a local file - we cannot use this function and we use streams instead
         if(!is_uploaded_file($filePath) && get_class($mediaSource) == 'modFileMediaSource_mysql') {
             $input = fopen($filePath, "r");
@@ -249,14 +231,14 @@ class galAlbum extends xPDOSimpleObject {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Created (stream): '.$targetDir.$shortName);
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Created File: '.$this->getPath(true).$shortName);
         } else {
-            $upErrors = $mediaSource->uploadObjectsToContainer($targetDir,array($file));
+            $success = $mediaSource->uploadObjectsToContainer($targetDir,array($file));
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Created (upload): '.$fileName);
         }
 
-        if($upErrors) {
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
-            return false;
-        }
+        // if(!$success) {
+        //     $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
+        //     return false;
+        // }
         return $fileName;
     }
 
