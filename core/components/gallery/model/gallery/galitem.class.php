@@ -52,6 +52,12 @@ class galItem extends xPDOSimpleObject {
                     $format['src'] = $this->getSiteUrl();
                     $format['src'] .= $this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
                 }
+
+                $ms = $this->getMediaSource();
+                if($ms->getBaseUrl() != '/') {
+                    $format['src'] = $ms->getBaseUrl().$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
+                }
+
                 $url = $value.'&'.http_build_query($format,'','&');
                 if ($this->xpdo->getOption('xhtml_urls',null,false)) {
                     $value = str_replace('&','&amp;',$url);
@@ -69,12 +75,24 @@ class galItem extends xPDOSimpleObject {
                     $format['src'] = $this->getSiteUrl();
                     $format['src'] .= $this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
                 }
+
+                $ms = $this->getMediaSource();
+                if($ms->getBaseUrl() != '/') {
+                    $format['src'] = $ms->getBaseUrl().$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
+                }
+
                 $value = $this->getPhpThumbUrl().'&'.http_build_query($format,'','&');
                 $value = $this->xpdo->getOption('xhtml_urls',null,false) ? str_replace('&','&amp;',$value) : $value;
                 break;
             case 'absoluteImage':
                 $siteUrl = $this->getSiteUrl();
                 $value = $siteUrl.$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$this->get('filename');
+
+                $ms = $this->getMediaSource();
+                if($ms->getBaseUrl() != '/') {
+                    $value = $ms->getBaseUrl().$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
+                }
+
                 break;
             case 'relativeImage':
                 $baseUrl = $this->getOption('base_url');
@@ -84,6 +102,12 @@ class galItem extends xPDOSimpleObject {
                 } else {
                     $value = str_replace($baseUrl,'',$path);
                 }
+
+                $ms = $this->getMediaSource(); // for absolute + relative the link NEEDS the http:// domain
+                if($ms->getBaseUrl() != '/') {
+                    $value = $ms->getBaseUrl().$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
+                }
+
                 break;
             case 'filesize':
                 $filename = $this->xpdo->call('galAlbum','getFilesPath',array(&$this->xpdo)).$this->get('filename');
