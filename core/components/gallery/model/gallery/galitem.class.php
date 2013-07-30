@@ -28,11 +28,12 @@ class galItem extends xPDOSimpleObject {
     private function getMediaSource() {
         if($this->mediaSource) return $this->mediaSource;
         //get modMediaSource
-        $media = new modMediaSource($this->xpdo); //$this->xpdo->loadClass('sources.modMediaSource');
         $mediaSource = $this->xpdo->getOption('gallery.mediaSource',null,1);
 
-        // find our one
-        $def = $media->getDefaultSource($this->xpdo, $mediaSource);
+        $def = $this->xpdo->getObject('sources.modMediaSource',array(
+            'id' => $mediaSource,
+        ));
+
         $def->initialize();
 
         $this->mediaSource = $def;
