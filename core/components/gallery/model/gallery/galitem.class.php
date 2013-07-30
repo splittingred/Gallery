@@ -88,10 +88,10 @@ class galItem extends xPDOSimpleObject {
                 $siteUrl = $this->getSiteUrl();
                 $value = $siteUrl.$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$this->get('filename');
 
-                $ms = $this->getMediaSource();
-                if($ms->getBaseUrl() != '/') {
-                    $value = $ms->getBaseUrl().$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
-                }
+                // $ms = $this->getMediaSource();
+                // if($ms->getBaseUrl() != '/') {
+                //     $value = $ms->getBaseUrl().$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
+                // }
 
                 break;
             case 'relativeImage':
@@ -103,10 +103,10 @@ class galItem extends xPDOSimpleObject {
                     $value = str_replace($baseUrl,'',$path);
                 }
 
-                $ms = $this->getMediaSource(); // for absolute + relative the link NEEDS the http:// domain
-                if($ms->getBaseUrl() != '/') {
-                    $value = $ms->getBaseUrl().$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
-                }
+                // $ms = $this->getMediaSource(); // for absolute + relative the link NEEDS the http:// domain
+                // if($ms->getBaseUrl() != '/') {
+                //     $value = $ms->getBaseUrl().$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$baseUrl;
+                // }
 
                 break;
             case 'filesize':
@@ -209,7 +209,9 @@ class galItem extends xPDOSimpleObject {
         $filename = $this->get('filename');
         if (!empty($filename)) {
             $filename = $this->xpdo->call('galAlbum','getFilesPath',array(&$this->xpdo)).$filename;
-            if (!@unlink($filename)) {
+            $filename = str_ireplace(MODX_BASE_PATH, '', $filename);
+            $ms = $this->getMediaSource();
+            if (!@$ms->removeObject($filename)) {
                 $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to remove the attachment file at: '.$filename);
             }
         }
