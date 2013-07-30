@@ -213,9 +213,6 @@ class galAlbum extends xPDOSimpleObject {
         $relativePath = $albumDir.$shortName;
         $absolutePath = $targetDir.$shortName;
 
-        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] shortName: '.$shortName);
-        $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] newName: '.$relativePath);
-
         $fileName = str_replace(' ','',$relativePath);
 
         $file = array("name" => $shortName, "tmp_name" => $filePath,"error" => "0"); // emulate a $_FILES object
@@ -228,11 +225,8 @@ class galAlbum extends xPDOSimpleObject {
             $bytes = stream_copy_to_stream($input, $target);
             fclose($input);
             fclose($target);
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Created (stream): '.$targetDir.$shortName);
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Created File: '.$this->getPath(true).$shortName);
         } else {
             $success = $mediaSource->uploadObjectsToContainer($targetDir,array($file));
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Created (upload): '.$fileName);
         }
 
         // if(!$success) {
