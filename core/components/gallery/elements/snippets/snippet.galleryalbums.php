@@ -121,6 +121,7 @@ if (!empty($containerTpl)) {
     $ct = $gallery->getChunk($containerTpl,array(
         'albums' => $output,
         'nav' => $nav,
+        'albumRequestVar' => $albumRequestVar
     ));
     if (!empty($ct)) $output = $ct;
 }
