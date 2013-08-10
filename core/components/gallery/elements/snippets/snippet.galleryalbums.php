@@ -111,6 +111,9 @@ foreach ($albums as $album) {
     $output[] = $gallery->getChunk($rowTpl,$albumArray);
     $idx++;
 }
+if (!isset($nav['current'])) {
+    unset($nav['prev']);
+}
 $nav['count'] = $idx;
 
 /* set output to placeholder or return */
