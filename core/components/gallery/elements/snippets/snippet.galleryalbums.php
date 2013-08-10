@@ -81,15 +81,16 @@ foreach ($albums as $album) {
     if (!isset($nav['first'])) {
         $nav['first'] = $albumArray['id'];
     }
+    if (!isset($nav['next']) && isset($nav['current'])) {
+        $nav['next'] = $albumArray['id'];
+    }
     if ($_GET[$albumRequestVar] == $albumArray['id']) {
         $nav['current'] = $albumArray['id'];
-		$classes[] = 'current';
+        $nav['curIdx'] = $idx + 1;
+        $classes[] = 'current';
     }
     if (!isset($nav['current'])) {
         $nav['prev'] = $albumArray['id'];
-    }
-    if (!isset($nav['next']) && isset($nav['current'])) {
-        $nav['next'] = $albumArray['id'];
     }
     $nav['last'] = $albumArray['id'];
 
@@ -110,6 +111,7 @@ foreach ($albums as $album) {
     $output[] = $gallery->getChunk($rowTpl,$albumArray);
     $idx++;
 }
+$nav['count'] = $idx;
 
 /* set output to placeholder or return */
 $outputSeparator = $modx->getOption('outputSeparator',$scriptProperties,"\n");
