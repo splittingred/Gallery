@@ -65,6 +65,7 @@ $thumbProperties = array_merge(array(
 /* iterate */
 $output = array();
 $idx = 0;
+$filesUrl = $modx->call('galAlbum','getFilesUrl',array(&$modx));
 /** @var galAlbum $album */
 foreach ($albums as $album) {
     $albumArray = $album->toArray();
@@ -72,6 +73,7 @@ foreach ($albums as $album) {
     $coverItem = $album->getCoverItem($albumCoverSort,$albumCoverSortDir);
     if ($coverItem) {
         $albumArray['image'] = $coverItem->get('thumbnail',$thumbProperties);
+        $albumArray['image_absolute'] = $filesUrl.$coverItem->get('filename');
         $albumArray['total'] = $coverItem->get('total');
     }
 
