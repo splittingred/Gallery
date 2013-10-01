@@ -62,6 +62,7 @@ class GalleryItemGetListProcessor extends modObjectGetListProcessor {
                 WHERE Tags.item = galItem.id
             ) AS tags'
         ));
+        $c->groupBy('id');
         return $c;
     }
 
