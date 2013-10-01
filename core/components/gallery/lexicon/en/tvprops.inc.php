@@ -49,3 +49,5 @@ $_lang['galtv.start'] = 'Start Index';
 $_lang['galtv.start_desc'] = 'If limit is greater than 0, will start at this index.';
 $_lang['galtv.width'] = 'Width';
 $_lang['galtv.width_desc'] = 'The width of the combobox, in pixels.';
+$_lang['galtv.subchilds'] = 'Show all of parent sub childs';
+$_lang['galtv.subchilds_desc'] = 'Show all of parent childs and subchilds.';

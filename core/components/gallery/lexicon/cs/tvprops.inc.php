@@ -99,3 +99,9 @@ $_lang['galtv.width'] = 'Šířka';
 
 // $_lang['galtv.width_desc'] = 'The width of the combobox, in pixels.';
 $_lang['galtv.width_desc'] = 'Šířka rozbalovací nabídky v px.';
+
+//$_lang['galtv.subchilds'] = 'Show all of parent sub childs';
+$_lang['galtv.subchilds'] = 'Zobrazit všechny potomky';
+
+//$_lang['galtv.subchilds_desc'] = 'Show all of parent childs and subchilds.';
+$_lang['galtv.subchilds_desc'] = 'Zobrazit všechny potomky od zadaného rodiče.';

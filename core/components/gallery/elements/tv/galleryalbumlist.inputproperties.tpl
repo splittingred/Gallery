@@ -105,6 +105,15 @@ MODx.load({
         ,width: 300
         ,listeners: oc
     },{
+        xtype: 'combo-boolean'
+        ,fieldLabel: '{/literal}{$gl.subchilds}{literal}'
+        ,description: '{/literal}{$gl.subchilds_desc}{literal}'
+        ,name: 'inopt_subchilds'
+        ,id: 'inopt_subchilds{/literal}{$tv}{literal}'
+        ,value: params['subchilds'] || ''
+        ,width: 300
+        ,listeners: oc
+    },{
         xtype: 'textfield'
         ,fieldLabel: '{/literal}{$gl.width}{literal}'
         ,description: '{/literal}{$gl.width_desc}{literal}'

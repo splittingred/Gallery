@@ -41,6 +41,7 @@ $start = (int)$modx->getOption('start',$params,0);
 $showNone = (boolean)$modx->getOption('showNone',$params,true);
 $showCover = (boolean)$modx->getOption('showCover',$params,true);
 $parent = $modx->getOption('parent',$params,'');
+$subchilds = $modx->getOption('subchilds',$params,false);
 
 /* get albums */
 $c = $modx->newQuery('galAlbum');
@@ -57,6 +58,17 @@ if ($limit > 0) {
     $c->limit($limit,$start);
 }
 $albums = $modx->getCollection('galAlbum',$c);
+
+if(($parent != '') && ($subchilds == true)){
+        $album = $modx->getObject('galAlbum',(int)$parent);
+        if($album != null){
+            $albumsWithSubs = array();
+            $gallery = new Gallery($modx);
+            $gallery->getAllChilds($album, $albumsWithSubs, $sort, $dir, -1);
+            
+            $albums = $albumsWithSubs;
+        }
+}
 
 /* setup thumb properties */
 $thumbProperties = array(
