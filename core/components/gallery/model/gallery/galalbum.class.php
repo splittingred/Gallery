@@ -451,12 +451,13 @@ class galAlbum extends xPDOSimpleObject {
             $c->sortby($sort,$dir);
             if ($limit > 0) { $c->limit($limit,$start); }
             $albums = $modx->getCollection('galAlbum',$c);
-
-            $cache = array();
-            foreach ($albums as $album) {
-                $cache[] = $album->toArray('',true);
-            }
-            $modx->cacheManager->set($cacheKey,$cache);
+			if($sort !== 'RAND()') {
+	            $cache = array();
+	            foreach ($albums as $album) {
+	                $cache[] = $album->toArray('',true);
+	            }
+	            $modx->cacheManager->set($cacheKey,$cache);
+			}
         }
         return $albums;
     }
