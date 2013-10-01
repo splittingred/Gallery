@@ -195,36 +195,44 @@ class galAlbum extends xPDOSimpleObject {
         return $exists;
     }
 
-    public function uploadItem(galItem $item,$filePath,$name) {
+    public function uploadItem(galItem $item,$filePath,$name,$mediaSource) {
         $fileName = false;
 
         $albumDir = $this->getPath(false);
-        $targetDir = $this->getPath();
+        $targetDir = str_ireplace(MODX_BASE_PATH, '', $this->getPath());
 
         /* if directory doesnt exist, create it */
-        if (!$this->ensurePathExists()) {
-           $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$targetDir);
-           return $fileName;
-        }
-        if (!$this->isPathWritable()) {
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
-            return $fileName;
+        if (!$mediaSource->createContainer($targetDir,'/')) {
+            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory (possibly already exists?): '.$targetDir);
         }
 
         /* upload the file */
+
         $extension = pathinfo($name,PATHINFO_EXTENSION);
         $shortName = $item->get('id').'.'.$extension;
         $relativePath = $albumDir.$shortName;
         $absolutePath = $targetDir.$shortName;
 
-        if (@file_exists($absolutePath)) {
-            @unlink($absolutePath);
-        }
-        if (!@move_uploaded_file($filePath,$absolutePath)) {
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
+        $fileName = str_replace(' ','',$relativePath);
+
+        $file = array("name" => $shortName, "tmp_name" => $filePath,"error" => "0"); // emulate a $_FILES object
+
+        $success = true;
+        // modFileMediaSource class uses move_uploaded_file - because we create a local file - we cannot use this function and we use streams instead
+        if(!is_uploaded_file($filePath) && get_class($mediaSource) == 'modFileMediaSource_mysql') {
+            $input = fopen($filePath, "r");
+            $target = fopen($this->getPath(true).$shortName, "w");
+            $bytes = stream_copy_to_stream($input, $target);
+            fclose($input);
+            fclose($target);
         } else {
-            $fileName = str_replace(' ','',$relativePath);
+            $success = $mediaSource->uploadObjectsToContainer($targetDir,array($file));
         }
+
+        // if(!$success) {
+        //     $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
+        //     return false;
+        // }
         return $fileName;
     }
 
