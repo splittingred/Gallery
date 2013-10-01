@@ -18,6 +18,7 @@ $xpdo_meta_map['galAlbum']= array (
     'active' => 0,
     'prominent' => 0,
     'watermark' => '',
+    'cover_filename' => ''
   ),
   'fieldMeta' => 
   array (
@@ -89,6 +90,14 @@ $xpdo_meta_map['galAlbum']= array (
       'default' => 0,
     ),
     'watermark' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'cover_filename' =>
     array (
       'dbtype' => 'varchar',
       'precision' => '255',

@@ -56,6 +56,9 @@ if ($object->xpdo) {
 
             $manager->addIndex('galAlbumItem','rank');
 
+            /* 1.5.3+ */
+            $manager->addField('galAlbum','cover_filename');
+
 
             $modx->setLogLevel($oldLogLevel);
             break;

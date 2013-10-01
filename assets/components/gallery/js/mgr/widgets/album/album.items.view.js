@@ -1,6 +1,6 @@
 GAL.view.AlbumItems = function(config) {
     config = config || {};
-    
+
     this._initTemplates();
     Ext.applyIf(config,{
         url: GAL.config.connector_url
@@ -27,7 +27,7 @@ GAL.view.AlbumItems = function(config) {
 Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     templates: {}
     ,windows: {}
-    
+
     ,onSort: function(o) {
         MODx.Ajax.request({
             url: this.config.url
@@ -43,7 +43,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     ,onDblClick: function(d,idx,n) {
         var node = this.getSelectedNodes()[0];
         if (!node) return false;
-        
+
         if (this.config.inPanel) {
             this.cm.activeNode = node;
             this.updateItem(node,n);
@@ -52,7 +52,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
             this.fireEvent('select',data);
         }
     }
-    
+
     ,updateItem: function(btn,e) {
         var node = this.cm.activeNode;
         var data = this.lookup[node.id];
@@ -70,12 +70,32 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         this.windows.updateItem.setValues(data);
         this.windows.updateItem.show(e.target);
     }
-    
+
+    ,setAsCover:function(btn,e) {
+        var node = this.cm.activeNode;
+        var data = this.lookup[node.id];
+        if (!data) return false;
+        MODx.Ajax.request({
+            url: this.config.url
+            ,params: {
+                action: 'mgr/album/setCoverItem'
+                ,id: data.id
+                ,albumid: data.album
+            }
+            ,listeners: {
+                'success': {fn:function(r) {
+                    var panel=Ext.getCmp('gal-panel-album');
+                    panel.getForm().setValues(r.object);
+                },scope:this}
+            }
+        });
+    }
+
     ,deleteItem: function(btn,e) {
         var node = this.cm.activeNode;
         var data = this.lookup[node.id];
         if (!data) return false;
-        
+
         MODx.msg.confirm({
             text: _('gallery.item_delete_confirm')
             ,url: this.config.url
@@ -111,7 +131,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         });
         return true;
     }
-    
+
     ,run: function(p) {
         p = p || {};
         var v = {};
@@ -121,18 +141,18 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         this.store.baseParams = v;
         this.store.load();
     }
-        
+
     ,sortBy: function(sel) {
         this.store.baseParams.sorter = sel.getValue();
         this.store.reload();
         return true;
     }
-    
+
     ,sortDir: function(sel) {
         this.store.baseParams.dir = sel.getValue();
         this.store.reload();
     }
-    
+
     ,showDetails : function(){
         var selNode = this.getSelectedNodes();
         var detailEl = Ext.getCmp('gal-album-items-detail').body;
@@ -148,7 +168,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
             detailEl.update('');
         }
     }
-    
+
     ,formatData: function(data) {
         var formatSize = function(data){
             if(data.size < 1024) {
@@ -176,7 +196,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         );
 
         this.templates.thumb.compile();
-                
+
         this.templates.details = new Ext.XTemplate(
             '<div class="details">'
             ,'<tpl for=".">'
@@ -202,7 +222,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     ,showScreenshot: function(id) {
         var data = this.lookup['gal-item-'+id];
         if (!data) return false;
-        
+
         if (!this.ssWin) {
             this.ssWin = new Ext.Window({
                 layout:'fit'
@@ -238,6 +258,11 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
             m.add({
                 text: _('gallery.item_update')
                 ,handler: this.updateItem
+                ,scope: this
+            });
+            m.add({
+                text: _('gallery.set_as_cover')
+                ,handler: this.setAsCover
                 ,scope: this
             });
             m.add('-');
