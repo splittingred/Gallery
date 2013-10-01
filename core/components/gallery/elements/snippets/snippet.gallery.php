@@ -143,6 +143,7 @@ if (!empty($containerTpl)) {
         'thumbnails' => $output,
         'album_name' => $data['album']['name'],
         'album_description' => $data['album']['description'],
+        'album_year' => $data['album']['year'],
         'albumRequestVar' => $albumRequestVar,
         'albumId' => $data['album']['id'],
     ));
@@ -156,16 +157,22 @@ if (!empty($toPlaceholder)) {
         $toPlaceholder => $output,
         $toPlaceholder.'.id' => $data['album']['id'],
         $toPlaceholder.'.name' => $data['album']['name'],
+        $toPlaceholder.'.year' => $data['album']['year'],
         $toPlaceholder.'.description' => $data['album']['description'],
         $toPlaceholder.'.total' => $data['total'],
+        $toPlaceholder.'.next' => $data['album']['id'] + 1,
+        $toPlaceholder.'.prev' => $data['album']['id'] - 1,
     ));
 } else {
     $placeholderPrefix = $modx->getOption('placeholderPrefix',$scriptProperties,'gallery.');
     $modx->toPlaceholders(array(
         $placeholderPrefix.'id' => $data['album']['id'],
         $placeholderPrefix.'name' => $data['album']['name'],
+        $placeholderPrefix.'year' => $data['album']['year'],
         $placeholderPrefix.'description' => $data['album']['description'],
         $placeholderPrefix.'total' => $data['total'],
+        $placeholderPrefix.'next' => $data['album']['id'] + 1,
+        $placeholderPrefix.'prev' => $data['album']['id'] - 1,
     ));
     return $output;
 }

@@ -26,6 +26,7 @@
  * @subpackage lexicon
  */
 $_lang['gallery'] = 'Gallery';
+$_lang['gallery.year'] = 'Year';
 $_lang['gallery.active'] = 'Active';
 $_lang['gallery.active_desc'] = 'If unchecked, this album will not be viewable.';
 $_lang['gallery.album'] = 'Album';

@@ -47,6 +47,12 @@ GAL.panel.Album = function(config) {
                             ,anchor: '100%'
                             ,allowBlank: false
                         },{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('gallery.year')
+                            ,name: 'year'
+                            ,anchor: '100%'
+                            ,allowBlank: true
+                        },{
                             xtype: 'textarea'
                             ,fieldLabel: _('description')
                             ,name: 'description'
