@@ -39,6 +39,13 @@ $albumCoverSort = $modx->getOption('albumCoverSort',$scriptProperties,'rank');
 $albumCoverSortDir = $modx->getOption('albumCoverSortDir',$scriptProperties,'ASC');
 $showName = $modx->getOption('showName',$scriptProperties,true);
 
+$totalProperties = $scriptProperties;
+$totalProperties['limit'] = '0';
+$totalProperties['start'] = '0';
+$totalAlbums = $modx->call('galAlbum', 'getList', array(&$modx, $totalProperties));
+$totalVar = $modx->getOption('totalVar', $scriptProperties, 'total');
+$modx->setPlaceholder($totalVar, count($totalAlbums));
+
 /* build query */
 $albums = $modx->call('galAlbum','getList',array(&$modx,$scriptProperties));
 
@@ -66,10 +73,32 @@ $thumbProperties = array_merge(array(
 $output = array();
 $idx = 0;
 $filesUrl = $modx->call('galAlbum','getFilesUrl',array(&$modx));
+$nav = array();
 /** @var galAlbum $album */
 foreach ($albums as $album) {
     $albumArray = $album->toArray();
+    $classes = array($rowCls);
 
+    if (!isset($nav['first'])) {
+        $nav['first'] = $albumArray['id'];
+    }
+    if (!isset($nav['next']) && isset($nav['current'])) {
+        $nav['next'] = $albumArray['id'];
+    }
+    if ($_GET[$albumRequestVar] == $albumArray['id']) {
+        $nav['current'] = $albumArray['id'];
+        $nav['curIdx'] = $idx + 1;
+        $classes[] = 'current';
+    }
+    if (!isset($nav['current'])) {
+        $nav['prev'] = $albumArray['id'];
+    }
+    $nav['last'] = $albumArray['id'];
+
+    $albumArray['cls'] = implode(' ', $classes);
+    $albumArray['idx'] = $idx;
+    $albumArray['showName'] = $showName;
+    $albumArray['albumRequestVar'] = $albumRequestVar;
     $coverItem = $album->getCoverItem($albumCoverSort,$albumCoverSortDir);
     if ($coverItem) {
         $albumArray['image'] = $coverItem->get('thumbnail',$thumbProperties);
@@ -77,17 +106,33 @@ foreach ($albums as $album) {
         $albumArray['total'] = $coverItem->get('total');
     }
 
-    $albumArray['cls'] = $rowCls;
+    $albumArray['cls'] = implode(' ', $classes);
     $albumArray['idx'] = $idx;
     $albumArray['showName'] = $showName;
     $albumArray['albumRequestVar'] = $albumRequestVar;
     $output[] = $gallery->getChunk($rowTpl,$albumArray);
     $idx++;
 }
+if (!isset($nav['current'])) {
+    unset($nav['prev']);
+}
+$nav['count'] = $idx;
 
 /* set output to placeholder or return */
 $outputSeparator = $modx->getOption('outputSeparator',$scriptProperties,"\n");
 $output = implode($outputSeparator,$output);
+
+/* if set, place in a container tpl */
+$containerTpl = $modx->getOption('containerTpl',$scriptProperties,false);
+if (!empty($containerTpl)) {
+    $ct = $gallery->getChunk($containerTpl,array(
+        'albums' => $output,
+        'nav' => $nav,
+        'albumRequestVar' => $albumRequestVar
+    ));
+    if (!empty($ct)) $output = $ct;
+}
+
 if ($toPlaceholder) {
     $modx->setPlaceholder($toPlaceholder,$output);
     return '';
