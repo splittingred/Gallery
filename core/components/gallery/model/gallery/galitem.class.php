@@ -243,6 +243,7 @@ class galItem extends xPDOSimpleObject {
     }
 
     public static function getList(modX &$modx,array $scriptProperties = array()) {
+		$sort = $modx->getOption('sort',$scriptProperties,'rank');		
         $cacheKey = 'gallery/item/list/'.md5(serialize($scriptProperties));
         if ($modx->getCacheManager() && $cache = $modx->cacheManager->get($cacheKey)) {
             $items = array();
@@ -254,6 +255,11 @@ class galItem extends xPDOSimpleObject {
             }
 
             $data = array(
+			
+			if (in_array(strtolower($sort),array('random','rand()','rand'))) {
+			shuffle($items);
+			}
+            
                 'items' => $items,
                 'total' => $cache['total'],
                 'album' => $cache['album'],
