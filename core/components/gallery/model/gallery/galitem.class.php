@@ -253,13 +253,12 @@ class galItem extends xPDOSimpleObject {
                 $item->fromArray($data,'',true,true);
                 $items[] = $item;
             }
-
-            $data = array(
 			
 			if (in_array(strtolower($sort),array('random','rand()','rand'))) {
 			shuffle($items);
 			}
             
+			$data = array(
                 'items' => $items,
                 'total' => $cache['total'],
                 'album' => $cache['album'],
@@ -273,7 +272,6 @@ class galItem extends xPDOSimpleObject {
             /* Fix to make it work with getPage which uses "offset" instead of "start" */
             $offset = $modx->getOption('offset',$scriptProperties,0);
             if ($offset > 0) { $start = $offset; }
-            $sort = $modx->getOption('sort',$scriptProperties,'rank');
             $sortAlias = $modx->getOption('sortAlias',$scriptProperties,'galItem');
             if ($sort == 'rank') $sortAlias = 'AlbumItems';
             $dir = $modx->getOption('dir',$scriptProperties,'ASC');
