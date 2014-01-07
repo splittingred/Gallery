@@ -84,7 +84,7 @@ if (!empty($_FILES['qqfile'])) {
         $item->set('filename',str_replace(' ','',$relativePath));
     }
 
-    @unlink($target);
+    @unlink($randomFilename);
 }
 
 $item->save();
