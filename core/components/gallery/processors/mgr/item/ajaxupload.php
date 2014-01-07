@@ -55,7 +55,6 @@ if (!empty($_FILES['qqfile'])) {
         return $modx->error->failure($modx->lexicon('gallery.item_err_upload'));
     }
 } else {
-    $modx->log(xPDO::LOG_LEVEL_ERROR,'[GalleryAjaxUpload] filenm '.$filenm);
 
     $length = 10;
     $tmpDir = MODX_BASE_PATH."core/cache/gallery-tmp/";
