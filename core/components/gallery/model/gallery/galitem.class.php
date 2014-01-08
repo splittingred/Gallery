@@ -23,6 +23,24 @@
  * @package gallery
  */
 class galItem extends xPDOSimpleObject {
+    private $mediaSource = false;
+
+    private function getMediaSource() {
+        if($this->mediaSource) return $this->mediaSource;
+        //get modMediaSource
+        $mediaSource = $this->xpdo->getOption('gallery.mediaSource',null,1);
+
+        $def = $this->xpdo->getObject('sources.modMediaSource',array(
+            'id' => $mediaSource,
+        ));
+
+        $def->initialize();
+
+        $this->mediaSource = $def;
+
+        return $this->mediaSource;
+    }
+
     public function get($k, $format = null, $formatTemplate= null) {
         switch ($k) {
             case 'thumbnail':
@@ -35,6 +53,12 @@ class galItem extends xPDOSimpleObject {
                     $format['src'] = $this->getSiteUrl();
                     $format['src'] .= $this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
                 }
+
+                $ms = $this->getMediaSource();
+                if($ms->getBaseUrl() != '/') {
+                    $format['src'] = $ms->getBaseUrl().$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
+                }
+
                 $url = $value.'&'.http_build_query($format,'','&');
                 if ($this->xpdo->getOption('xhtml_urls',null,false)) {
                     $value = str_replace('&','&amp;',$url);
@@ -52,12 +76,24 @@ class galItem extends xPDOSimpleObject {
                     $format['src'] = $this->getSiteUrl();
                     $format['src'] .= $this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
                 }
+
+                $ms = $this->getMediaSource();
+                if($ms->getBaseUrl() != '/') {
+                    $format['src'] = $ms->getBaseUrl().$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
+                }
+
                 $value = $this->getPhpThumbUrl().'&'.http_build_query($format,'','&');
                 $value = $this->xpdo->getOption('xhtml_urls',null,false) ? str_replace('&','&amp;',$value) : $value;
                 break;
             case 'absoluteImage':
                 $siteUrl = $this->getSiteUrl();
                 $value = $siteUrl.$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$this->get('filename');
+
+                // $ms = $this->getMediaSource();
+                // if($ms->getBaseUrl() != '/') {
+                //     $value = $ms->getBaseUrl().$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$filename;
+                // }
+
                 break;
             case 'relativeImage':
                 $baseUrl = $this->getOption('base_url');
@@ -67,6 +103,12 @@ class galItem extends xPDOSimpleObject {
                 } else {
                     $value = str_replace($baseUrl,'',$path);
                 }
+
+                // $ms = $this->getMediaSource(); // for absolute + relative the link NEEDS the http:// domain
+                // if($ms->getBaseUrl() != '/') {
+                //     $value = $ms->getBaseUrl().$this->xpdo->call('galAlbum','getFilesUrl',array(&$this->xpdo)).$baseUrl;
+                // }
+
                 break;
             case 'filesize':
                 $filename = $this->xpdo->call('galAlbum','getFilesPath',array(&$this->xpdo)).$this->get('filename');
@@ -75,6 +117,14 @@ class galItem extends xPDOSimpleObject {
                 break;
             case 'image_path':
                 $value = $this->xpdo->call('galAlbum','getFilesPath',array(&$this->xpdo)).$this->get('filename');
+                break;
+            case 'base_url':
+                $ms = $this->getMediaSource();
+                $value='';
+                if($ms->getBaseUrl() != '/') {
+                    $value = $ms->getBaseUrl();
+                }
+
                 break;
             default:
                 $value = parent::get($k,$format,$formatTemplate);
@@ -136,7 +186,7 @@ class galItem extends xPDOSimpleObject {
         $album = $this->xpdo->getObject('galAlbum',$albumId);
         if (empty($album)) return false;
 
-        $fileName = $album->uploadItem($this,$file['tmp_name'],$file['name']);
+        $fileName = $album->uploadItem($this,$file['tmp_name'], $file['name'], $this->getMediaSource());
         if (empty($fileName)) {
             return false;
         }
@@ -168,7 +218,9 @@ class galItem extends xPDOSimpleObject {
         $filename = $this->get('filename');
         if (!empty($filename)) {
             $filename = $this->xpdo->call('galAlbum','getFilesPath',array(&$this->xpdo)).$filename;
-            if (!@unlink($filename)) {
+            $filename = str_ireplace(MODX_BASE_PATH, '', $filename);
+            $ms = $this->getMediaSource();
+            if (!@$ms->removeObject($filename)) {
                 $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to remove the attachment file at: '.$filename);
             }
         }
