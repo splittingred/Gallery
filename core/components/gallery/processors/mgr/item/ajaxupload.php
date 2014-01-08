@@ -55,10 +55,13 @@ if (!empty($_FILES['qqfile'])) {
         return $modx->error->failure($modx->lexicon('gallery.item_err_upload'));
     }
 } else {
-    $modx->log(xPDO::LOG_LEVEL_ERROR,'[GalleryAjaxUpload] filenm '.$filenm);
 
     $length = 10;
-    $randomFilename = "/tmp/".substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length).".$extension";
+    $tmpDir = MODX_BASE_PATH."core/cache/gallery-tmp/";
+
+    if(!file_exists($tmpDir)) mkdir($tmpDir);
+
+    $randomFilename = $tmpDir.substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length).".$extension";
 
     /* Using AJAX upload - to tmp file then use the correct media source to upload */
     $input = fopen("php://input", "r");
@@ -80,7 +83,7 @@ if (!empty($_FILES['qqfile'])) {
         $item->set('filename',str_replace(' ','',$relativePath));
     }
 
-    @unlink($target);
+    @unlink($randomFilename);
 }
 
 $item->save();
