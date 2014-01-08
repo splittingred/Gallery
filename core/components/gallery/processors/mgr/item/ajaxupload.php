@@ -57,7 +57,7 @@ if (!empty($_FILES['qqfile'])) {
 } else {
 
     $length = 10;
-    $tmpDir = MODX_BASE_PATH."core/cache/gallery-tmp/";
+    $tmpDir = MODX_CORE_PATH."cache/gallery-tmp/";
 
     if(!file_exists($tmpDir)) mkdir($tmpDir);
 
