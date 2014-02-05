@@ -111,7 +111,7 @@ foreach ($data['items'] as $item) {
         $itemArray['cls'] .= ' '.$activeCls;
     }
     $itemArray['filename'] = basename($item->get('filename'));
-    $itemArray['image_absolute'] = $filesUrl.$item->get('filename');
+    $itemArray['image_absolute'] = $item->get('base_url').$filesUrl.$item->get('filename');
     $itemArray['fileurl'] = $itemArray['image_absolute'];
     $itemArray['filepath'] = $filesPath.$item->get('filename');
     $itemArray['filesize'] = $item->get('filesize');
