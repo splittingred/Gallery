@@ -31,6 +31,7 @@ class GalleryHomeManagerController extends GalleryManagerController {
         $this->addJavascript($this->gallery->config['jsUrl'].'mgr/widgets/album/album.tree.js');
         $this->addJavascript($this->gallery->config['jsUrl'].'mgr/widgets/home.panel.js');
         $this->addLastJavascript($this->gallery->config['jsUrl'].'mgr/sections/home.js');
+        $this->addHtml("<script>Ext.onReady(function() { MODx.load({xtype: 'gal-page-home'}) })</script>");
     }
     public function getTemplateFile() { return $this->gallery->config['templatesPath'].'home.tpl'; }
 }

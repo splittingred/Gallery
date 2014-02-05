@@ -1,7 +1,3 @@
-Ext.onReady(function() {
-    MODx.load({ xtype: 'gal-page-album-update'});
-});
-
 GAL.page.UpdateAlbum = function(config) {
     config = config || {};
     Ext.applyIf(config,{
