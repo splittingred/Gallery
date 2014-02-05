@@ -54,7 +54,13 @@ abstract class GalleryPlugin {
     public function toBoolean(&$array,array $properties = array()) {
         foreach ($properties as $property) {
             if (isset($array[$property])) {
-                $array[$property] = (boolean)$array[$property];
+                if($array[$property] == 'false'){
+                    $array[$property] = false;
+                }else if($array[$property] == 'true'){
+                    $array[$property] = true;
+                }else{
+                    $array[$property] = (boolean)$array[$property];
+                }
             }
         }
     }
