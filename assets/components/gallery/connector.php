@@ -47,7 +47,6 @@ if ($_REQUEST['action'] == 'web/phpthumb') {
         if ($modx->user->hasSessionContext($modx->context->get('key'))) {
             $_SERVER['HTTP_MODAUTH'] = $_SESSION["modx.{$modx->context->get('key')}.user.token"];
         } else {
-            $_SESSION["modx.{$modx->context->get('key')}.user.token"] = 0;
             $_SERVER['HTTP_MODAUTH'] = 0;
         }
     } else {
