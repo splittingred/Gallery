@@ -143,7 +143,7 @@ class galItem extends xPDOSimpleObject {
 
     public function getPhpThumbUrl() {
         $assetsUrl = $this->xpdo->getOption('gallery.assets_url',null,$this->xpdo->getOption('assets_url',null,MODX_ASSETS_URL).'components/gallery/');
-        $assetsUrl .= 'connector.php?action=web/phpthumb';
+        $assetsUrl .= 'connector.php?action=web/phpthumb&ctx='.$this->xpdo->context->get('key');
         return $assetsUrl;
     }
 
