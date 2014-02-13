@@ -1,5 +1,9 @@
 Changelog for Gallery.
 
+Gallery 1.5.3
+====================================
+- [#9] Fixes Access Denied issue when using Manager / Gallery
+
 Gallery 1.5.2
 ====================================
 - [#219] Ensure that GalleryAlbums custom TV marks resource edit form dirty and enables save button
