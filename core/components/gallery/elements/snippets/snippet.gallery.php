@@ -44,6 +44,8 @@ if ($modx->getOption('checkForRequestTagVar',$scriptProperties,true)) {
 if (empty($scriptProperties['album']) && empty($scriptProperties['tag'])) return '';
 
 $data = $modx->call('galItem','getList',array(&$modx,$scriptProperties));
+$totalVar = $modx->getOption('totalVar', $scriptProperties, 'total');
+$modx->setPlaceholder($totalVar,$data['total']);
 
 /* load plugins */
 $plugin = $modx->getOption('plugin',$scriptProperties,'');
@@ -98,6 +100,9 @@ $linkToImage = $modx->getOption('linkToImage',$scriptProperties,false);
 $activeCls = $modx->getOption('activeCls',$scriptProperties,'gal-item-active');
 $highlightItem = $modx->getOption($imageGetParam,$_REQUEST,false);
 /** @var galItem $item */
+
+if (!is_array($data)) return '';
+
 foreach ($data['items'] as $item) {
     $itemArray = $item->toArray();
     $itemArray['idx'] = $idx;
@@ -106,7 +111,7 @@ foreach ($data['items'] as $item) {
         $itemArray['cls'] .= ' '.$activeCls;
     }
     $itemArray['filename'] = basename($item->get('filename'));
-    $itemArray['image_absolute'] = $filesUrl.$item->get('filename');
+    $itemArray['image_absolute'] = $item->get('base_url').$filesUrl.$item->get('filename');
     $itemArray['fileurl'] = $itemArray['image_absolute'];
     $itemArray['filepath'] = $filesPath.$item->get('filename');
     $itemArray['filesize'] = $item->get('filesize');
@@ -138,6 +143,7 @@ if (!empty($containerTpl)) {
         'thumbnails' => $output,
         'album_name' => $data['album']['name'],
         'album_description' => $data['album']['description'],
+        'album_year' => $data['album']['year'],
         'albumRequestVar' => $albumRequestVar,
         'albumId' => $data['album']['id'],
     ));
@@ -151,16 +157,22 @@ if (!empty($toPlaceholder)) {
         $toPlaceholder => $output,
         $toPlaceholder.'.id' => $data['album']['id'],
         $toPlaceholder.'.name' => $data['album']['name'],
+        $toPlaceholder.'.year' => $data['album']['year'],
         $toPlaceholder.'.description' => $data['album']['description'],
         $toPlaceholder.'.total' => $data['total'],
+        $toPlaceholder.'.next' => $data['album']['id'] + 1,
+        $toPlaceholder.'.prev' => $data['album']['id'] - 1,
     ));
 } else {
     $placeholderPrefix = $modx->getOption('placeholderPrefix',$scriptProperties,'gallery.');
     $modx->toPlaceholders(array(
         $placeholderPrefix.'id' => $data['album']['id'],
         $placeholderPrefix.'name' => $data['album']['name'],
+        $placeholderPrefix.'year' => $data['album']['year'],
         $placeholderPrefix.'description' => $data['album']['description'],
         $placeholderPrefix.'total' => $data['total'],
+        $placeholderPrefix.'next' => $data['album']['id'] + 1,
+        $placeholderPrefix.'prev' => $data['album']['id'] - 1,
     ));
     return $output;
 }

@@ -120,10 +120,10 @@ class galZipImport extends galImport {
         $newRelativePath = $this->albumId.'/'.$newFileName;
         $newAbsolutePath = $this->target.'/'.$newFileName;
 
-        if (@file_exists($newAbsolutePath)) {
-            @unlink($newAbsolutePath);
-        }
-        if (!@copy($filePathName,$newAbsolutePath)) {
+        $file = array("name" => $newRelativePath, "tmp_name" => $filePathName, "error" => "0"); // emulate a $_FILES object
+
+        $success = $item->upload($file,$options['album']);
+        if(!$success) {
             $errors[] = $this->modx->lexicon('gallery.file_err_move',array(
                 'file' => $newFileName,
                 'target' => $newAbsolutePath,

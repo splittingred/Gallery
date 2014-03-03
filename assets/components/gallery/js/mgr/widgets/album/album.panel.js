@@ -1,6 +1,6 @@
 GAL.panel.Album = function(config) {
     config = config || {};
-        
+
     Ext.apply(config,{
         id: 'gal-panel-album'
         ,url: GAL.config.connector_url
@@ -47,10 +47,46 @@ GAL.panel.Album = function(config) {
                             ,anchor: '100%'
                             ,allowBlank: false
                         },{
+                            xtype: 'textfield'
+                            ,fieldLabel: _('gallery.year')
+                            ,name: 'year'
+                            ,anchor: '100%'
+                            ,allowBlank: true
+                        },{
                             xtype: 'textarea'
                             ,fieldLabel: _('description')
                             ,name: 'description'
                             ,anchor: '100%'
+                        },{
+                            layout: 'column'
+                            ,border:false
+						    ,fieldLabel: _('gallery.cover_filename')
+                            ,items: [{
+                                xtype: 'textfield'
+                                ,name: 'cover_filename'
+                                ,id: 'cover_filename'
+                                ,readOnly: true
+                                ,allowBlank: true
+                                ,columnWidth: .6
+                            },{
+                                xtype:'hidden'
+                                ,'name':'cover_filename_url'
+                                ,id:'cover_filename_url'
+                            },{
+                                xtype:'button'
+                                ,text: _('gallery.upload_cover')
+                                ,height: 39
+                                ,handler: this.updateCover
+                            },{
+                                xtype:'button'
+                                ,text: _('gallery.delete_cover')
+                                ,height: 39
+                                ,handler:function() {
+                                    var panel=Ext.getCmp('gal-panel-album').getForm();
+                                    panel.findField('cover_filename').setValue('');
+                                    panel.findField('cover_filename_url').setValue('');
+                                }
+                            }]
                         }]
                     },{
                         columnWidth: .4
@@ -110,6 +146,7 @@ GAL.panel.Album = function(config) {
 };
 Ext.extend(GAL.panel.Album,MODx.FormPanel,{
     initialized: false
+    ,windows: {}
     ,setup: function() {
         if (!this.config.album || this.initialized) return;
         MODx.Ajax.request({
@@ -132,6 +169,38 @@ Ext.extend(GAL.panel.Album,MODx.FormPanel,{
         Ext.apply(o.form.baseParams,{
         });
     }
+    ,updateCover:function(btn,e) {
+        var form=this.findParentByType('gal-panel-album');
+        var data=form.getForm().getValues();
+        /**
+         * We'll need a "fresh" window when using Tiny for the description field,
+         * so we don't check if it exists but just load a new window.
+         */
+        form.windows.updateCover = MODx.load({
+            xtype: 'gal-window-cover-update'
+            ,listeners: {
+                'success': function(o) {
+                    if(o.a.result.object) {
+                        var panel=Ext.getCmp('gal-panel-album');
+                        panel.getForm().setValues(o.a.result.object);
+                    }
+                    this.close();
+                 }
+            }
+        });
+        form.windows.updateCover.setValues(data);
+        var previewDivName=form.windows.updateCover.ident+'-preview';
+        var preview=form.windows.updateCover.find('id',previewDivName);
+        if(preview.length>0) {
+	        if(data.cover_filename_url!='') {
+	            var now=new Date();
+	            preview[0].html='<img src="'+data.cover_filename_url+'&time='+now.getTime()+'"/>';
+	        } else {
+		        preview[0].setVisible(false);
+	        }
+		}
+        form.windows.updateCover.show(e.target);
+    }
     ,success: function(o) {
         Ext.getCmp('gal-btn-save').setDisabled(false);
     }
@@ -142,7 +211,7 @@ Ext.reg('gal-panel-album',GAL.panel.Album);
 
 GAL.panel.AlbumItems = function(config) {
     config = config || {};
-    
+
     this.view = MODx.load({
         id: 'gal-album-items-view'
         ,xtype: 'gal-view-album-items'
@@ -161,44 +230,44 @@ GAL.panel.AlbumItems = function(config) {
         ,autoLoad: true
         ,items: [
             '-'
-        	,_('per_page')+':'
-        	,{
-		        xtype: 'textfield'
-		        ,value: config.pageSize || (parseInt(MODx.config.default_per_page) || 20)
-		        ,width: 40
-		        ,listeners: {
-		            'change': {fn:function(tf,nv,ov) {
-		                if (Ext.isEmpty(nv)) return false;
-		                nv = parseInt(nv);
-		                this.view.pagingBar.pageSize = nv;
-		                this.view.store.load({params:{
-		                    start:0
-		                    ,limit: nv
-		                }});
-		            },scope:this}
-		            ,'render': {fn: function(cmp) {
-		                new Ext.KeyMap(cmp.getEl(), {
-		                    key: Ext.EventObject.ENTER
-		                    ,fn: function() {
-		                        this.fireEvent('change',this.getValue());
-		                        this.blur();
-		                        return true;}
-		                    ,scope: cmp
-		                });
-		            },scope:this}
-		        }
-	    	}
-	    	,'-'
-	    ]
+            ,_('per_page')+':'
+            ,{
+                xtype: 'textfield'
+                ,value: config.pageSize || (parseInt(MODx.config.default_per_page) || 20)
+                ,width: 40
+                ,listeners: {
+                    'change': {fn:function(tf,nv,ov) {
+                        if (Ext.isEmpty(nv)) return false;
+                        nv = parseInt(nv);
+                        this.view.pagingBar.pageSize = nv;
+                        this.view.store.load({params:{
+                            start:0
+                            ,limit: nv
+                        }});
+                    },scope:this}
+                    ,'render': {fn: function(cmp) {
+                        new Ext.KeyMap(cmp.getEl(), {
+                            key: Ext.EventObject.ENTER
+                            ,fn: function() {
+                                this.fireEvent('change',this.getValue());
+                                this.blur();
+                                return true;}
+                            ,scope: cmp
+                        });
+                    },scope:this}
+                }
+            }
+            ,'-'
+        ]
     });
     var dv = this.view;
-    
-    
+
+
     dv.on('render', function() {
         dv.dragZone = new MODx.DataView.dragZone(dv);
         dv.dropZone = new MODx.DataView.dropZone(dv);
     });
-    
+
     Ext.applyIf(config,{
         id: 'gal-panel-album-items'
         ,cls: 'browser-win'
@@ -257,7 +326,7 @@ GAL.panel.AlbumItems = function(config) {
         }]
     });
     GAL.panel.AlbumItems.superclass.constructor.call(this,config);
-    
+
 };
 Ext.extend(GAL.panel.AlbumItems,MODx.Panel,{
     windows: {}

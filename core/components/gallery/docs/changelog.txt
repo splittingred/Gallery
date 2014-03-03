@@ -1,5 +1,23 @@
 Changelog for Gallery.
 
+
+Gallery 1.6.0
+====================================
+- [#271] [GalleryAlbums] Added image_absolute placeholder
+- [#270] [GalleryAlbums] Added containerTpl (with navigation placeholders) and totalVar placeholder
+- [#266] Add support for selection of album cover. 
+- [#259] Do not cache in getList() when $sort = RAND()
+- [#252] Database Optimization
+- [#248] Fix getPage support in Gallery snippet
+- [#246] Batch import sorts by filename.
+- [#235] show all childs and subchilds of selected parent album by new TV option
+- [#233] Fix property itemCls from being assigned activeCls's value
+- [#226] German localization
+- [#151] Needed to show links to next/prev albums
+- [#91] Allow false boolean
+- [#258] Bug fix with random sorting when cached 
+- Bug fixes
+
 Gallery 1.5.3
 ====================================
 - [#9] Fixes Access Denied issue when using Manager / Gallery

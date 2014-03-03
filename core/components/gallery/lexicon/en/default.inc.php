@@ -26,6 +26,7 @@
  * @subpackage lexicon
  */
 $_lang['gallery'] = 'Gallery';
+$_lang['gallery.year'] = 'Year';
 $_lang['gallery.active'] = 'Active';
 $_lang['gallery.active_desc'] = 'If unchecked, this album will not be viewable.';
 $_lang['gallery.album'] = 'Album';
@@ -47,6 +48,8 @@ $_lang['gallery.bytes'] = 'bytes';
 $_lang['gallery.comma_separated_list'] = 'Comma-separated list';
 $_lang['gallery.clearsuccessful'] = 'Clear Successful Uploads';
 $_lang['gallery.clearfailure'] = 'Clear Failed Uploads';
+$_lang['gallery.cover_filename'] = 'Album cover';
+$_lang['gallery.delete_cover'] = 'Delete cover';
 $_lang['gallery.directory'] = 'Directory';
 $_lang['gallery.directory_desc'] = 'The directory to scan for images.';
 $_lang['gallery.directory_err_create'] = 'Could not create directory: [[+directory]]';
@@ -87,9 +90,12 @@ $_lang['gallery.parent'] = 'Parent';
 $_lang['gallery.prominent'] = 'Prominent';
 $_lang['gallery.prominent_desc'] = 'Making an Album non-prominent can be used to hide Albums from your Album listing, should you want a private album, or to create non-listed albums.';
 $_lang['gallery.refresh'] = 'Refresh';
+$_lang['gallery.set_as_cover'] = 'Make as album cover';
 $_lang['gallery.tags'] = 'Tags';
 $_lang['gallery.title'] = 'Title';
 $_lang['gallery.upload'] = 'Upload';
+$_lang['gallery.upload_cover'] = 'Upload cover';
+$_lang['gallery.view_cover'] = 'View cover';
 $_lang['gallery.width'] = 'Width';
 $_lang['gallery.xpdozip_err_nf'] = 'Could not load xPDOZip class.';
 $_lang['gallery.zip_err_ns'] = 'Please specify a zip file.';

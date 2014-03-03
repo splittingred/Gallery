@@ -20,18 +20,10 @@
  * @package gallery
  */
 /**
+ * German Lexicon Entries
+ * Translated by Martin Gartner (gadgetto) / bitego.com
+ *
  * @package gallery
- * @subpackage processors
+ * @subpackage lexicon
  */
-class GalleryAlbumGetProcessor extends modObjectGetProcessor {
-    public $classKey = 'galAlbum';
-    public $objectType = 'gallery.album';
-    public $languageTopics = array('gallery:default');
-
-	public function cleanup() {
-		$arResult=$this->object->toArray();
-		$arResult['cover_filename_url']=$this->object->getCoverUrl();
-		return $this->success('',$arResult);
-	}
-}
-return 'GalleryAlbumGetProcessor';
+$_lang['gallery.plugin_err_load'] = 'Laden des Plugins "[[+name]]" von Pfad: [[+path]] fehlgeschlagen.';

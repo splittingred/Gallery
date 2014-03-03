@@ -20,18 +20,12 @@
  * @package gallery
  */
 /**
+ * Media Source German Lexicon Entries for Gallery
+ * Translated by Martin Gartner (gadgetto) / bitego.com
+ *
+ * @var array $_lang
  * @package gallery
- * @subpackage processors
+ * @subpackage lexicon
  */
-class GalleryAlbumGetProcessor extends modObjectGetProcessor {
-    public $classKey = 'galAlbum';
-    public $objectType = 'gallery.album';
-    public $languageTopics = array('gallery:default');
-
-	public function cleanup() {
-		$arResult=$this->object->toArray();
-		$arResult['cover_filename_url']=$this->object->getCoverUrl();
-		return $this->success('',$arResult);
-	}
-}
-return 'GalleryAlbumGetProcessor';
+$_lang['gallery.source_name'] = 'Galerie Alben';
+$_lang['gallery.source_desc'] = 'Eine Dateisystem-basierte Quelle, die Zugriff auf Ihre Galerie-Bilder am Server erm&ouml;glicht.';

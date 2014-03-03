@@ -195,37 +195,151 @@ class galAlbum extends xPDOSimpleObject {
         return $exists;
     }
 
-    public function uploadItem(galItem $item,$filePath,$name) {
+    public function uploadItem(galItem $item,$filePath,$name,$mediaSource) {
         $fileName = false;
 
+        $albumDir = $this->getPath(false);
+        $targetDir = str_ireplace(MODX_BASE_PATH, '', $this->getPath());
+
+        /* if directory doesnt exist, create it */
+        if (!$mediaSource->createContainer($targetDir,'/')) {
+            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory (possibly already exists?): '.$targetDir);
+        }
+
+        /* upload the file */
+
+        $extension = pathinfo($name,PATHINFO_EXTENSION);
+        $shortName = $item->get('id').'.'.$extension;
+        $relativePath = $albumDir.$shortName;
+        $absolutePath = $targetDir.$shortName;
+
+        $fileName = str_replace(' ','',$relativePath);
+
+        $file = array("name" => $shortName, "tmp_name" => $filePath,"error" => "0"); // emulate a $_FILES object
+
+        $success = true;
+        // modFileMediaSource class uses move_uploaded_file - because we create a local file - we cannot use this function and we use streams instead
+        if(!is_uploaded_file($filePath) && get_class($mediaSource) == 'modFileMediaSource_mysql') {
+            $input = fopen($filePath, "r");
+            $target = fopen($this->getPath(true).$shortName, "w");
+            $bytes = stream_copy_to_stream($input, $target);
+            fclose($input);
+            fclose($target);
+        } else {
+            $success = $mediaSource->uploadObjectsToContainer($targetDir,array($file));
+        }
+
+        // if(!$success) {
+        //     $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
+        //     return false;
+        // }
+        return $fileName;
+    }
+
+    public function getCoverUrl() {
+        $value='';
+        if($this->get('cover_filename')!='') {
+            $assetsUrl = $this->xpdo->getOption('gallery.assets_url',null,$this->xpdo->getOption('assets_url',null,MODX_ASSETS_URL).'components/gallery/');
+            $assetsUrl .= 'connector.php?action=web/phpthumb';
+            if (empty($format)) $format = array();
+            $format['w']=100;
+            $format['h']=100;
+            $format['zc']=1;
+            $filename = $this->get('cover_filename');
+            $format['src'] = '';
+            if ($this->xpdo->getOption('gallery.thumbs_prepend_site_url',null,false)) {
+                $format['src'] = MODX_URL_SCHEME.$_SERVER['HTTP_HOST'];
+            }
+            $format['src'] .= $this->getFilesUrl($this->xpdo).$filename;
+            $url = $assetsUrl.'&'.http_build_query($format,'','&');
+            if ($this->xpdo->getOption('xhtml_urls',null,false)) {
+                $value = str_replace('&','&amp;',$url);
+                $value = str_replace('&amp;amp;','&amp;',$value);
+            } else {
+                $value =  $url;
+            }
+        }
+        return $value;
+    }
+
+    private function cleanCoverCache() {
+        $assetsPath = $this->xpdo->getOption('gallery.assets_path',null,$this->xpdo->getOption('assets_path').'components/gallery/');
+        $cacheDir = $assetsPath.'cache/';
+        $filepath=str_replace(array('/','\\'),'_',$this->getPath()).'cover\.';
+        try {
+            $hDir=opendir($cacheDir);
+            while($file=readdir($hDir)) {
+                if(preg_match('#^'.$filepath.'#i',$file)) {
+                    @unlink($cacheDir.$file);
+                }
+            }
+        } catch(Exception $e) {
+            if($hDir)
+                closedir($hDir);
+            echo $e;
+        }
+    }
+
+    public function setCoverFile($item) {
+        $fileName = false;
         $albumDir = $this->getPath(false);
         $targetDir = $this->getPath();
 
         /* if directory doesnt exist, create it */
         if (!$this->ensurePathExists()) {
-           $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$targetDir);
-           return $fileName;
+            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$targetDir);
+            return $fileName;
         }
         if (!$this->isPathWritable()) {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
             return $fileName;
         }
 
-        /* upload the file */
-        $extension = pathinfo($name,PATHINFO_EXTENSION);
-        $shortName = $item->get('id').'.'.$extension;
-        $relativePath = $albumDir.$shortName;
-        $absolutePath = $targetDir.$shortName;
+        $this->cleanCoverCache();
 
-        if (@file_exists($absolutePath)) {
-            @unlink($absolutePath);
+        if($item instanceof galItem) {
+            /* upload the file */
+            $filePath=$item->getPath();
+            $extension = pathinfo($filePath,PATHINFO_EXTENSION);
+            $shortName = 'cover.'.$extension;
+            $relativePath = $albumDir.$shortName;
+            $absolutePath = $targetDir.$shortName;
+            if (@file_exists($absolutePath)) {
+                @unlink($absolutePath);
+            }
+            if (!@copy($filePath,$absolutePath)) {
+                $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to copy the file: '.$filePath.' to '.$absolutePath);
+            } else {
+                $fileName = str_replace(' ','',$relativePath);
+            }
+            return $fileName;
+        } elseif (is_array($item)) {
+            /* upload the file */
+            $filePath=$item['name'];
+            $extension = pathinfo($filePath,PATHINFO_EXTENSION);
+            $shortName = 'cover.'.$extension;
+            $relativePath = $albumDir.$shortName;
+            $absolutePath = $targetDir.$shortName;
+
+            if (@file_exists($absolutePath)) {
+                @unlink($absolutePath);
+            }
+            if (!@move_uploaded_file($item['tmp_name'],$absolutePath)) {
+                $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
+            } else {
+                $fileName = str_replace(' ','',$relativePath);
+            }
+            return $fileName;
         }
-        if (!@move_uploaded_file($filePath,$absolutePath)) {
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
-        } else {
-            $fileName = str_replace(' ','',$relativePath);
+        return false;
+    }
+
+    public function setCoverItem($item) {
+        if($filename=$this->setCoverFile($item)) {
+            $this->set('cover_filename',$filename);
+            return $this->save();
         }
-        return $fileName;
+        return false;
     }
 
     /**
@@ -242,33 +356,52 @@ class galAlbum extends xPDOSimpleObject {
             $cache = $this->xpdo->cacheManager->get($cacheKey);
         }
         if (!$cache || true) {
-            $c = $this->xpdo->newQuery('galItem');
-            $c->innerJoin('galAlbumItem','AlbumItems');
-            $c->where(array(
-                'AlbumItems.album' => $this->get('id'),
-            ));
-            $c->sortby($albumCoverSort,$albumCoverSortDir);
-            $count = $this->xpdo->getCount('galItem', $c);
-            $c->limit(1);
-
-            /** @var galItem $item */
-            $item = $this->xpdo->getObject('galItem',$c);
-            if (empty($item)) {
-                $assetsUrl = $this->xpdo->getOption('gallery.assets_url',null,$this->xpdo->getOption('assets_url',null,MODX_ASSETS_URL).'gallery/');
-                if (strpos($assetsUrl,'http') === false && defined('MODX_URL_SCHEME') && defined('MODX_HTTP_HOST')) {
-                    $assetsUrl = MODX_URL_SCHEME.MODX_HTTP_HOST.$assetsUrl;
-                }
+            if($this->get('cover_filename')!='') {
+                $c = $this->xpdo->newQuery('galItem');
+                $c->innerJoin('galAlbumItem','AlbumItems');
+                $c->where(array(
+                    'AlbumItems.album' => $this->get('id'),
+                ));
+                $count = $this->xpdo->getCount('galItem', $c);
                 $item = $this->xpdo->newObject('galItem');
                 $item->fromArray(array(
-                    'name' => '',
-                    'filename' => $assetsUrl.'images/album-empty.jpg',
+                    'name' => 'Cover',
+                    'filename' => $this->getFilesUrl($this->xpdo).$this->get('cover_filename'),
                     'absolute_filename' => true,
                     'active' => true,
                 ));
-	        }
-            $item->set('total',$count);
-            $cache = $item->toArray();
-            $this->xpdo->cacheManager->set($cacheKey,$cache);
+                $item->set('total',$count);
+                $cache = $item->toArray();
+                $this->xpdo->cacheManager->set($cacheKey,$cache);
+            } else {
+                $c = $this->xpdo->newQuery('galItem');
+                $c->innerJoin('galAlbumItem','AlbumItems');
+                $c->where(array(
+                    'AlbumItems.album' => $this->get('id'),
+                ));
+                $c->sortby($albumCoverSort,$albumCoverSortDir);
+                $count = $this->xpdo->getCount('galItem', $c);
+                $c->limit(1);
+
+                /** @var galItem $item */
+                $item = $this->xpdo->getObject('galItem',$c);
+                if (empty($item)) {
+                    $assetsUrl = $this->xpdo->getOption('gallery.assets_url',null,$this->xpdo->getOption('assets_url',null,MODX_ASSETS_URL).'gallery/');
+                    if (strpos($assetsUrl,'http') === false && defined('MODX_URL_SCHEME') && defined('MODX_HTTP_HOST')) {
+                        $assetsUrl = MODX_URL_SCHEME.MODX_HTTP_HOST.$assetsUrl;
+                    }
+                    $item = $this->xpdo->newObject('galItem');
+                    $item->fromArray(array(
+                        'name' => '',
+                        'filename' => $assetsUrl.'images/album-empty.jpg',
+                        'absolute_filename' => true,
+                        'active' => true,
+                    ));
+                }
+                $item->set('total',$count);
+                $cache = $item->toArray();
+                $this->xpdo->cacheManager->set($cacheKey,$cache);
+            }
         } else {
             $item = $this->xpdo->newObject('galItem');
             $item->fromArray($cache,'',true,true);
@@ -293,6 +426,7 @@ class galAlbum extends xPDOSimpleObject {
             $limit = $modx->getOption('limit',$scriptProperties,10);
             $start = $modx->getOption('start',$scriptProperties,0);
             $parent = $modx->getOption('parent',$scriptProperties,0);
+	    $id = $modx->getOption('id',$scriptProperties,false);
             $showInactive = $modx->getOption('showInactive',$scriptProperties,false);
             $prominentOnly = $modx->getOption('prominentOnly',$scriptProperties,true);
 
@@ -325,13 +459,20 @@ class galAlbum extends xPDOSimpleObject {
             }
             $c->sortby($sort,$dir);
             if ($limit > 0) { $c->limit($limit,$start); }
-            $albums = $modx->getCollection('galAlbum',$c);
+	    if (!empty($id)) {
+		    $c->where(array(
+		    	'id' => $id,
+	    	    ));
+	    }
 
-            $cache = array();
-            foreach ($albums as $album) {
-                $cache[] = $album->toArray('',true);
-            }
-            $modx->cacheManager->set($cacheKey,$cache);
+            $albums = $modx->getCollection('galAlbum',$c);
+			if($sort !== 'RAND()') {
+	            $cache = array();
+	            foreach ($albums as $album) {
+	                $cache[] = $album->toArray('',true);
+	            }
+	            $modx->cacheManager->set($cacheKey,$cache);
+			}
         }
         return $albums;
     }

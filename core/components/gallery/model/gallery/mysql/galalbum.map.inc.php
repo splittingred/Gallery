@@ -11,6 +11,7 @@ $xpdo_meta_map['galAlbum']= array (
   array (
     'parent' => 0,
     'name' => '',
+    'year' => '',
     'description' => NULL,
     'createdon' => NULL,
     'createdby' => 0,
@@ -18,6 +19,7 @@ $xpdo_meta_map['galAlbum']= array (
     'active' => 0,
     'prominent' => 0,
     'watermark' => '',
+    'cover_filename' => ''
   ),
   'fieldMeta' => 
   array (
@@ -39,6 +41,12 @@ $xpdo_meta_map['galAlbum']= array (
       'null' => false,
       'default' => '',
       'index' => 'index',
+    ),
+    'year' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '100',
+      'phptype' => 'string',
     ),
     'description' => 
     array (
@@ -89,6 +97,14 @@ $xpdo_meta_map['galAlbum']= array (
       'default' => 0,
     ),
     'watermark' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'cover_filename' =>
     array (
       'dbtype' => 'varchar',
       'precision' => '255',

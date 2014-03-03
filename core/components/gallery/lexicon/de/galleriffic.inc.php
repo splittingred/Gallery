@@ -20,18 +20,18 @@
  * @package gallery
  */
 /**
+ * German Lexicon Entries for Galleriffic plugin
+ * Translated by Martin Gartner (gadgetto) / bitego.com
+ *
  * @package gallery
- * @subpackage processors
+ * @subpackage galleriffic
  */
-class GalleryAlbumGetProcessor extends modObjectGetProcessor {
-    public $classKey = 'galAlbum';
-    public $objectType = 'gallery.album';
-    public $languageTopics = array('gallery:default');
+$_lang['gallery.download_original'] = 'Original herunterladen';
+$_lang['gallery.photo_next']        = 'N&auml;chstes Foto';
+$_lang['gallery.photo_previous']    = 'Vorheriges Foto';
+$_lang['gallery.next']              = 'N&auml;chstes';
+$_lang['gallery.prev']              = 'Vorheriges';
+$_lang['gallery.slideshow_pause']   = 'Slideshow anhalten';
+$_lang['gallery.slideshow_play']    = 'Slideshow starten';
+$_lang['gallery.tags']              = 'Tags';
 
-	public function cleanup() {
-		$arResult=$this->object->toArray();
-		$arResult['cover_filename_url']=$this->object->getCoverUrl();
-		return $this->success('',$arResult);
-	}
-}
-return 'GalleryAlbumGetProcessor';
