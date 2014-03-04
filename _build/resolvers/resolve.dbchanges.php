@@ -55,6 +55,7 @@ if ($object->xpdo) {
             $manager->addIndex('galAlbum','prominent');
 
             $manager->addIndex('galAlbumItem','rank');
+            $manager->addField('galAlbum', 'year'); 
 
             /* 1.5.3+ */
             $manager->addField('galAlbum','cover_filename');
