@@ -1,6 +1,10 @@
 Changelog for Gallery.
 
 
+Gallery 1.6.1
+====================================
+ - [#13][#12] Backwards Compatibility Fix
+
 Gallery 1.6.0
 ====================================
 - [#271] [GalleryAlbums] Added image_absolute placeholder
