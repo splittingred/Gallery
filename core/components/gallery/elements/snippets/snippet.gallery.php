@@ -89,7 +89,7 @@ $thumbProperties = array_merge(array(
     'q' => (int)$modx->getOption('thumbQuality',$scriptProperties,90),
 ),$thumbProperties);
 
-$idx = 0;
+$idx = 1;
 $output = array();
 $filesUrl = $modx->call('galAlbum','getFilesUrl',array(&$modx));
 $filesPath = $modx->call('galAlbum','getFilesPath',array(&$modx));
@@ -130,8 +130,19 @@ foreach ($data['items'] as $item) {
     if ($plugin) {
         $plugin->renderItem($itemArray);
     }
-
-    $output[] = $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
+    
+    $nth = $modx->getOption('nth',$scriptProperties);
+    $nthTpl = $modx->getOption('nthTpl',$scriptProperties);
+    if (isset($nth) && ($nthTpl)) {
+      if ($idx % $nth == 0) { // Checks if index can be divided by nth
+        $output[] = $gallery->getChunk($modx->getOption('nthTpl',$scriptProperties,'galItemThumbNth'),$itemArray);
+      }else{
+        $output[] = $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
+      }
+    }else{
+      $output[] = $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
+    }
+    
     $idx++;
 }
 $output = implode("\n",$output);
