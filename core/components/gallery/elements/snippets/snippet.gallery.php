@@ -131,8 +131,21 @@ foreach ($data['items'] as $item) {
         $plugin->renderItem($itemArray);
     }
 
-    $output[] = $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
     $idx++;
+    
+    $needle = 'thumbTpl_n' . $idx;
+
+    if(empty($tplnth)) {
+      if (in_array($$needle,$scriptProperties,true)) {
+      $itemidx = $idx;
+      $tplnth = 'thumbTpl_n' . $idx;
+      }
+    }
+    if ($idx % $itemidx === 0) {
+      $output[] = $gallery->getChunk($modx->getOption($tplnth,$scriptProperties,'galItemThumbNth'),$itemArray);
+    }else{
+      $output[] = $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
+    }
 }
 $output = implode("\n",$output);
 
