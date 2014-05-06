@@ -143,7 +143,15 @@ if (file_exists($cacheKey)) {
 }
 
 if (!headers_sent()) {
-	$phpThumb->setOutputFormat();
+    $headers = $modx->request->getHeaders();
+    $mtime = filemtime($cacheKey);
+    if (isset($headers['If-Modified-Since']) && strtotime($headers['If-Modified-Since']) == $mtime) {
+        // cache is good, send 304
+        header('Last-Modified: '.gmdate('D, d M Y H:i:s', $mtime).' GMT', true, 304);
+        exit();
+    }
+    header('Last-Modified: '.gmdate('D, d M Y H:i:s', $mtime).' GMT', true, 200);
+    $phpThumb->setOutputFormat();
     header('Content-Type: '.phpthumb_functions::ImageTypeToMIMEtype($phpThumb->thumbnailFormat));
     header('Content-Disposition: inline; filename="'.basename($src).'"');
 }
