@@ -93,7 +93,7 @@ $_lang['gallery.comma_separated_list'] = 'Čárkou oddělený seznam';
 $_lang['gallery.clearsuccessful'] = 'Vymazat úspěšně nahrané';
 
 // $_lang['gallery.clearfailure'] = 'Clear Failed Uploads';
-$_lang['gallery.clearfailure'] = 'Vymazat neúspešně nahrané';
+$_lang['gallery.clearfailure'] = 'Vymazat neúspěšně nahrané';
 
 // $_lang['gallery.directory'] = 'Directory';
 $_lang['gallery.directory'] = 'Složka';
