@@ -15,11 +15,7 @@ GAL.view.AlbumItems = function(config) {
         ,tpl: this.templates.thumb
         ,enableDD: true
         ,multiSelect: true
-		,itemSelector: 'div.modx-browser-thumb-wrap'
-        ,listeners: {
-			'selectionchange': {fn:this.showDetails, scope:this, buffer:100}
-            ,'dblclick': config.onSelect || {fn:Ext.emptyFn,scope:this}
-		}
+        ,listeners: {}
         ,prepareData: this.formatData.createDelegate(this)
     });
     GAL.view.AlbumItems.superclass.constructor.call(this,config);
@@ -190,8 +186,8 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     ,_initTemplates: function() {
         this.templates.thumb = new Ext.XTemplate(
             '<tpl for=".">'
-                ,'<div class="modx-browser-thumb-wrap modx-pb-thumb-wrap <tpl if="!active">gal-item-inactive</tpl>" id="gal-item-{id}">'
-                    ,'<div class="modx-browser-thumb gal-item-thumb">'
+                ,'<div class="modx-pb-thumb-wrap <tpl if="!active">gal-item-inactive</tpl>" id="gal-item-{id}">'
+                    ,'<div class="gal-item-thumb">'
                         ,'<img src="{thumbnail}" title="{name}" />'
                     ,'</div>'
                     ,'<span>{shortName}</span>'              
@@ -204,8 +200,8 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         this.templates.details = new Ext.XTemplate(
             '<div class="details">'
             ,'<tpl for=".">'
-                ,'<div class="modx-browser-detail-thumb modx-pb-detail-thumb"><img src="{thumbnail}" alt="{shortName}" onclick="Ext.getCmp(\'gal-album-items-view\').showScreenshot(\'{id}\'); return false;" /></div>'
-                ,'<div class="modx-browser-details-info modx-pb-details-info">'
+                ,'<div class="modx-pb-detail-thumb"><img src="{thumbnail}" alt="{shortName}" onclick="Ext.getCmp(\'gal-album-items-view\').showScreenshot(\'{id}\'); return false;" /></div>'
+                ,'<div class="modx-pb-details-info">'
                     ,'<span class="gal-detail-active">'
                         ,'<tpl if="active"><span class="green">'+_('gallery.active')+'</span></tpl>'
                         ,'<tpl if="!active"><span class="red">'+_('gallery.inactive')+'</span></tpl>'
@@ -231,7 +227,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
             this.ssWin = new Ext.Window({
                 layout:'fit'
                 ,width: 600
-                ,height: auto
+                ,height: 450
                 ,closeAction:'hide'
                 ,plain: true
                 ,items: [{
@@ -289,3 +285,5 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
     }
 });
 Ext.reg('gal-view-album-items',GAL.view.AlbumItems);
+
+
