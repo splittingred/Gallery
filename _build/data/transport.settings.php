@@ -39,7 +39,7 @@ $settings['gallery.backend_thumb_far']->fromArray(array(
 $settings['gallery.backend_thumb_height']= $modx->newObject('modSystemSetting');
 $settings['gallery.backend_thumb_height']->fromArray(array(
     'key' => 'gallery.backend_thumb_height',
-    'value' => '100',
+    'value' => '80',
     'xtype' => 'textfield',
     'namespace' => 'gallery',
     'area' => 'backend',
