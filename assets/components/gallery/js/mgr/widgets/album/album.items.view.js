@@ -231,7 +231,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
             this.ssWin = new Ext.Window({
                 layout:'fit'
                 ,width: 600
-                ,height: auto
+                ,height: 450
                 ,closeAction:'hide'
                 ,plain: true
                 ,items: [{
