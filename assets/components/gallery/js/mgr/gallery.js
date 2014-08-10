@@ -57,6 +57,12 @@ GAL.window.CreateAlbum = function(config) {
             },{
                 columnWidth: .5
                 ,items: [{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('gallery.year')
+                    ,name: 'year'
+                    ,anchor: '100%'
+                    ,allowBlank: true
+                },{
                     xtype: 'checkbox'
                     ,boxLabel: _('gallery.active')
                     ,description: MODx.expandHelp ? '' : _('gallery.active_desc')

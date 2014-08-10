@@ -103,6 +103,12 @@ GAL.window.CreateAlbum = function(config) {
             ,id: 'gal-'+this.ident+'-description'
             ,width: 300
         },{
+            xtype: 'textfield'
+            ,fieldLabel: _('gallery.year')
+            ,name: 'year'
+            ,anchor: '100%'
+            ,allowBlank: true
+        },{
             xtype: 'checkbox'
             ,fieldLabel: _('gallery.active')
             ,name: 'active'
