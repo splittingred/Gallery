@@ -30,6 +30,7 @@ GAL.grid.Albums = function(config) {
         }]
         ,tbar: [{
             text: _('gallery.album_create')
+            ,cls: 'primary-button'
             ,handler: this.createAlbum
             ,scope: this
         }]

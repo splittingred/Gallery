@@ -9,6 +9,7 @@ GAL.page.UpdateAlbum = function(config) {
         ,buttons: [{
             text: _('save')
             ,id: 'gal-btn-save'
+            ,cls: 'primary-button'
             ,process: 'mgr/album/update'
             ,method: 'remote'
             ,keys: [{

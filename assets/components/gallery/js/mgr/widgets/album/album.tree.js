@@ -7,6 +7,7 @@ GAL.tree.Album = function(config) {
         ,action: 'mgr/album/getNodes'
         ,tbar: [{
             text: _('gallery.album_create')
+            ,cls: 'primary-button'
             ,handler: function(btn,e) { this.createAlbum(btn,e,true); }
             ,scope: this
         },'-',{
