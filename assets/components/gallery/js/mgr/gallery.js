@@ -111,7 +111,8 @@ GAL.window.UpdateItem = function(config) {
         ,id: this.ident
         ,closeAction: 'close'
         // ,height: 150
-        ,width: '55%'
+        // ,width: '55%'
+        ,width: 600
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/update'
         ,fileUpload: true
@@ -183,6 +184,7 @@ GAL.window.UpdateItem = function(config) {
                     ,name: 'id'
                     ,fieldLabel: _('id')
                     ,submitValue: true
+                    ,anchor: '100%'
                 },{
                     xtype: 'checkbox'
                     ,boxLabel: _('gallery.active')
