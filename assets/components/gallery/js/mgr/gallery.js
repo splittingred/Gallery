@@ -491,7 +491,7 @@ GAL.window.BatchUpload = function(config) {
         title: _('gallery.batch_upload')
         ,id: this.ident
         // ,height: 150
-        ,width: 600
+        // ,width: 600
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/batchupload'
         ,fileUpload: true
@@ -555,7 +555,7 @@ GAL.window.ZipUpload = function(config) {
         title: _('gallery.zip_upload')
         ,id: this.ident
         // ,height: 150
-        ,width: 600
+        // ,width: 600
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/zipupload'
         ,fileUpload: true
@@ -563,8 +563,8 @@ GAL.window.ZipUpload = function(config) {
             xtype: 'hidden'
             ,name: 'album'
         },{
-            xtype: 'textfield'
-            ,inputType: 'file'
+            xtype: (MODx.config.connector_url) ? 'fileuploadfield' : 'textfield' // check for 2.3
+            ,inputType: (MODx.config.connector_url) ? 'text' : 'file' // check for 2.3
             ,fieldLabel: _('gallery.zip_file')
             ,description: MODx.expandHelp ? '' : _('gallery.zip_upload_intro')
             ,name: 'zip'
