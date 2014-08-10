@@ -334,6 +334,7 @@ GAL.window.UploadCover = function(config) {
         title: _('gallery.cover_upload')
         ,id: this.ident
         // ,height: 150
+        ,height: 300 // account for the preview thumbnail that is rendered after the window is opened
         // ,width: 350
         // ,minWidth: 350
         ,saveBtnText:_('gallery.upload_cover')
@@ -350,7 +351,7 @@ GAL.window.UploadCover = function(config) {
                 layout: 'form'
                 ,labelAlign: 'top'
                 ,border: false
-                ,cls:'main-wrapper'
+                // ,cls:'main-wrapper'
                 ,labelSeparator: ''
             }
             ,items: [{
@@ -359,8 +360,8 @@ GAL.window.UploadCover = function(config) {
                     xtype:'hidden'
                     ,name:'id'
                 },{
-                    xtype: 'textfield'
-                    ,inputType: 'file'
+                    xtype: (MODx.config.connector_url) ? 'fileuploadfield' : 'textfield' // check for 2.3
+                    ,inputType: (MODx.config.connector_url) ? 'text' : 'file' // check for 2.3
                     ,fieldLabel: _('gallery.file')
                     ,description: MODx.expandHelp ? '' : _('gallery.item_upload_file_desc')
                     ,name: 'file'
