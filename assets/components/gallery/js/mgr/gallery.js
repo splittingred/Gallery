@@ -16,8 +16,8 @@ GAL.window.CreateAlbum = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.album_create')
         ,id: this.ident
-        ,height: 150
-        ,width: 650
+        // ,height: 150
+        ,width: 600
         ,url: GAL.config.connector_url
         ,action: 'mgr/album/create'
         ,fields: [{
@@ -104,7 +104,7 @@ GAL.window.UpdateItem = function(config) {
         title: _('gallery.item_update')
         ,id: this.ident
         ,closeAction: 'close'
-        ,height: 150
+        // ,height: 150
         ,width: '55%'
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/update'
@@ -218,7 +218,7 @@ GAL.window.UploadItem = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.item_upload')
         ,id: this.ident
-        ,height: 150
+        // ,height: 150
         ,width: '55%'
         ,minWidth: 650
         ,url: GAL.config.connector_url
@@ -327,9 +327,9 @@ GAL.window.UploadCover = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.cover_upload')
         ,id: this.ident
-        ,height: 150
-        ,width: 350
-        ,minWidth: 350
+        // ,height: 150
+        // ,width: 350
+        // ,minWidth: 350
         ,saveBtnText:_('gallery.upload_cover')
         ,url: GAL.config.connector_url
         ,action: 'mgr/album/uploadcover'
@@ -381,8 +381,9 @@ GAL.window.UploadMultiItems = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.multi_item_upload')
         ,id: this.ident
-        ,height: 350
-        ,width: 475
+        // ,height: 350
+        ,minHeight: 350
+        // ,width: 475
         ,fields: [{
             xtype: 'hidden'
             ,name: 'album'
@@ -483,8 +484,8 @@ GAL.window.BatchUpload = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.batch_upload')
         ,id: this.ident
-        ,height: 150
-        ,width: 500
+        // ,height: 150
+        ,width: 600
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/batchupload'
         ,fileUpload: true
@@ -547,8 +548,8 @@ GAL.window.ZipUpload = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.zip_upload')
         ,id: this.ident
-        ,height: 150
-        ,width: 500
+        // ,height: 150
+        ,width: 600
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/zipupload'
         ,fileUpload: true

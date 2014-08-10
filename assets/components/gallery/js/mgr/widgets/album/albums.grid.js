@@ -85,8 +85,8 @@ GAL.window.CreateAlbum = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.album_create')
         ,id: this.ident
-        ,height: 150
-        ,width: 475
+        // ,height: 150
+        // ,width: 475
         ,url: GAL.config.connector_url
         ,action: 'mgr/album/create'
         ,fields: [{
