@@ -225,8 +225,9 @@ GAL.window.UploadItem = function(config) {
         title: _('gallery.item_upload')
         ,id: this.ident
         // ,height: 150
-        ,width: '55%'
-        ,minWidth: 650
+        // ,width: '55%'
+        ,width: 600
+        // ,minWidth: 650
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/upload'
         ,fileUpload: true
@@ -241,7 +242,7 @@ GAL.window.UploadItem = function(config) {
                 ,labelAlign: 'top'
                 ,anchor: '100%'
                 ,border: false
-                ,cls:'main-wrapper'
+                ,cls: (MODx.config.connector_url) ? '' : 'main-wrapper' // check for 2.3
                 ,labelSeparator: ''
             }
             ,items: [{
@@ -274,8 +275,8 @@ GAL.window.UploadItem = function(config) {
             },{
                 columnWidth: .5
                 ,items: [{
-                    xtype: 'textfield'
-                    ,inputType: 'file'
+                    xtype: (MODx.config.connector_url) ? 'fileuploadfield' : 'textfield' // check for 2.3
+                    ,inputType: (MODx.config.connector_url) ? 'text' : 'file' // check for 2.3
                     ,fieldLabel: _('gallery.file')
                     ,description: MODx.expandHelp ? '' : _('gallery.item_upload_file_desc')
                     ,name: 'file'
@@ -351,7 +352,7 @@ GAL.window.UploadCover = function(config) {
                 layout: 'form'
                 ,labelAlign: 'top'
                 ,border: false
-                // ,cls:'main-wrapper'
+                ,cls: (MODx.config.connector_url) ? '' : 'main-wrapper' // check for 2.3
                 ,labelSeparator: ''
             }
             ,items: [{
