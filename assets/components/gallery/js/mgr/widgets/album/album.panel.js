@@ -319,9 +319,9 @@ GAL.panel.AlbumItems = function(config) {
             ,region: 'east'
             ,split: true
             ,autoScroll: true
-            ,width: '20%'
+            ,width: '25%'
             ,minWidth: 150
-            ,maxWidth: 250
+            // ,maxWidth: 250
             ,height: 450
             ,border: false
         }]
