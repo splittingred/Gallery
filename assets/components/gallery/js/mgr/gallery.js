@@ -388,8 +388,7 @@ GAL.window.UploadMultiItems = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.multi_item_upload')
         ,id: this.ident
-        // ,height: 350
-        ,minHeight: 350
+        ,height: 350
         // ,width: 475
         ,fields: [{
             xtype: 'hidden'
