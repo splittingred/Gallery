@@ -99,9 +99,22 @@ $linkAttributes = $modx->getOption('linkAttributes',$scriptProperties,'');
 $linkToImage = $modx->getOption('linkToImage',$scriptProperties,false);
 $activeCls = $modx->getOption('activeCls',$scriptProperties,'gal-item-active');
 $highlightItem = $modx->getOption($imageGetParam,$_REQUEST,false);
+$defaultThumbTpl = $modx->getOption('thumbTpl',$scriptProperties,'galItemThumb');
+
 /** @var galItem $item */
 
 if (!is_array($data)) return '';
+
+// prep for &thumbTpl_N
+$keys = array_keys($scriptProperties);
+$nthTpls = array();
+foreach($keys as $key) {
+    $keyBits = $gallery->explodeAndClean($key, '_');
+    if (isset($keyBits[0]) && $keyBits[0] === 'thumbTpl') {
+        if ($i = (int) $keyBits[1]) $nthTpls[$i] = $scriptProperties[$key];
+    }
+}
+ksort($nthTpls);
 
 foreach ($data['items'] as $item) {
     $itemArray = $item->toArray();
@@ -131,7 +144,17 @@ foreach ($data['items'] as $item) {
         $plugin->renderItem($itemArray);
     }
 
-    $output[] = $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
+    $thumbTpl = $defaultThumbTpl;
+    if (isset($nthTpls[$idx])) {
+        $thumbTpl = $nthTpls[$idx];
+    } else {
+        foreach ($nthTpls as $int => $tpl) {
+            if ( ($idx % $int) === 0 ) $thumbTpl = $tpl;
+        }
+    }
+
+    $output[] = $gallery->getChunk($thumbTpl,$itemArray);
+
     $idx++;
 }
 $output = implode("\n",$output);
