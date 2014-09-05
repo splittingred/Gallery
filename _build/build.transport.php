@@ -34,8 +34,8 @@ set_time_limit(0);
 /* define package */
 define('PKG_NAME','Gallery');
 define('PKG_NAME_LOWER','gallery');
-define('PKG_VERSION','1.6.2');
-define('PKG_RELEASE','pl');
+define('PKG_VERSION','1.7.0');
+define('PKG_RELEASE','dev');
 
 /* define sources */
 $root = dirname(dirname(__FILE__)).'/';
@@ -68,6 +68,7 @@ $modx->setLogTarget('ECHO');
 
 $modx->loadClass('transport.modPackageBuilder','',false, true);
 $builder = new modPackageBuilder($modx);
+$builder->directory = dirname(dirname(__FILE__)).'/_packages/';
 $builder->createPackage(PKG_NAME_LOWER,PKG_VERSION,PKG_RELEASE);
 $builder->registerNamespace(PKG_NAME_LOWER,false,true,'{core_path}components/'.PKG_NAME_LOWER.'/');
 $modx->log(modX::LOG_LEVEL_INFO,'Created Transport Package and Namespace.');

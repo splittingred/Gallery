@@ -2,3 +2,6 @@ _build/build.config.php
 config.core.php
 .idea
 nbproject
+_packages/*.*
+!_packages/.gitignore
+!_packages/*.zip
