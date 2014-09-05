@@ -1,5 +1,6 @@
 Changelog for Gallery.
 
+- More 2.3 Fixes
 - Modx 2.3 Compatibility Fixes
 
 Gallery 1.6.1

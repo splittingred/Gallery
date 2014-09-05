@@ -204,7 +204,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         this.templates.details = new Ext.XTemplate(
             '<div class="details">'
             ,'<tpl for=".">'
-                ,'<div class="modx-browser-detail-thumb modx-pb-detail-thumb"><img src="{thumbnail}" alt="{shortName}" onclick="Ext.getCmp(\'gal-album-items-view\').showScreenshot(\'{id}\'); return false;" /></div>'
+                ,'<div class="modx-browser-detail-thumb modx-pb-detail-thumb"><img src="{image}" alt="{shortName}" onclick="Ext.getCmp(\'gal-album-items-view\').showScreenshot(\'{id}\'); return false;" /></div>'
                 ,'<div class="modx-browser-details-info modx-pb-details-info">'
                     ,'<span class="gal-detail-active">'
                         ,'<tpl if="active"><span class="green">'+_('gallery.active')+'</span></tpl>'

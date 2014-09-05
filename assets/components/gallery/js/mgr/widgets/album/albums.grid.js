@@ -30,6 +30,7 @@ GAL.grid.Albums = function(config) {
         }]
         ,tbar: [{
             text: _('gallery.album_create')
+            ,cls: 'primary-button'
             ,handler: this.createAlbum
             ,scope: this
         }]
@@ -85,8 +86,8 @@ GAL.window.CreateAlbum = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.album_create')
         ,id: this.ident
-        ,height: 150
-        ,width: 475
+        // ,height: 150
+        // ,width: 475
         ,url: GAL.config.connector_url
         ,action: 'mgr/album/create'
         ,fields: [{
@@ -101,6 +102,12 @@ GAL.window.CreateAlbum = function(config) {
             ,name: 'description'
             ,id: 'gal-'+this.ident+'-description'
             ,width: 300
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('gallery.year')
+            ,name: 'year'
+            ,anchor: '100%'
+            ,allowBlank: true
         },{
             xtype: 'checkbox'
             ,fieldLabel: _('gallery.active')

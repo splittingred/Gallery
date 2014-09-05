@@ -6,25 +6,34 @@
 .gal-item-inactive {
     opacity: 0.5;
 }
-.green { color: green; }
-.red { color: red; }
+/* unnecessary as defined in default styles */
+/*.green { color: green; }
+.red { color: red; }*/
 
 .gal-detail-active {
      float: right;
 }
 .gal-view-item-albums {
     overflow:auto;
-    border-top: 1px solid #d4d4d4;
-    margin-top: 4px;
+    border-top: 1px solid #E4E4E4;
+    margin-top: 7px;
 }
 
 .gal-item-thumb {
     border: 1px solid #ddd;
-    padding: 5px 5px 3px;
+    padding: 5px;
 }
 
 .gal-item-update-preview {
     margin: 0 auto;
     text-align: center;
     padding: 2px;
+}
+
+#gal-album-items-detail {
+    border-left: 1px solid #E4E4E4;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-left: 0 !important; /* override default modx theme styles for .x-column */
 }
