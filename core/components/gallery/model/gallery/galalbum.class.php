@@ -426,7 +426,8 @@ class galAlbum extends xPDOSimpleObject {
             $limit = $modx->getOption('limit',$scriptProperties,10);
             $start = $modx->getOption('start',$scriptProperties,0);
             $parent = $modx->getOption('parent',$scriptProperties,0);
-	    $id = $modx->getOption('id',$scriptProperties,false);
+            $showAll = $modx->getOption('showAll',$scriptProperties, false);
+	        $id = $modx->getOption('id',$scriptProperties,false);
             $showInactive = $modx->getOption('showInactive',$scriptProperties,false);
             $prominentOnly = $modx->getOption('prominentOnly',$scriptProperties,true);
 
@@ -452,7 +453,7 @@ class galAlbum extends xPDOSimpleObject {
                     'prominent' => true,
                 ));
             }
-            if (empty($showAll)) {
+            if ($showAll == false) {
                 $c->where(array(
                     'parent' => $parent,
                 ));
