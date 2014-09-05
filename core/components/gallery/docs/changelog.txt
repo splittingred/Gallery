@@ -1,5 +1,6 @@
 Changelog for Gallery.
 
+- Add browser caching support to phpthumb processor
 - Move Ext.onReady into controllers
 - Add support for &thumbTpl_N tpl in Gallery snippet
 - More 2.3 Fixes
