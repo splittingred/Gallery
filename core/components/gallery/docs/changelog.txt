@@ -1,5 +1,6 @@
 Changelog for Gallery.
 
+- Fixed undefined index: Year
 - Updated phpthumb-processor
 - Add browser caching support to phpthumb processor
 - Move Ext.onReady into controllers
