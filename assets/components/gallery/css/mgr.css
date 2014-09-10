@@ -37,3 +37,7 @@
     box-sizing: border-box;
     margin-left: 0 !important; /* override default modx theme styles for .x-column */
 }
+
+.modx-browser-thumb-wrap .gal-item-thumb {
+    height: 100px;
+}
