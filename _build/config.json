@@ -3,7 +3,7 @@
     ,"lowCaseName": "gallery"
     ,"description": "Gallery"
     ,"author": "Shaun McCormick"
-    ,"version": "1.6.2"
+    ,"version": "1.7.0"
     ,"package":{
         "actions": [{
             "id": 1

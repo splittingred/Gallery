@@ -1,5 +1,7 @@
 Changelog for Gallery.
 
+Gallery 1.7.0
+====================================
 - Fixed showAll parameter in galAlbum
 - Fixed album tree icon
 - Fixed undefined index: Year
