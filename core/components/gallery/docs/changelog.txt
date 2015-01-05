@@ -1,5 +1,7 @@
 Changelog for Gallery.
 
+- Fixed namespace paths
+
 Gallery 1.7.0
 ====================================
 - Fixed showAll parameter in galAlbum
