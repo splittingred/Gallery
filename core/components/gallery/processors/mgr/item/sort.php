@@ -48,7 +48,7 @@ if ($source->get('rank') < $target->get('rank')) {
         AND rank > 0
     ");
     $newRank = $target->get('rank');
-} else {
+} elseif($source->get('rank') > $target->get('rank')) {
     $modx->exec("
         UPDATE {$modx->getTableName('galAlbumItem')}
             SET rank = rank + 1
