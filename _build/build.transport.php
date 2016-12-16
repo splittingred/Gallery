@@ -34,8 +34,8 @@ set_time_limit(0);
 /* define package */
 define('PKG_NAME','Gallery');
 define('PKG_NAME_LOWER','gallery');
-define('PKG_VERSION','1.5.3');
-define('PKG_RELEASE','a2');
+define('PKG_VERSION','1.7.0');
+define('PKG_RELEASE','beta1');
 
 /* define sources */
 $root = dirname(dirname(__FILE__)).'/';
@@ -74,7 +74,7 @@ $modx->log(modX::LOG_LEVEL_INFO,'Created Transport Package and Namespace.');
 
 /* create category */
 $category= $modx->newObject('modCategory');
-$category->set('id',1);
+//$category->set('id',1);
 $category->set('category',PKG_NAME);
 
 /* add snippets */
@@ -113,12 +113,16 @@ $plugin->fromArray(array(
     'plugincode' => getSnippetContent($sources['plugins'] . 'gallerycustomtv.plugin.php'),
     
 ),'',true,true);
+
 $plugin->setProperties($properties);
 $events = include $sources['data'].'events/events.gallerycustomtv.php';
+
 if (is_array($events) && !empty($events)) {
     $modx->log(modX::LOG_LEVEL_INFO,'Added '.count($events).' events to GalleryCustomTV plugin.');
     $plugin->addMany($events);
 }
+$category->addMany($plugin); // added
+   $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($plugin).' plugin.');
 unset($events);
 $attributes = array (
     xPDOTransport::PRESERVE_KEYS => false,
