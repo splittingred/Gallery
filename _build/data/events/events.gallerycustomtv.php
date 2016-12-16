@@ -29,6 +29,8 @@
 $events = array();
 
 $evs = array(
+    'OnResourceDuplicate',
+    'OnDocFormSave',
     'OnTVInputRenderList',
     'OnTVInputPropertiesList',
     'OnTVOutputRenderList',

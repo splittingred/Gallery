@@ -97,12 +97,23 @@ if (!is_array($chunks)) {
 
 /* add tv plugin */
 $plugin= $modx->newObject('modPlugin');
+$properties = array(
+    array(
+        'name' => 'tmplvarid',
+        'desc' => 'TV id of Gallery',
+        'type' => 'number',
+        'options' => '',
+        'value' => 0,
+    ));
+
 $plugin->fromArray(array(
     'id' => 1,
     'name' => 'GalleryCustomTV',
     'description' => '',
     'plugincode' => getSnippetContent($sources['plugins'] . 'gallerycustomtv.plugin.php'),
+    
 ),'',true,true);
+$plugin->setProperties($properties);
 $events = include $sources['data'].'events/events.gallerycustomtv.php';
 if (is_array($events) && !empty($events)) {
     $modx->log(modX::LOG_LEVEL_INFO,'Added '.count($events).' events to GalleryCustomTV plugin.');
