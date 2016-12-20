@@ -345,17 +345,19 @@ class galItem extends xPDOSimpleObject {
                 'album' => $activeAlbum,
             );
 
-            $cache = array(
-                'items' => array(),
-                'total' => $count,
-                'album' => $activeAlbum,
-            );
-            /** @var galItem $item */
-            foreach ($items as $item) {
-                $cache['items'][] = $item->toArray('',true);
+            if (in_array(strtolower($sort),array('random','rand()','rand'))) {
+                $cache = array(
+                    'items' => array(),
+                    'total' => $count,
+                    'album' => $activeAlbum,
+                );
+                /** @var galItem $item */
+                foreach ($items as $item) {
+                    $cache['items'][] = $item->toArray('',true);
+                }
+    
+                $modx->cacheManager->set($cacheKey,$cache);
             }
-
-            $modx->cacheManager->set($cacheKey,$cache);
         }
         return $data;
     }
