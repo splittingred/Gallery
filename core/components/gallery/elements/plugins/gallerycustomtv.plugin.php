@@ -3,7 +3,7 @@
  * Handles plugin events for Gallery's Custom TV
  * need to add plugin property tmplvarid
  * 
- * @package gallery
+ * @package gallery 
  */
 $corePath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/');
 switch ($modx->event->name) {
@@ -20,16 +20,16 @@ switch ($modx->event->name) {
             $options = array('processors_path'=>$GalleryProcessorPath);
             $galleryName = $resource->get('pagetitle');
 
-            //Получаем все TV текущего ресурса
+            //Get all TV of current resource 
             $tvs = $resource->getTemplateVars();
             foreach($tvs as $tv) {
                 //нам нужны только TV с типом galleryalbumview
                 if ($tv->get('type')=='galleryalbumview') {
                     $tvvalue = $tv->getValue($id);
                     if (empty($tvvalue)) {
-                        //Параметры TV
+                        //tv params
                         $tv_prop = $tv->get('properties');
-                        //Создаем альбом
+                        //create album
                         $album = array(
                             'name' => $galleryName,
                             'parent' => isset($tv_prop['galParentId']['value'])?$tv_prop['galParentId']['value']:0,
@@ -45,7 +45,7 @@ switch ($modx->event->name) {
                         }
                         
                     } else {
-                        // TV уже есть, обновим название альбома
+                        // if TV exists, update album title
                         $resp = $modx->runProcessor('mgr/album/get',array('id'=>$tvvalue),$options);
                         if (!$resp->isError()) {
                             $album = $resp->getObject();

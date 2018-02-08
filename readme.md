@@ -15,8 +15,10 @@ Simply download through Package Management, and install.
 For setting up the custom TV, create a TV with Input and Output types of
 'galleryitem'.
 
+Added custom TV called 'galleryitemview'.
 Documentation
 =============
 Please see the official documentation at:
 http://rtfm.modx.com/display/ADDON/Gallery/
 
+ 
