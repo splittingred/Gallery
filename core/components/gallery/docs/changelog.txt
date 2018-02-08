@@ -1,5 +1,42 @@
 Changelog for Gallery.
 
+Gallery 1.7.0
+====================================
+- Fixed showAll parameter in galAlbum
+- Fixed album tree icon
+- Fixed undefined index: Year
+- Updated phpthumb-processor
+- Add browser caching support to phpthumb processor
+- Move Ext.onReady into controllers
+- Add support for &thumbTpl_N tpl in Gallery snippet
+- More 2.3 Fixes
+- Modx 2.3 Compatibility Fixes
+
+Gallery 1.6.1
+====================================
+ - [#13][#12] Backwards Compatibility Fix
+
+Gallery 1.6.0
+====================================
+- [#271] [GalleryAlbums] Added image_absolute placeholder
+- [#270] [GalleryAlbums] Added containerTpl (with navigation placeholders) and totalVar placeholder
+- [#266] Add support for selection of album cover. 
+- [#259] Do not cache in getList() when $sort = RAND()
+- [#252] Database Optimization
+- [#248] Fix getPage support in Gallery snippet
+- [#246] Batch import sorts by filename.
+- [#235] show all childs and subchilds of selected parent album by new TV option
+- [#233] Fix property itemCls from being assigned activeCls's value
+- [#226] German localization
+- [#151] Needed to show links to next/prev albums
+- [#91] Allow false boolean
+- [#258] Bug fix with random sorting when cached 
+- Bug fixes
+
+Gallery 1.5.3
+====================================
+- [#9] Fixes Access Denied issue when using Manager / Gallery
+
 Gallery 1.5.2
 ====================================
 - [#219] Ensure that GalleryAlbums custom TV marks resource edit form dirty and enables save button

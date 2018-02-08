@@ -1,4 +1,3 @@
-// assets/components/gallery/js/mgr/widgets/album/album.panel.js
 GAL.panel.Album = function(config) {
     config = config || {};
 
@@ -301,7 +300,7 @@ GAL.panel.AlbumItems = function(config) {
                     ,text: _('gallery.multi_item_upload')
                     ,handler: this.uploadMultiItems
                     ,scope: this
-                }/*,'-',{
+                },'-',{
                     xtype: 'button'
                     ,text: _('gallery.batch_upload')
                     ,handler: this.batchUpload
@@ -311,7 +310,7 @@ GAL.panel.AlbumItems = function(config) {
                     ,text: _('gallery.zip_upload')
                     ,handler: this.zipUpload
                     ,scope: this
-                }*/]
+                }]
             },this.view]
             ,bbar: [this.view.pagingBar]
         },{

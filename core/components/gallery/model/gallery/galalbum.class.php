@@ -195,36 +195,44 @@ class galAlbum extends xPDOSimpleObject {
         return $exists;
     }
 
-    public function uploadItem(galItem $item,$filePath,$name) {
+    public function uploadItem(galItem $item,$filePath,$name,$mediaSource) {
         $fileName = false;
 
         $albumDir = $this->getPath(false);
-        $targetDir = $this->getPath();
+        $targetDir = str_ireplace(MODX_BASE_PATH, '', $this->getPath());
 
         /* if directory doesnt exist, create it */
-        if (!$this->ensurePathExists()) {
-           $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$targetDir);
-           return $fileName;
-        }
-        if (!$this->isPathWritable()) {
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
-            return $fileName;
+        if (!$mediaSource->createContainer($targetDir,'/')) {
+            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory (possibly already exists?): '.$targetDir);
         }
 
         /* upload the file */
+
         $extension = pathinfo($name,PATHINFO_EXTENSION);
         $shortName = $item->get('id').'.'.$extension;
         $relativePath = $albumDir.$shortName;
         $absolutePath = $targetDir.$shortName;
 
-        if (@file_exists($absolutePath)) {
-            @unlink($absolutePath);
-        }
-        if (!@move_uploaded_file($filePath,$absolutePath)) {
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
+        $fileName = str_replace(' ','',$relativePath);
+
+        $file = array("name" => $shortName, "tmp_name" => $filePath,"error" => "0"); // emulate a $_FILES object
+
+        $success = true;
+        // modFileMediaSource class uses move_uploaded_file - because we create a local file - we cannot use this function and we use streams instead
+        if(!is_uploaded_file($filePath) && get_class($mediaSource) == 'modFileMediaSource_mysql') {
+            $input = fopen($filePath, "r");
+            $target = fopen($this->getPath(true).$shortName, "w");
+            $bytes = stream_copy_to_stream($input, $target);
+            fclose($input);
+            fclose($target);
         } else {
-            $fileName = str_replace(' ','',$relativePath);
+            $success = $mediaSource->uploadObjectsToContainer($targetDir,array($file));
         }
+
+        // if(!$success) {
+        //     $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
+        //     return false;
+        // }
         return $fileName;
     }
 
@@ -418,7 +426,8 @@ class galAlbum extends xPDOSimpleObject {
             $limit = $modx->getOption('limit',$scriptProperties,10);
             $start = $modx->getOption('start',$scriptProperties,0);
             $parent = $modx->getOption('parent',$scriptProperties,0);
-	    $id = $modx->getOption('id',$scriptProperties,false);
+            $showAll = $modx->getOption('showAll',$scriptProperties, false);
+	        $id = $modx->getOption('id',$scriptProperties,false);
             $showInactive = $modx->getOption('showInactive',$scriptProperties,false);
             $prominentOnly = $modx->getOption('prominentOnly',$scriptProperties,true);
 
@@ -444,7 +453,7 @@ class galAlbum extends xPDOSimpleObject {
                     'prominent' => true,
                 ));
             }
-            if (empty($showAll)) {
+            if ($showAll == false) {
                 $c->where(array(
                     'parent' => $parent,
                 ));

@@ -56,20 +56,6 @@ $fullpath = $modx->fileHandler->sanitizePath($directory);
 
 $targetDir = $modx->call('galAlbum','getFilesPath',array(&$modx)).$scriptProperties['album'].'/';
 
-$cacheManager = $modx->getCacheManager();
-/* if directory doesnt exist, create it */
-if (!file_exists($targetDir) || !is_dir($targetDir)) {
-    if (!$cacheManager->writeTree($targetDir)) {
-       $modx->log(modX::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$targetDir);
-       return $modx->error->failure($modx->lexicon('gallery.directory_err_create',array('directory' => $targetDir)));
-    }
-}
-/* make sure directory is readable/writable */
-if (!is_readable($targetDir) || !is_writable($targetDir)) {
-    $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
-    return $modx->error->failure($modx->lexicon('gallery.directory_err_write',array('directory' => $targetDir)));
-}
-
 $imagesExts = array('jpg','jpeg','png','gif','bmp');
 $use_multibyte = $modx->getOption('use_multibyte',null,false);
 $encoding = $modx->getOption('modx_charset',null,'UTF-8');
@@ -108,11 +94,11 @@ foreach ($files as $f_name => $file) {
     $newFileName = $item->get('id').'.'.$fileExtension;
     $newRelativePath = $scriptProperties['album'].'/'.$newFileName;
     $newAbsolutePath = $targetDir.'/'.$newFileName;
-    
-    if (@file_exists($newAbsolutePath)) {
-        @unlink($newAbsolutePath);
-    }
-    if (!@copy($filePathName,$newAbsolutePath)) {
+
+    $file = array("name" => $newRelativePath, "tmp_name" => $filePathName, "error" => "0"); // emulate a $_FILES object
+
+    $success = $item->upload($file,$scriptProperties['album']);
+    if(!$success) {
         $errors[] = $modx->lexicon('gallery.file_err_move',array(
             'file' => $newFileName,
             'target' => $newAbsolutePath,
