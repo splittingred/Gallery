@@ -37,9 +37,9 @@ class GalleryAlbumUpdateManagerController extends GalleryManagerController {
         $this->addJavascript($this->gallery->config['jsUrl'].'mgr/widgets/album/album.panel.js');
         $this->addLastJavascript($this->gallery->config['jsUrl'].'mgr/sections/album/update.js');
         $this->addCss($this->gallery->config['cssUrl'].'fileuploader.css');
-        
+        $this->addHtml("<script>Ext.onReady(function() { MODx.load({xtype: 'gal-page-album-update'}) })</script>");
+
         $this->checkForTinyMCE();
-        
     }
     public function getTemplateFile() { return $this->gallery->config['templatesPath'].'album/update.tpl'; }
     

@@ -16,8 +16,8 @@ GAL.window.CreateAlbum = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.album_create')
         ,id: this.ident
-        ,height: 150
-        ,width: 650
+        // ,height: 150
+        ,width: 600
         ,url: GAL.config.connector_url
         ,action: 'mgr/album/create'
         ,fields: [{
@@ -57,6 +57,12 @@ GAL.window.CreateAlbum = function(config) {
             },{
                 columnWidth: .5
                 ,items: [{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('gallery.year')
+                    ,name: 'year'
+                    ,anchor: '100%'
+                    ,allowBlank: true
+                },{
                     xtype: 'checkbox'
                     ,boxLabel: _('gallery.active')
                     ,description: MODx.expandHelp ? '' : _('gallery.active_desc')
@@ -104,8 +110,9 @@ GAL.window.UpdateItem = function(config) {
         title: _('gallery.item_update')
         ,id: this.ident
         ,closeAction: 'close'
-        ,height: 150
-        ,width: '55%'
+        // ,height: 150
+        // ,width: '55%'
+        ,width: 600
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/update'
         ,fileUpload: true
@@ -177,6 +184,7 @@ GAL.window.UpdateItem = function(config) {
                     ,name: 'id'
                     ,fieldLabel: _('id')
                     ,submitValue: true
+                    ,anchor: '100%'
                 },{
                     xtype: 'checkbox'
                     ,boxLabel: _('gallery.active')
@@ -218,9 +226,10 @@ GAL.window.UploadItem = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.item_upload')
         ,id: this.ident
-        ,height: 150
-        ,width: '55%'
-        ,minWidth: 650
+        // ,height: 150
+        // ,width: '55%'
+        ,width: 600
+        // ,minWidth: 650
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/upload'
         ,fileUpload: true
@@ -235,7 +244,7 @@ GAL.window.UploadItem = function(config) {
                 ,labelAlign: 'top'
                 ,anchor: '100%'
                 ,border: false
-                ,cls:'main-wrapper'
+                ,cls: (MODx.config.connector_url) ? '' : 'main-wrapper' // check for 2.3
                 ,labelSeparator: ''
             }
             ,items: [{
@@ -268,8 +277,8 @@ GAL.window.UploadItem = function(config) {
             },{
                 columnWidth: .5
                 ,items: [{
-                    xtype: 'textfield'
-                    ,inputType: 'file'
+                    xtype: (MODx.config.connector_url) ? 'fileuploadfield' : 'textfield' // check for 2.3
+                    ,inputType: (MODx.config.connector_url) ? 'text' : 'file' // check for 2.3
                     ,fieldLabel: _('gallery.file')
                     ,description: MODx.expandHelp ? '' : _('gallery.item_upload_file_desc')
                     ,name: 'file'
@@ -327,9 +336,10 @@ GAL.window.UploadCover = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.cover_upload')
         ,id: this.ident
-        ,height: 150
-        ,width: 350
-        ,minWidth: 350
+        // ,height: 150
+        ,height: 300 // account for the preview thumbnail that is rendered after the window is opened
+        // ,width: 350
+        // ,minWidth: 350
         ,saveBtnText:_('gallery.upload_cover')
         ,url: GAL.config.connector_url
         ,action: 'mgr/album/uploadcover'
@@ -344,7 +354,7 @@ GAL.window.UploadCover = function(config) {
                 layout: 'form'
                 ,labelAlign: 'top'
                 ,border: false
-                ,cls:'main-wrapper'
+                ,cls: (MODx.config.connector_url) ? '' : 'main-wrapper' // check for 2.3
                 ,labelSeparator: ''
             }
             ,items: [{
@@ -353,8 +363,8 @@ GAL.window.UploadCover = function(config) {
                     xtype:'hidden'
                     ,name:'id'
                 },{
-                    xtype: 'textfield'
-                    ,inputType: 'file'
+                    xtype: (MODx.config.connector_url) ? 'fileuploadfield' : 'textfield' // check for 2.3
+                    ,inputType: (MODx.config.connector_url) ? 'text' : 'file' // check for 2.3
                     ,fieldLabel: _('gallery.file')
                     ,description: MODx.expandHelp ? '' : _('gallery.item_upload_file_desc')
                     ,name: 'file'
@@ -382,7 +392,7 @@ GAL.window.UploadMultiItems = function(config) {
         title: _('gallery.multi_item_upload')
         ,id: this.ident
         ,height: 350
-        ,width: 475
+        // ,width: 475
         ,fields: [{
             xtype: 'hidden'
             ,name: 'album'
@@ -483,8 +493,8 @@ GAL.window.BatchUpload = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.batch_upload')
         ,id: this.ident
-        ,height: 150
-        ,width: 500
+        // ,height: 150
+        // ,width: 600
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/batchupload'
         ,fileUpload: true
@@ -547,8 +557,8 @@ GAL.window.ZipUpload = function(config) {
     Ext.applyIf(config,{
         title: _('gallery.zip_upload')
         ,id: this.ident
-        ,height: 150
-        ,width: 500
+        // ,height: 150
+        // ,width: 600
         ,url: GAL.config.connector_url
         ,action: 'mgr/item/zipupload'
         ,fileUpload: true
@@ -556,8 +566,8 @@ GAL.window.ZipUpload = function(config) {
             xtype: 'hidden'
             ,name: 'album'
         },{
-            xtype: 'textfield'
-            ,inputType: 'file'
+            xtype: (MODx.config.connector_url) ? 'fileuploadfield' : 'textfield' // check for 2.3
+            ,inputType: (MODx.config.connector_url) ? 'text' : 'file' // check for 2.3
             ,fieldLabel: _('gallery.zip_file')
             ,description: MODx.expandHelp ? '' : _('gallery.zip_upload_intro')
             ,name: 'zip'

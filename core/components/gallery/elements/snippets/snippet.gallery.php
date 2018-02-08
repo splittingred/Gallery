@@ -99,9 +99,22 @@ $linkAttributes = $modx->getOption('linkAttributes',$scriptProperties,'');
 $linkToImage = $modx->getOption('linkToImage',$scriptProperties,false);
 $activeCls = $modx->getOption('activeCls',$scriptProperties,'gal-item-active');
 $highlightItem = $modx->getOption($imageGetParam,$_REQUEST,false);
+$defaultThumbTpl = $modx->getOption('thumbTpl',$scriptProperties,'galItemThumb');
+
 /** @var galItem $item */
 
 if (!is_array($data)) return '';
+
+// prep for &thumbTpl_N
+$keys = array_keys($scriptProperties);
+$nthTpls = array();
+foreach($keys as $key) {
+    $keyBits = $gallery->explodeAndClean($key, '_');
+    if (isset($keyBits[0]) && $keyBits[0] === 'thumbTpl') {
+        if ($i = (int) $keyBits[1]) $nthTpls[$i] = $scriptProperties[$key];
+    }
+}
+ksort($nthTpls);
 
 foreach ($data['items'] as $item) {
     $itemArray = $item->toArray();
@@ -111,7 +124,7 @@ foreach ($data['items'] as $item) {
         $itemArray['cls'] .= ' '.$activeCls;
     }
     $itemArray['filename'] = basename($item->get('filename'));
-    $itemArray['image_absolute'] = $filesUrl.$item->get('filename');
+    $itemArray['image_absolute'] = $item->get('base_url').$filesUrl.$item->get('filename');
     $itemArray['fileurl'] = $itemArray['image_absolute'];
     $itemArray['filepath'] = $filesPath.$item->get('filename');
     $itemArray['filesize'] = $item->get('filesize');
@@ -131,7 +144,17 @@ foreach ($data['items'] as $item) {
         $plugin->renderItem($itemArray);
     }
 
-    $output[] = $gallery->getChunk($modx->getOption('thumbTpl',$scriptProperties,'galItemThumb'),$itemArray);
+    $thumbTpl = $defaultThumbTpl;
+    if (isset($nthTpls[$idx])) {
+        $thumbTpl = $nthTpls[$idx];
+    } else {
+        foreach ($nthTpls as $int => $tpl) {
+            if ( ($idx % $int) === 0 ) $thumbTpl = $tpl;
+        }
+    }
+
+    $output[] = $gallery->getChunk($thumbTpl,$itemArray);
+
     $idx++;
 }
 $output = implode("\n",$output);
@@ -143,7 +166,7 @@ if (!empty($containerTpl)) {
         'thumbnails' => $output,
         'album_name' => $data['album']['name'],
         'album_description' => $data['album']['description'],
-        'album_year' => $data['album']['year'],
+        'album_year' => isset($data['album']['year']) ? $data['album']['year'] : '',
         'albumRequestVar' => $albumRequestVar,
         'albumId' => $data['album']['id'],
     ));
@@ -157,7 +180,7 @@ if (!empty($toPlaceholder)) {
         $toPlaceholder => $output,
         $toPlaceholder.'.id' => $data['album']['id'],
         $toPlaceholder.'.name' => $data['album']['name'],
-        $toPlaceholder.'.year' => $data['album']['year'],
+        $toPlaceholder.'.year' => isset($data['album']['year']) ? $data['album']['year'] : '',
         $toPlaceholder.'.description' => $data['album']['description'],
         $toPlaceholder.'.total' => $data['total'],
         $toPlaceholder.'.next' => $data['album']['id'] + 1,
@@ -168,7 +191,7 @@ if (!empty($toPlaceholder)) {
     $modx->toPlaceholders(array(
         $placeholderPrefix.'id' => $data['album']['id'],
         $placeholderPrefix.'name' => $data['album']['name'],
-        $placeholderPrefix.'year' => $data['album']['year'],
+        $placeholderPrefix.'year' => isset($data['album']['year']) ? $data['album']['year'] : '',
         $placeholderPrefix.'description' => $data['album']['description'],
         $placeholderPrefix.'total' => $data['total'],
         $placeholderPrefix.'next' => $data['album']['id'] + 1,

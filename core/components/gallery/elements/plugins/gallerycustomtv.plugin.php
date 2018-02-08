@@ -1,11 +1,63 @@
 <?php
 /**
  * Handles plugin events for Gallery's Custom TV
+ * need to add plugin property tmplvarid
  * 
- * @package gallery
+ * @package gallery 
  */
 $corePath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/');
 switch ($modx->event->name) {
+    case 'OnResourceDuplicate':
+          $newResource = $modx->event->params['newResource'];
+          $id=$newResource->get('id');
+          $tv = $modx->getObject('modTemplateVarResource',array ('tmplvarid'=>$tmplvarid,'contentid' => $id));
+          if (isset($tv))           {
+             $tv->remove();
+           }
+        break;
+    case 'OnDocFormSave':
+            $GalleryProcessorPath = $modx->getOption('gallery.core_path',$config,$modx->getOption('core_path').'components/gallery/').'processors/';
+            $options = array('processors_path'=>$GalleryProcessorPath);
+            $galleryName = $resource->get('pagetitle');
+
+            //Get all TV of current resource 
+            $tvs = $resource->getTemplateVars();
+            foreach($tvs as $tv) {
+                //нам нужны только TV с типом galleryalbumview
+                if ($tv->get('type')=='galleryalbumview') {
+                    $tvvalue = $tv->getValue($id);
+                    if (empty($tvvalue)) {
+                        //tv params
+                        $tv_prop = $tv->get('properties');
+                        //create album
+                        $album = array(
+                            'name' => $galleryName,
+                            'parent' => isset($tv_prop['galParentId']['value'])?$tv_prop['galParentId']['value']:0,
+                            'description' => '',
+                            'active' => 1,
+                            'prominent' => 0
+                        );
+                        $resp = $modx->runProcessor('mgr/album/create',$album,$options);
+                        if (!$resp->isError()) {
+                            $album = $resp->getObject();
+                            $tv->setValue($id,$album['id']);
+                            $tv->save();
+                        }
+                        
+                    } else {
+                        // if TV exists, update album title
+                        $resp = $modx->runProcessor('mgr/album/get',array('id'=>$tvvalue),$options);
+                        if (!$resp->isError()) {
+                            $album = $resp->getObject();
+                            $album['name'] = $galleryName;
+                            $modx->runProcessor('mgr/album/update',$album,$options);    
+                        }
+
+                    }
+                }
+            }
+            break;
+    
     case 'OnTVInputRenderList':
         $modx->event->output($corePath.'elements/tv/input/');
         break;
@@ -68,7 +120,11 @@ switch ($modx->event->name) {
         $modx->controller->addJavascript($gallery->config['assetsUrl'].'js/mgr/widgets/album/album.tree.js');
         $modx->controller->addJavascript($gallery->config['assetsUrl'].'js/mgr/tv/gal.browser.js');
         $modx->controller->addJavascript($gallery->config['assetsUrl'].'js/mgr/tv/galtv.js');
+        $modx->controller->addJavascript($gallery->config['assetsUrl'].'js/mgr/utils/ddview.js');
+        $modx->controller->addJavascript($gallery->config['assetsUrl'].'js/mgr/utils/fileuploader.js');
+        $modx->controller->addJavascript($gallery->config['assetsUrl'].'js/mgr/widgets/album/album.panel.js');
         $modx->controller->addCss($gallery->config['cssUrl'].'mgr.css');
+        $modx->controller->addCss($gallery->config['cssUrl'].'fileuploader.css');
         break;
 }
 return;
