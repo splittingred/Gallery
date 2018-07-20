@@ -25,7 +25,25 @@ $src = $modx->getOption('src', $scriptProperties, '');
 $src = str_replace('+', '%27', urldecode($src));
 
 /* explode tag options */
-$ptOptions = $scriptProperties;
+$ptOptions = array();
+
+// Only public parameters of phpThumb should be allowed to pass from user input.
+// List properties between START PARAMETERS and START PARAMETERS in src/core/model/phpthumb/phpthumb.class.php
+$allowed = array(
+    'src', 'new', 'w', 'h', 'wp', 'hp', 'wl', 'hl', 'ws', 'hs',
+    'f', 'q', 'sx', 'sy', 'sw', 'sh', 'zc', 'bc', 'bg', 'fltr',
+    'goto', 'err', 'xto', 'ra', 'ar', 'aoe', 'far', 'iar', 'maxb', 'down',
+    'md5s', 'sfn', 'dpi', 'sia', 'phpThumbDebug'
+);
+
+/* iterate through properties */
+foreach ($scriptProperties as $property => $value) {
+    if (!in_array($property, $allowed, true)) {
+        $this->modx->log(modX::LOG_LEVEL_WARN, "Detected attempt of using private parameter `$property` (for internal usage) of phpThumb that not allowed and insecure");
+        continue;
+    }
+    $ptOptions[$property] = $value;
+}
 
 if (empty($ptOptions['f'])) {
     $ext = pathinfo($src, PATHINFO_EXTENSION);
