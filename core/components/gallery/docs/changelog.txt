@@ -1,5 +1,8 @@
 Changelog for Gallery.
 
+Gallery 1.7.1
+====================================
+- Fixed critical vulnerability in phpthumb processor
 - Fixed namespace paths
 
 Gallery 1.7.0
