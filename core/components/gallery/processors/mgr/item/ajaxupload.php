@@ -28,29 +28,26 @@ if (!$item->save()) {
 $albumDir = $album.'/';
 $targetDir = $modx->call('galAlbum','getFilesPath',array(&$modx)).$albumDir;
 
-$cacheManager = $modx->getCacheManager();
-/* if directory doesnt exist, create it */
-if (!file_exists($targetDir) || !is_dir($targetDir)) {
-    if (!$cacheManager->writeTree($targetDir)) {
-       $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$targetDir);
-       return $modx->toJSON(array('error' => 'Could not create directory: ' . $targetDir));
-    }
-}
-/* make sure directory is readable/writable */
-if (!is_readable($targetDir) || !is_writable($targetDir)) {
-    $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
-    return $modx->toJSON(array('error' => 'Could not write to directory: ' . $targetDir));
-}
+// $cacheManager = $modx->getCacheManager();
+// /* if directory doesnt exist, create it */
+// if (!file_exists($targetDir) || !is_dir($targetDir)) {
+//     if (!$cacheManager->writeTree($targetDir)) {
+//        $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$targetDir);
+//        return $modx->toJSON(array('error' => 'Could not create directory: ' . $targetDir));
+//     }
+// }
+// /* make sure directory is readable/writable */
+// if (!is_readable($targetDir) || !is_writable($targetDir)) {
+//     $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
+//     return $modx->toJSON(array('error' => 'Could not write to directory: ' . $targetDir));
+// }
 
 /* upload the file */
-$extension = end(explode('.', $filenm));
+$extension = @end(explode('.', $filenm));
 $filename = $item->get('id').'.'.$extension;
 $relativePath = $albumDir.$filename;
 $absolutePath = $targetDir.$filename;
 
-if (@file_exists($absolutePath)) {
-    @unlink($absolutePath);
-}
 
 if (!empty($_FILES['qqfile'])) {
     if (!$item->upload($_FILES['qqfile'],$scriptProperties['album'])) {
@@ -58,20 +55,35 @@ if (!empty($_FILES['qqfile'])) {
         return $modx->error->failure($modx->lexicon('gallery.item_err_upload'));
     }
 } else {
-    /* Using AJAX upload */
+
+    $length = 10;
+    $tmpDir = MODX_CORE_PATH."cache/gallery-tmp/";
+
+    if(!file_exists($tmpDir)) mkdir($tmpDir);
+
+    $randomFilename = $tmpDir.substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length).".$extension";
+
+    /* Using AJAX upload - to tmp file then use the correct media source to upload */
     $input = fopen("php://input", "r");
-    $target = fopen($absolutePath, "w");
+    $target = fopen($randomFilename, "w");
     $bytes = stream_copy_to_stream($input, $target);
     fclose($input);
     fclose($target);
-    
-    if ($bytes == 0) {
+
+    $file = array("name" => $relativePath, "tmp_name" => $randomFilename, "error" => "0"); // emulate a $_FILES object
+
+    $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Album Type: '.$scriptProperties['album']);
+
+
+    if ($bytes == 0 || !$item->upload($file,$scriptProperties['album'])) {
         $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file to '.$absolutePath);
         $item->remove();
         return $modx->toJSON(array('error' => 'gallery.item_err_upload'));
     } else {
         $item->set('filename',str_replace(' ','',$relativePath));
     }
+
+    @unlink($randomFilename);
 }
 
 $item->save();

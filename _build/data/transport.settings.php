@@ -39,7 +39,7 @@ $settings['gallery.backend_thumb_far']->fromArray(array(
 $settings['gallery.backend_thumb_height']= $modx->newObject('modSystemSetting');
 $settings['gallery.backend_thumb_height']->fromArray(array(
     'key' => 'gallery.backend_thumb_height',
-    'value' => '100',
+    'value' => '80',
     'xtype' => 'textfield',
     'namespace' => 'gallery',
     'area' => 'backend',
@@ -86,6 +86,15 @@ $settings['gallery.thumbs_prepend_site_url']->fromArray(array(
     'key' => 'gallery.thumbs_prepend_site_url',
     'value' => false,
     'xtype' => 'combo-boolean',
+    'namespace' => 'gallery',
+    'area' => '',
+),'',true,true);
+
+$settings['gallery.mediaSource']= $modx->newObject('modSystemSetting');
+$settings['gallery.mediaSource']->fromArray(array(
+    'key' => 'gallery.mediaSource',
+    'value' => 1,
+    'xtype' => 'modx-combo-source',
     'namespace' => 'gallery',
     'area' => '',
 ),'',true,true);

@@ -1,0 +1,136 @@
+{
+    "name": "Gallery"
+    ,"lowCaseName": "gallery"
+    ,"description": "Gallery"
+    ,"author": "Shaun McCormick"
+    ,"version": "1.7.1"
+    ,"package":{
+        "actions": [{
+            "id": 1
+            ,"controller": "index"
+        }]
+        ,"menus": [{
+            "text": "gallery"
+            ,"description": "gallery.menu_desc"
+            ,"action": 1
+            ,"parent": "components"
+        }]
+        ,"elements": {
+            "snippets": [{
+                "name": "Gallery"
+                ,"file": "snippet.gallery.php"
+            },{
+                "name": "GalleryAlbums"
+                ,"file": "snippet.galleryalbums.php"
+            },{
+                "name": "GalleryItem"
+                ,"file": "snippet.galleryitem.php"
+            }]
+            ,"chunks": [{
+                "name": "galAlbumRowTpl"
+            },{
+                "name": "galItemThumb"
+            }]
+        }
+        ,"systemSettings": [{
+            "key": "backend_thumb_far"
+            ,"type": "textfield"
+            ,"area": "backend"
+            ,"value": "C"
+        },{
+            "key": "backend_thumb_height"
+            ,"type": "textfield"
+            ,"area": "backend"
+            ,"value": "100"
+        },{
+            "key": "backend_thumb_width"
+            ,"type": "textfield"
+            ,"area": "backend"
+            ,"value": "100"
+        },{
+            "key": "backend_thumb_zoomcrop"
+            ,"type": "combo-boolean"
+            ,"area": "backend"
+            ,"value": 1
+        },{
+            "key": "default_batch_upload_path"
+            ,"type": "textfield"
+            ,"area": "backend"
+            ,"value": "{assets_path}images/"
+        },{
+            "key": "thumbs_prepend_site_url"
+            ,"type": "combo-boolean"
+            ,"area": "backend"
+            ,"value": 0
+        },{
+            "key": "mediaSource"
+            ,"type": "modx-combo-source"
+            ,"area": "backend"
+            ,"value": 1
+        },{
+            "key": "use_richtext"
+            ,"type": "combo-boolean"
+            ,"area": "TinyMCE"
+            ,"value": 0
+        },{
+            "key": "tiny.width"
+            ,"type": "textfield"
+            ,"area": "TinyMCE"
+            ,"value": "95%"
+        },{
+            "key": "tiny.height"
+            ,"type": "textfield"
+            ,"area": "TinyMCE"
+            ,"value": "200"
+        },{
+            "key": "tiny.buttons1"
+            ,"type": "textfield"
+            ,"area": "TinyMCE"
+            ,"value": "undo,redo,selectall,pastetext,pasteword,charmap,separator,image,modxlink,unlink,media,separator,code,help"
+        },{
+            "key": "tiny.buttons2"
+            ,"type": "textfield"
+            ,"area": "TinyMCE"
+            ,"value": "bold,italic,underline,strikethrough,sub,sup,separator,bullist,numlist,outdent,indent,separator,justifyleft,justifycenter,justifyright,justifyfull"
+        },{
+            "key": "tiny.buttons3"
+            ,"type": "textfield"
+            ,"area": "TinyMCE"
+            ,"value": "styleselect,formatselect,separator,styleprops"
+        },{
+            "key": "tiny.buttons4"
+            ,"type": "textfield"
+            ,"area": "TinyMCE"
+            ,"value": ""
+        },{
+            "key": "tiny.buttons5"
+            ,"type": "textfield"
+            ,"area": "TinyMCE"
+            ,"value": ""
+        },{
+            "key": "tiny.custom_plugins"
+            ,"type": "textfield"
+            ,"area": "TinyMCE"
+            ,"value": ""
+        },{
+            "key": "tiny.theme"
+            ,"type": "textfield"
+            ,"area": "TinyMCE"
+            ,"value": ""
+        },{
+            "key": "tiny.theme_advanced_blockformats"
+            ,"type": "textfield"
+            ,"area": "TinyMCE"
+            ,"value": ""
+        },{
+            "key": "tiny.theme_advanced_css_selectors"
+            ,"type": "textfield"
+            ,"area": "TinyMCE"
+            ,"value": ""
+        }]
+    }
+    ,"database": {
+        "tables": ["galItem", "galAlbum", "galAlbumItem", "galAlbumContext", "galTag"]
+    }
+    ,"extensionPackage": {}
+}
