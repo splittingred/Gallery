@@ -1,7 +1,3 @@
-Ext.onReady(function() {
-    MODx.load({ xtype: 'gal-page-home'});
-});
-
 GAL.page.Home = function(config) {
     config = config || {};
     Ext.applyIf(config,{

@@ -70,17 +70,18 @@ GAL.panel.Album = function(config) {
                                 ,columnWidth: .6
                             },{
                                 xtype:'hidden'
-                                ,'name':'cover_filename_url'
+                                ,name:'cover_filename_url'
                                 ,id:'cover_filename_url'
                             },{
                                 xtype:'button'
                                 ,text: _('gallery.upload_cover')
-                                ,height: 39
+                                ,cls: 'primary-button'
+                                // ,height: 39
                                 ,handler: this.updateCover
                             },{
                                 xtype:'button'
                                 ,text: _('gallery.delete_cover')
-                                ,height: 39
+                                // ,height: 39
                                 ,handler:function() {
                                     var panel=Ext.getCmp('gal-panel-album').getForm();
                                     panel.findField('cover_filename').setValue('');
@@ -318,9 +319,9 @@ GAL.panel.AlbumItems = function(config) {
             ,region: 'east'
             ,split: true
             ,autoScroll: true
-            ,width: '20%'
+            ,width: '25%'
             ,minWidth: 150
-            ,maxWidth: 250
+            // ,maxWidth: 250
             ,height: 450
             ,border: false
         }]

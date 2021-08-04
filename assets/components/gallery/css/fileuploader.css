@@ -1,5 +1,11 @@
 .qq-uploader { position:relative; width: 100%;}
 
+.qq-uploader a {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
 .qq-upload-button {
     display:block; /* or inline-block */
     padding: 7px 0;
@@ -10,6 +16,12 @@
     text-shadow: 1px -1px 0 #1F1F1F;
     margin-top: 10px;
     font-weight: bold;
+}
+/* 2.3 style fixes */
+.qq-upload-button.x-btn {
+    border: 0;
+    padding: 10px 15px;
+    text-shadow: none;
 }
 .qq-upload-button-hover {background:#5C7F17;}
 .qq-upload-button-focus {outline:1px dotted black;}
