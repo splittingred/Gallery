@@ -495,7 +495,7 @@ qq.FileUploader = function(o){
                 
         template: '<div class="qq-uploader">' + 
                 '<div class="qq-upload-drop-area"><span>' + _('gallery.dropfileshere') + '</span></div>' +
-                '<div class="qq-upload-button">' + _('file_upload') + '</div>' +
+                '<div class="qq-upload-button ' + (MODx.config.connector_url ? 'x-btn primary-button' : '') + '">' + _('file_upload') + '</div>' +
                 '<p><a href="#" onclick="clearSuccess(); return false;">' + _('gallery.clearsuccessful') + '</a> | ' +
                 '<a href="#" onclick="clearFailure(); return false;">' + _('gallery.clearfailure') + '</a></p>' +
                 '<ul class="qq-upload-list"></ul>' +

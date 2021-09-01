@@ -43,11 +43,11 @@ if ($source->get('rank') < $target->get('rank')) {
             SET rank = rank - 1
         WHERE
             album = ".$scriptProperties['album']."
-        AND rank <= {$target->get('rank')}
+        AND rank < {$target->get('rank')}
         AND rank > {$source->get('rank')}
         AND rank > 0
     ");
-    $newRank = $target->get('rank');
+    $newRank = $target->get('rank')-1;
 } else {
     $modx->exec("
         UPDATE {$modx->getTableName('galAlbumItem')}
