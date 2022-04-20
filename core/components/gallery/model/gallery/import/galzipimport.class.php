@@ -150,11 +150,18 @@ class galZipImport extends galImport {
      * @return bool|string
      */
     public function unpack() {
-        if (!$this->modx->loadClass('compression.xPDOZip',$this->modx->getOption('core_path').'xpdo/',true,true)) {
-            return $this->modx->lexicon('gallery.xpdozip_err_nf');
+        $archive = null;
+        if ($this->modx->getVersionData()['version'] >= 3){
+            //V3
+            $archive = new xPDO\Compression\xPDOZip($this->modx,$this->source['tmp_name']);
+        } else {
+            //V2
+            if (!$this->modx->loadClass('compression.xPDOZip',$this->modx->getOption('core_path').'xpdo/',true,true)) {
+                return $this->modx->lexicon('gallery.xpdozip_err_nf');
+            }
+            $archive = new xPDOZip($this->modx,$this->source['tmp_name']);
         }
-        /* unpack zip file */
-        $archive = new xPDOZip($this->modx,$this->source['tmp_name']);
+        /* unpack zip file */ 
         if (!$archive) {
             return $this->modx->lexicon('gallery.zip_err_unpack');
         }
