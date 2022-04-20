@@ -34,10 +34,14 @@ class GalleryAlbumGetNodesProcessor extends modObjectProcessor {
         $c->sortby('galAlbum.rank','ASC');
         $albums = $this->modx->getCollection('galAlbum',$c);
 
-        $action = $this->modx->getObject('modAction',array(
-            'controller' => 'index',
-            'namespace' => 'gallery',
-        ));
+        $action = null;
+        if ($this->modx->getVersionData()['version'] < 3){
+            //V2
+            $action = $this->modx->getObject('modAction',array(
+                'controller' => 'index',
+                'namespace' => 'gallery',
+            ));
+        }
 
         /** @var galAlbum $album */
         foreach ($albums as $album) {
@@ -58,6 +62,8 @@ class GalleryAlbumGetNodesProcessor extends modObjectProcessor {
             $albumArray['classKey'] = 'galAlbum';
             if (!empty($action)) {
                 $albumArray['page'] = '?a='.$action->get('id').'&album='.$album->get('id').'&action=album/update';
+            } else {
+                $albumArray['page'] = '?a=album/update&namespace=gallery&album='.$album->get('id'); //V3
             }
 
             $albumArray['menu'] = array('items' => array());

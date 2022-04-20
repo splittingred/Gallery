@@ -51,10 +51,15 @@ switch ($modx->event->name) {
         $modx->controller->addLexiconTopic('gallery:tv');
 
         /* @var modAction $action */
-        $action = $modx->getObject('modAction',array(
-            'namespace' => 'gallery',
-            'controller' => 'index',
-        ));
+        $action = null;
+        if ($this->modx->getVersionData()['version'] < 3){
+            //V2
+            $action = $modx->getObject('modAction',array(
+                'namespace' => 'gallery',
+                'controller' => 'index',
+            ));
+        }
+        
         $modx->controller->addHtml('<script type="text/javascript">
         Ext.onReady(function() {
             GAL.config = {};
