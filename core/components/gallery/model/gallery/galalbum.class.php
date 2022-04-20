@@ -48,9 +48,9 @@ class galAlbum extends xPDOSimpleObject {
         $saved= parent :: save($cacheFlag);
         if ($saved) {
             if ($this->xpdo->getCacheManager()) {
-                $this->xpdo->cacheManager->delete('gallery/album/'.$this->get('id'));
-                $this->xpdo->cacheManager->delete('gallery/album/list/');
-                $this->xpdo->cacheManager->delete('gallery/item/list/');
+                $this->xpdo->cacheManager->delete('gallery/album/'.$this->get('id'), array('multiple_object_delete' => true));
+                $this->xpdo->cacheManager->delete('gallery/album/list/', array('multiple_object_delete' => true));
+                $this->xpdo->cacheManager->delete('gallery/item/list/', array('multiple_object_delete' => true));
             }
         }
         return $saved;

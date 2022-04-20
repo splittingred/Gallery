@@ -27,7 +27,7 @@ class galTag extends xPDOSimpleObject {
         $saved = parent::save($cacheFlag);
         if ($saved) {
             if ($this->xpdo->getCacheManager()) {
-                $this->xpdo->cacheManager->delete('gallery/item/list/');
+                $this->xpdo->cacheManager->delete('gallery/item/list/', array('multiple_object_delete' => true));
             }
         }
         return $saved;
