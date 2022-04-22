@@ -52,7 +52,7 @@ switch ($modx->event->name) {
 
         /* @var modAction $action */
         $action = null;
-        if ($this->modx->getVersionData()['version'] < 3){
+        if ($modx->getVersionData()['version'] < 3){
             //V2
             $action = $modx->getObject('modAction',array(
                 'namespace' => 'gallery',
