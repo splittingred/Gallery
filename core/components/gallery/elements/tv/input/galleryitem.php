@@ -25,29 +25,62 @@
  * @package gallery
  * @subpackage tv
  */
-$modx->lexicon->load('tv_widget','gallery:default');
-$modx->smarty->assign('base_url',$this->xpdo->getOption('base_url'));
+class GalleryItemInputRender extends modTemplateVarInputRender
+{
+    /**
+     * Return the template path to load
+     *
+     * @return string
+     */
+    public function getTemplate()
+    {
+        $corePath = $this->modx->getOption('gallery.core_path', null, $this->modx->getOption('core_path') . 'components/gallery/');
+        return $corePath . 'elements/tv/galleryitem.input.tpl';
+    }
 
-$corePath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/');
-$modx->addPackage('gallery',$corePath.'model/');
+    /**
+     * Get lexicon topics
+     *
+     * @return array
+     */
+    public function getLexiconTopics()
+    {
+        return ['gallery:default'];
+    }
 
-if (!empty($this->value)) {
-    $data = $modx->fromJSON($this->value);
-    if (is_array($data) && !empty($data['gal_id'])) {
-        $item = $modx->getObject('galItem',$data['gal_id']);
-        if ($item) {
-            $item->getSize();
-            $data = array_merge($item->toArray('gal_',true,true),$data);
-            $pt = $item->getPhpThumbUrl();
-            $data['gal_id'] = $item->get('id');
-            $data['gal_src'] = $item->get('absoluteImage');
-            $data['gal_rotate'] = !empty($data['gal_rotate']) ? $data['gal_rotate'] : 0;
-            $data['gal_watermark-text'] = !empty($data['gal_watermark-text']) ? $data['gal_watermark-text'] : '';
-            $data['gal_watermark-text-position'] = !empty($data['gal_watermark-text-position']) ? $data['gal_watermark-text-position'] : 'BL';
-            $js = $modx->toJSON($data);
-            $modx->smarty->assign('itemjson',$js);
+    /**
+     * Process Input Render
+     *
+     * @param string $value
+     * @param array $params
+     * @return void
+     */
+    public function process($value, array $params = [])
+    {
+        $this->setPlaceholder('base_url', $this->modx->getOption('base_url'));
+
+        $corePath = $this->modx->getOption('gallery.core_path',null,$this->modx->getOption('core_path').'components/gallery/');
+        $this->modx->addPackage('gallery',$corePath.'model/');
+
+        if (!empty($value)) {
+            $data = $this->modx->fromJSON($value);
+            if (is_array($data) && !empty($data['gal_id'])) {
+                $item = $this->modx->getObject('galItem',$data['gal_id']);
+                if ($item) {
+                    $item->getSize();
+                    $data = array_merge($item->toArray('gal_',true,true),$data);
+                    $pt = $item->getPhpThumbUrl();
+                    $data['gal_id'] = $item->get('id');
+                    $data['gal_src'] = $item->get('absoluteImage');
+                    $data['gal_rotate'] = !empty($data['gal_rotate']) ? $data['gal_rotate'] : 0;
+                    $data['gal_watermark-text'] = !empty($data['gal_watermark-text']) ? $data['gal_watermark-text'] : '';
+                    $data['gal_watermark-text-position'] = !empty($data['gal_watermark-text-position']) ? $data['gal_watermark-text-position'] : 'BL';
+                    $js = $this->modx->toJSON($data);
+                    $this->setPlaceholder('itemjson', $js);
+                }
+            }
         }
     }
 }
 
-return $modx->smarty->fetch($corePath.'elements/tv/galleryitem.input.tpl');
+return 'GalleryItemInputRender';

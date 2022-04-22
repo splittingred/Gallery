@@ -25,53 +25,68 @@
  * @package gallery
  * @subpackage tv
  */
-$corePath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/');
-$modx->addPackage('gallery',$corePath.'model/');
+class GalleryItemOutputRender extends modTemplateVarOutputRender
+{
+    /**
+     * Process Output Render
+     *
+     * @param string $value
+     * @param array $params
+     * @return string
+     */
+    public function process($value, array $params = [])
+    {
+        $corePath = $this->modx->getOption('gallery.core_path',null,$this->modx->getOption('core_path').'components/gallery/');
+        $this->modx->addPackage('gallery',$corePath.'model/');
 
-if (!empty($value) && $value != '{}') {
-    $data = $modx->fromJSON($value);
-    if (empty($data)) return '';
+        if (!empty($value) && $value != '{}') {
+            $data = $this->modx->fromJSON($value);
+            if (empty($data)) return '';
 
-    $item = $modx->getObject('galItem',$data['gal_id']);
-    if ($item) {
-        /* get filters */
-        $filtersArray = array();
-        if (!empty($data['gal_rotate'])) {
-            $filtersArray['rot'] = (string)$data['gal_rotate'];
-        }
-        /* text watermark */
-        if (!empty($data['gal_watermark-text'])) {
-            $filtersArray['wmt'] = (string)$data['gal_watermark-text'].'|5|'.$data['gal_watermark-text-position'].'|ffffff|||5|||100|0';
-        }
-        /* crop */
-        if (!empty($data['gal_cropCoords'])) {
-            $filtersArray['crop'] = $data['gal_cropLeft'].'|'.$data['gal_cropRight'].'|'.$data['gal_cropTop'].'|'.$data['gal_cropBottom'];
-        }
-        $filters = '';
-        foreach ($filtersArray as $filter => $val) {
-            $filters .= '&fltr[]='.$filter.'|'.$val;
-        }
+            $item = $this->modx->getObject('galItem',$data['gal_id']);
+            if ($item) {
+                /* get filters */
+                $filtersArray = array();
+                if (!empty($data['gal_rotate'])) {
+                    $filtersArray['rot'] = (string)$data['gal_rotate'];
+                }
+                /* text watermark */
+                if (!empty($data['gal_watermark-text'])) {
+                    $filtersArray['wmt'] = (string)$data['gal_watermark-text'].'|5|'.$data['gal_watermark-text-position'].'|ffffff|||5|||100|0';
+                }
+                /* crop */
+                if (!empty($data['gal_cropCoords'])) {
+                    $filtersArray['crop'] = $data['gal_cropLeft'].'|'.$data['gal_cropRight'].'|'.$data['gal_cropTop'].'|'.$data['gal_cropBottom'];
+                }
+                $filters = '';
+                foreach ($filtersArray as $filter => $val) {
+                    $filters .= '&fltr[]='.$filter.'|'.$val;
+                }
 
-        /* get any other params */
-        $other = !empty($data['gal_other']) ? $data['gal_other'] : '';
-        if (!empty($other)) {
-            if (substr($other,0,1) != '&') {
-                $other = '&'.$other;
+                /* get any other params */
+                $other = !empty($data['gal_other']) ? $data['gal_other'] : '';
+                if (!empty($other)) {
+                    if (substr($other,0,1) != '&') {
+                        $other = '&'.$other;
+                    }
+                }
+
+                $url = $item->get('image',array(
+                    'w' => $data['gal_image_width'],
+                    'h' => $data['gal_image_height'],
+                    'f' => 'png',
+                )).$filters.$other;
+
+                $class = !empty($data['gal_class']) ? 'class="'.$data['gal_class'].'"' : '';
+                $value = '<img src="'.$url.'" alt="'.$data['gal_description'].'" title="'.$data['gal_name'].'" '.$class.' />';
+            } else {
+                $value = '';
             }
+        } else { /* if empty dont return json, return blank */
+            $value = '';
         }
-
-        $url = $item->get('image',array(
-            'w' => $data['gal_image_width'],
-            'h' => $data['gal_image_height'],
-            'f' => 'png',
-        )).$filters.$other;
-
-        $class = !empty($data['gal_class']) ? 'class="'.$data['gal_class'].'"' : '';
-        $value = '<img src="'.$url.'" alt="'.$data['gal_description'].'" title="'.$data['gal_name'].'" '.$class.' />';
-    } else {
-        $value = '';
+        return $value;
     }
-} else { /* if empty dont return json, return blank */
-    $value = '';
 }
-return $value;
+
+return 'GalleryItemOutputRender';
