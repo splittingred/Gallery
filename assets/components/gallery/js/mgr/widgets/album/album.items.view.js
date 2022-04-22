@@ -8,7 +8,7 @@ GAL.view.AlbumItems = function(config) {
         ,ident: 'galbit'
         ,id: 'gal-album-items-view'
         ,baseParams: {
-            action: 'mgr/item/getList'
+            action: 'mgr/item/getlist'
             ,album: config.album
         }
         ,loadingText: _('loading')
@@ -86,7 +86,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'mgr/album/setCoverItem'
+                action: 'mgr/album/setcoveritem'
                 ,id: data.id
                 ,albumid: data.album
             }
@@ -130,7 +130,7 @@ Ext.extend(GAL.view.AlbumItems,MODx.DataView,{
             text: _('gallery.item_delete_multiple_confirm')
             ,url: this.config.url
             ,params: {
-                action: 'mgr/item/removeMultiple'
+                action: 'mgr/item/removemultiple'
                 ,ids: ids.substr(1)
             }
             ,listeners: {
