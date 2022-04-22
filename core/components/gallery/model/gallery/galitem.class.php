@@ -199,7 +199,7 @@ class galItem extends xPDOSimpleObject {
             $this->set('createdon', strftime('%Y-%m-%d %H:%M:%S'));
         }
         if ($this->isNew() && !$this->get('createdby')) {
-            if (!empty($this->xpdo->user) && $this->xpdo->user instanceof modUser) {
+            if (!empty($this->xpdo->user) && ($this->xpdo->user instanceof modUser || $this->xpdo->user instanceof \MODX\Revolution\modUser)) {
                 if ($this->xpdo->user->isAuthenticated()) {
                     $this->set('createdby',$this->xpdo->user->get('id'));
                 }

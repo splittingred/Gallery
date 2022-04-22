@@ -77,7 +77,7 @@ class GalleryItemAjaxUploadProcessor extends modProcessor {
 
             $file = array("name" => $relativePath, "tmp_name" => $randomFilename, "error" => "0"); // emulate a $_FILES object
 
-            $modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Album Type: '.$scriptProperties['album']);
+            //$modx->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Album Type: '.$scriptProperties['album']);
 
 
             if ($bytes == 0 || !$item->upload($file,$scriptProperties['album'])) {

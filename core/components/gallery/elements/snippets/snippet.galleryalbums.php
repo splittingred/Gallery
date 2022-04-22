@@ -85,7 +85,7 @@ foreach ($albums as $album) {
     if (!isset($nav['next']) && isset($nav['current'])) {
         $nav['next'] = $albumArray['id'];
     }
-    if ($_GET[$albumRequestVar] == $albumArray['id']) {
+    if (isset($_GET[$albumRequestVar]) && $_GET[$albumRequestVar] == $albumArray['id']) {
         $nav['current'] = $albumArray['id'];
         $nav['curIdx'] = $idx + 1;
         $classes[] = 'current';

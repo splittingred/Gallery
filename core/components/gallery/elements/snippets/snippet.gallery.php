@@ -45,7 +45,9 @@ if (empty($scriptProperties['album']) && empty($scriptProperties['tag'])) return
 
 $data = $modx->call('galItem','getList',array(&$modx,$scriptProperties));
 $totalVar = $modx->getOption('totalVar', $scriptProperties, 'total');
-$modx->setPlaceholder($totalVar,$data['total']);
+if (is_array($data) && isset($data['total'])){
+    $modx->setPlaceholder($totalVar,$data['total']);
+}
 
 /* load plugins */
 $plugin = $modx->getOption('plugin',$scriptProperties,'');
@@ -110,7 +112,7 @@ $keys = array_keys($scriptProperties);
 $nthTpls = array();
 foreach($keys as $key) {
     $keyBits = $gallery->explodeAndClean($key, '_');
-    if (isset($keyBits[0]) && $keyBits[0] === 'thumbTpl') {
+    if (isset($keyBits[0]) && $keyBits[0] === 'thumbTpl' && isset($keyBits[1])) {
         if ($i = (int) $keyBits[1]) $nthTpls[$i] = $scriptProperties[$key];
     }
 }
