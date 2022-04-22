@@ -411,6 +411,11 @@ class galAlbum extends xPDOSimpleObject {
     }
 
     public static function getList(modX &$modx,array $scriptProperties = array()) {
+        /* implement tree-style albums*/
+        if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,false)) {
+            $albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
+            if (!empty($_REQUEST[$albumRequestVar])) $scriptProperties['parent'] = $_REQUEST[$albumRequestVar];
+        }
         $cacheKey = 'gallery/album/list/'.md5(serialize($scriptProperties));
         if ($modx->getCacheManager() && $cache = $modx->cacheManager->get($cacheKey)) {
             $albums = array();
@@ -430,12 +435,6 @@ class galAlbum extends xPDOSimpleObject {
 	        $id = $modx->getOption('id',$scriptProperties,false);
             $showInactive = $modx->getOption('showInactive',$scriptProperties,false);
             $prominentOnly = $modx->getOption('prominentOnly',$scriptProperties,true);
-
-            /* implement tree-style albums*/
-            if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,false)) {
-                $albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
-                if (!empty($_REQUEST[$albumRequestVar])) $parent = $_REQUEST[$albumRequestVar];
-            }
 
             /* add random sorting for albums */
             if (in_array(strtolower($sort),array('random','rand()','rand'))) {
