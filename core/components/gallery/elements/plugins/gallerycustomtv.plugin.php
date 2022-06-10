@@ -1,9 +1,10 @@
 <?php
 /**
  * Handles plugin events for Gallery's Custom TV
- * 
+ *
  * @package gallery
  */
+/** @noinspection PhpUndefinedVariableInspection */
 $corePath = $modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/');
 switch ($modx->event->name) {
     case 'OnTVInputRenderList':
@@ -19,6 +20,7 @@ switch ($modx->event->name) {
         $modx->event->output($corePath.'elements/tv/properties/');
         break;
     case 'OnManagerPageBeforeRender':
+        /** @noinspection PhpUndefinedVariableInspection */
         $gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/gallery/',$scriptProperties);
         if (!($gallery instanceof Gallery)) return '';
 
@@ -44,6 +46,7 @@ switch ($modx->event->name) {
         </script>');
         break;
     case 'OnDocFormPrerender':
+        /** @noinspection PhpUndefinedVariableInspection */
         $gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/gallery/',$scriptProperties);
         if (!($gallery instanceof Gallery)) return '';
 
@@ -51,10 +54,15 @@ switch ($modx->event->name) {
         $modx->controller->addLexiconTopic('gallery:tv');
 
         /* @var modAction $action */
-        $action = $modx->getObject('modAction',array(
-            'namespace' => 'gallery',
-            'controller' => 'index',
-        ));
+        $action = null;
+        if ($modx->getVersionData()['version'] < 3){
+            //V2
+            $action = $modx->getObject('modAction',array(
+                'namespace' => 'gallery',
+                'controller' => 'index',
+            ));
+        }
+
         $modx->controller->addHtml('<script type="text/javascript">
         Ext.onReady(function() {
             GAL.config = {};

@@ -55,7 +55,7 @@ Ext.extend(GAL.grid.Albums,MODx.grid.Grid,{
     ,updateAlbum: function(btn,e) {
         if (!this.menu.record || !this.menu.record.id) return false;
         
-        location.href = '?a='+MODx.request.a+'&action=album/update'+'&album='+this.menu.record.id;
+        MODx.loadPage('album/update', 'namespace=gallery&album='+this.menu.record.id);
     }
     
     ,removeAlbum: function(btn,e) {

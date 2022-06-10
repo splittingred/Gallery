@@ -112,7 +112,7 @@ Ext.extend(galTreeHandlerClass,Ext.Component,{
     }
     ,updateAlbum: function(btn,e) {
         var id = this.data.id ? this.data.id : 0;
-        location.href = '?a='+MODx.action['gallery:index']+'&album='+id+'&action=album/update';
+        MODx.loadPage('album/update', 'namespace=gallery&album='+id);
     }
     ,removeAlbum: function(btn,e) {
         MODx.msg.confirm({

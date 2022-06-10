@@ -48,9 +48,9 @@ class galAlbum extends xPDOSimpleObject {
         $saved= parent :: save($cacheFlag);
         if ($saved) {
             if ($this->xpdo->getCacheManager()) {
-                $this->xpdo->cacheManager->delete('gallery/album/'.$this->get('id'));
-                $this->xpdo->cacheManager->delete('gallery/album/list/');
-                $this->xpdo->cacheManager->delete('gallery/item/list/');
+                $this->xpdo->cacheManager->delete('gallery/album/'.$this->get('id'), array('multiple_object_delete' => true));
+                $this->xpdo->cacheManager->delete('gallery/album/list/', array('multiple_object_delete' => true));
+                $this->xpdo->cacheManager->delete('gallery/item/list/', array('multiple_object_delete' => true));
             }
         }
         return $saved;
@@ -89,7 +89,7 @@ class galAlbum extends xPDOSimpleObject {
         return $path;
     }
 
-    public static function getFilesPath(xPDO &$modx) {
+    public static function getFilesPath(xPDO $modx) {
         $path = $modx->getOption('gallery.files_path',null,$modx->getOption('base_path',null,MODX_BASE_PATH).'assets/gallery/');
         $path = str_replace(array(
             '[[++assets_path]]',
@@ -109,7 +109,8 @@ class galAlbum extends xPDOSimpleObject {
         return $path;
     }
 
-    public static function getFilesUrl(xPDO &$modx) {
+    public static function getFilesUrl(xPDO $modx)
+    {
         $path = $modx->getOption('gallery.files_url',null,$modx->getOption('base_url',null,MODX_BASE_URL).'assets/gallery/');
         $path = str_replace(array(
             '[[++assets_url]]',
@@ -130,7 +131,8 @@ class galAlbum extends xPDOSimpleObject {
      * @param int $newRank
      * @return boolean
      */
-    public function reorder($newRank) {
+    public function reorder($newRank): bool
+    {
         $oldRank = $this->get('rank');
 
         $this->set('rank',$newRank);
@@ -138,11 +140,10 @@ class galAlbum extends xPDOSimpleObject {
         $movingDown = $newRank > $oldRank;
         if ($movingDown) {
             $sql = 'UPDATE '.$this->xpdo->getTableName('galAlbum').' SET rank = rank - 1 WHERE rank >= '.$oldRank.' AND rank <= '.$newRank.' AND parent = '.$this->get('parent');
-            $this->xpdo->exec($sql);
         } else {
             $sql = 'UPDATE '.$this->xpdo->getTableName('galAlbum').' SET rank = rank + 1 WHERE rank > '.$newRank.' AND rank <= '.$oldRank.' AND parent = '.$this->get('parent');
-            $this->xpdo->exec($sql);
         }
+        $this->xpdo->exec($sql);
 
         return $this->save();
     }
@@ -152,7 +153,8 @@ class galAlbum extends xPDOSimpleObject {
      * @param int $newParent
      * @return boolean
      */
-    public function move($newParent) {
+    public function move(int $newParent): bool
+    {
         $oldParent = $this->get('parent');
         $oldRank = $this->get('rank');
 
@@ -174,7 +176,8 @@ class galAlbum extends xPDOSimpleObject {
      * Check to see if the storage path for the album is writable
      * @return boolean
      */
-    public function isPathWritable() {
+    public function isPathWritable(): bool
+    {
         $path = $this->getPath();
         return is_readable($path) && is_writable($path);
     }
@@ -183,7 +186,8 @@ class galAlbum extends xPDOSimpleObject {
      * Ensure the storage path for this album exists
      * @return boolean
      */
-    public function ensurePathExists() {
+    public function ensurePathExists(): bool
+    {
         $exists = true;
         $path = $this->getPath();
         if (!file_exists($path) || !is_dir($path)) {
@@ -195,8 +199,8 @@ class galAlbum extends xPDOSimpleObject {
         return $exists;
     }
 
-    public function uploadItem(galItem $item,$filePath,$name,$mediaSource) {
-        $fileName = false;
+    public function uploadItem(galItem $item,$filePath,$name,$mediaSource)
+    {
 
         $albumDir = $this->getPath(false);
         $targetDir = str_ireplace(MODX_BASE_PATH, '', $this->getPath());
@@ -211,37 +215,26 @@ class galAlbum extends xPDOSimpleObject {
         $extension = pathinfo($name,PATHINFO_EXTENSION);
         $shortName = $item->get('id').'.'.$extension;
         $relativePath = $albumDir.$shortName;
-        $absolutePath = $targetDir.$shortName;
 
         $fileName = str_replace(' ','',$relativePath);
 
-        $file = array("name" => $shortName, "tmp_name" => $filePath,"error" => "0"); // emulate a $_FILES object
-
-        $success = true;
         // modFileMediaSource class uses move_uploaded_file - because we create a local file - we cannot use this function and we use streams instead
         if(!is_uploaded_file($filePath) && get_class($mediaSource) == 'modFileMediaSource_mysql') {
             $input = fopen($filePath, "r");
-            $target = fopen($this->getPath(true).$shortName, "w");
-            $bytes = stream_copy_to_stream($input, $target);
+            $target = fopen($this->getPath().$shortName, "w");
             fclose($input);
             fclose($target);
-        } else {
-            $success = $mediaSource->uploadObjectsToContainer($targetDir,array($file));
         }
-
-        // if(!$success) {
-        //     $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] An error occurred while trying to upload the file: '.$filePath.' to '.$absolutePath);
-        //     return false;
-        // }
         return $fileName;
     }
 
-    public function getCoverUrl() {
+    public function getCoverUrl()
+    {
         $value='';
-        if($this->get('cover_filename')!='') {
+        if($this->get('cover_filename')!=='') {
             $assetsUrl = $this->xpdo->getOption('gallery.assets_url',null,$this->xpdo->getOption('assets_url',null,MODX_ASSETS_URL).'components/gallery/');
             $assetsUrl .= 'connector.php?action=web/phpthumb';
-            if (empty($format)) $format = array();
+            $format = array();
             $format['w']=100;
             $format['h']=100;
             $format['zc']=1;
@@ -262,7 +255,8 @@ class galAlbum extends xPDOSimpleObject {
         return $value;
     }
 
-    private function cleanCoverCache() {
+    private function cleanCoverCache(): void
+    {
         $assetsPath = $this->xpdo->getOption('gallery.assets_path',null,$this->xpdo->getOption('assets_path').'components/gallery/');
         $cacheDir = $assetsPath.'cache/';
         $filepath=str_replace(array('/','\\'),'_',$this->getPath()).'cover\.';
@@ -280,7 +274,8 @@ class galAlbum extends xPDOSimpleObject {
         }
     }
 
-    public function setCoverFile($item) {
+    public function setCoverFile($item)
+    {
         $fileName = false;
         $albumDir = $this->getPath(false);
         $targetDir = $this->getPath();
@@ -288,11 +283,11 @@ class galAlbum extends xPDOSimpleObject {
         /* if directory doesnt exist, create it */
         if (!$this->ensurePathExists()) {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not create directory: '.$targetDir);
-            return $fileName;
+            return false;
         }
         if (!$this->isPathWritable()) {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'[Gallery] Could not write to directory: '.$targetDir);
-            return $fileName;
+            return false;
         }
 
         $this->cleanCoverCache();
@@ -334,7 +329,8 @@ class galAlbum extends xPDOSimpleObject {
         return false;
     }
 
-    public function setCoverItem($item) {
+    public function setCoverItem($item): bool
+    {
         if($filename=$this->setCoverFile($item)) {
             $this->set('cover_filename',$filename);
             return $this->save();
@@ -349,13 +345,14 @@ class galAlbum extends xPDOSimpleObject {
      * @param string $albumCoverSortDir
      * @return galItem
      */
-    public function getCoverItem($albumCoverSort = 'rank',$albumCoverSortDir = 'ASC') {
+    public function getCoverItem($albumCoverSort = 'rank',$albumCoverSortDir = 'ASC'): galItem
+    {
         $cache = false;
         $cacheKey = 'gallery/album/'.$this->get('id').'/cover-'.md5($albumCoverSort.$albumCoverSortDir);
         if ($this->xpdo->getCacheManager()) {
             $cache = $this->xpdo->cacheManager->get($cacheKey);
         }
-        if (!$cache || true) {
+        if (!$cache) {
             if($this->get('cover_filename')!='') {
                 $c = $this->xpdo->newQuery('galItem');
                 $c->innerJoin('galAlbumItem','AlbumItems');
@@ -370,9 +367,6 @@ class galAlbum extends xPDOSimpleObject {
                     'absolute_filename' => true,
                     'active' => true,
                 ));
-                $item->set('total',$count);
-                $cache = $item->toArray();
-                $this->xpdo->cacheManager->set($cacheKey,$cache);
             } else {
                 $c = $this->xpdo->newQuery('galItem');
                 $c->innerJoin('galAlbumItem','AlbumItems');
@@ -398,10 +392,10 @@ class galAlbum extends xPDOSimpleObject {
                         'active' => true,
                     ));
                 }
-                $item->set('total',$count);
-                $cache = $item->toArray();
-                $this->xpdo->cacheManager->set($cacheKey,$cache);
             }
+            $item->set('total',$count);
+            $cache = $item->toArray();
+            $this->xpdo->cacheManager->set($cacheKey,$cache);
         } else {
             $item = $this->xpdo->newObject('galItem');
             $item->fromArray($cache,'',true,true);
@@ -410,7 +404,13 @@ class galAlbum extends xPDOSimpleObject {
         return $item;
     }
 
-    public static function getList(modX &$modx,array $scriptProperties = array()) {
+    public static function getList(modX $modx, array $scriptProperties = array()): array
+    {
+        /* implement tree-style albums*/
+        if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,false)) {
+            $albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
+            if (!empty($_REQUEST[$albumRequestVar])) $scriptProperties['parent'] = $_REQUEST[$albumRequestVar];
+        }
         $cacheKey = 'gallery/album/list/'.md5(serialize($scriptProperties));
         if ($modx->getCacheManager() && $cache = $modx->cacheManager->get($cacheKey)) {
             $albums = array();
@@ -431,12 +431,6 @@ class galAlbum extends xPDOSimpleObject {
             $showInactive = $modx->getOption('showInactive',$scriptProperties,false);
             $prominentOnly = $modx->getOption('prominentOnly',$scriptProperties,true);
 
-            /* implement tree-style albums*/
-            if ($modx->getOption('checkForRequestAlbumVar',$scriptProperties,false)) {
-                $albumRequestVar = $modx->getOption('albumRequestVar',$scriptProperties,'galAlbum');
-                if (!empty($_REQUEST[$albumRequestVar])) $parent = $_REQUEST[$albumRequestVar];
-            }
-
             /* add random sorting for albums */
             if (in_array(strtolower($sort),array('random','rand()','rand'))) {
                 $sort = 'RAND()';
@@ -453,7 +447,7 @@ class galAlbum extends xPDOSimpleObject {
                     'prominent' => true,
                 ));
             }
-            if ($showAll == false) {
+            if (!$showAll) {
                 $c->where(array(
                     'parent' => $parent,
                 ));

@@ -30,11 +30,10 @@ class galAlbumItem extends xPDOSimpleObject {
         $movingDown = $newRank > $oldRank;
         if ($movingDown) {
             $sql = 'UPDATE '.$this->xpdo->getTableName('galAlbumItem').' SET rank = rank - 1 WHERE rank >= '.$oldRank.' AND rank <= '.$newRank.' AND album = '.$this->get('album');
-            $this->xpdo->exec($sql);
         } else {
             $sql = 'UPDATE '.$this->xpdo->getTableName('galAlbumItem').' SET rank = rank + 1 WHERE rank >= '.$newRank.' AND rank <= '.$oldRank.' AND album = '.$this->get('album');
-            $this->xpdo->exec($sql);
         }
+        $this->xpdo->exec($sql);
         return $this->save();
     }
 
@@ -42,8 +41,8 @@ class galAlbumItem extends xPDOSimpleObject {
         $saved = parent::save($cacheFlag);
         if ($saved) {
             if ($this->xpdo->getCacheManager()) {
-                $this->xpdo->cacheManager->delete('gallery/album/'.$this->get('album_id'));
-                $this->xpdo->cacheManager->delete('gallery/item/list/');
+                $this->xpdo->cacheManager->delete('gallery/album/'.$this->get('album_id'), array('multiple_object_delete' => true));
+                $this->xpdo->cacheManager->delete('gallery/item/list/', array('multiple_object_delete' => true));
             }
         }
         return $saved;

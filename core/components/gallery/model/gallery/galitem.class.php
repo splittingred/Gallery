@@ -171,7 +171,7 @@ class galItem extends xPDOSimpleObject {
         }
         return parent::set($k,$v,$vType);
     }
-    
+
     /**
      * Upload a file to an album
      *
@@ -199,7 +199,7 @@ class galItem extends xPDOSimpleObject {
             $this->set('createdon', strftime('%Y-%m-%d %H:%M:%S'));
         }
         if ($this->isNew() && !$this->get('createdby')) {
-            if (!empty($this->xpdo->user) && $this->xpdo->user instanceof modUser) {
+            if (!empty($this->xpdo->user) && ($this->xpdo->user instanceof modUser || $this->xpdo->user instanceof \MODX\Revolution\modUser)) {
                 if ($this->xpdo->user->isAuthenticated()) {
                     $this->set('createdby',$this->xpdo->user->get('id'));
                 }
@@ -208,7 +208,7 @@ class galItem extends xPDOSimpleObject {
         $saved= parent :: save($cacheFlag);
         if ($saved) {
             if ($this->xpdo->getCacheManager()) {
-                $this->xpdo->cacheManager->delete('gallery/item/list/');
+                $this->xpdo->cacheManager->delete('gallery/item/list/', array('multiple_object_delete' => true));
             }
         }
         return $saved;
@@ -257,7 +257,7 @@ class galItem extends xPDOSimpleObject {
      */
     public function move($album) {
         /** @var galAlbum $newAlbum */
-        $newAlbum = is_object($album) && $album instanceof galAlbum ? $album : $this->xpdo->getObject('galAlbum',$album);
+        $newAlbum = $album instanceof galAlbum ? $album : $this->xpdo->getObject('galAlbum',$album);
         if (empty($newAlbum)) return false;
 
         /** @var galAlbumItem $albumItem */
@@ -294,8 +294,8 @@ class galItem extends xPDOSimpleObject {
         return true;
     }
 
-    public static function getList(modX &$modx,array $scriptProperties = array()) {
-		$sort = $modx->getOption('sort',$scriptProperties,'rank');		
+    public static function getList(modX $modx, array $scriptProperties = array()) {
+		$sort = $modx->getOption('sort',$scriptProperties,'rank');
         $cacheKey = 'gallery/item/list/'.md5(serialize($scriptProperties));
         if ($modx->getCacheManager() && $cache = $modx->cacheManager->get($cacheKey)) {
             $items = array();
@@ -305,11 +305,11 @@ class galItem extends xPDOSimpleObject {
                 $item->fromArray($data,'',true,true);
                 $items[] = $item;
             }
-			
+
 			if (in_array(strtolower($sort),array('random','rand()','rand'))) {
 			shuffle($items);
 			}
-            
+
 			$data = array(
                 'items' => $items,
                 'total' => $cache['total'],

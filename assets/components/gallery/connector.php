@@ -31,7 +31,7 @@ if (!empty($_REQUEST['action']) && $_REQUEST['action'] == 'web/phpthumb') {
 	@session_cache_limiter('public');
     define('MODX_REQP',false);
 }
-require_once dirname(dirname(dirname(dirname(__FILE__)))).'/config.core.php';
+require_once dirname(__FILE__, 4) .'/config.core.php';
 require_once MODX_CORE_PATH.'config/'.MODX_CONFIG_KEY.'.inc.php';
 require_once MODX_CONNECTORS_PATH.'index.php';
 
@@ -47,7 +47,7 @@ if ($_REQUEST['action'] == 'web/phpthumb') {
         if ($modx->user->hasSessionContext($modx->context->get('key'))) {
             $_SERVER['HTTP_MODAUTH'] = $_SESSION["modx.{$modx->context->get('key')}.user.token"];
         } else {
-            $_SERVER['HTTP_MODAUTH'] = 0;
+            $_SERVER['HTTP_MODAUTH'] = '';
         }
     } else {
         $_SERVER['HTTP_MODAUTH'] = $modx->site_id;

@@ -26,6 +26,7 @@
  * @var Gallery $gallery
  * @package gallery
  */
+/** @noinspection PhpUndefinedVariableInspection */
 $gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/gallery/',$scriptProperties);
 if (!($gallery instanceof Gallery)) return '';
 
@@ -85,7 +86,7 @@ foreach ($albums as $album) {
     if (!isset($nav['next']) && isset($nav['current'])) {
         $nav['next'] = $albumArray['id'];
     }
-    if ($_GET[$albumRequestVar] == $albumArray['id']) {
+    if (isset($_GET[$albumRequestVar]) && $_GET[$albumRequestVar] == $albumArray['id']) {
         $nav['current'] = $albumArray['id'];
         $nav['curIdx'] = $idx + 1;
         $classes[] = 'current';
