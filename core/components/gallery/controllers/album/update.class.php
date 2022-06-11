@@ -27,6 +27,8 @@
  * @var modX $this->modx
  * @var Gallery $gallery
  */
+require_once dirname(__FILE__,3) . '/index.class.php';
+
 class GalleryAlbumUpdateManagerController extends GalleryManagerController {
     public function getPageTitle() { return $this->modx->lexicon('gallery.album_update'); }
     public function loadCustomCssJs() {
@@ -62,7 +64,11 @@ class GalleryAlbumUpdateManagerController extends GalleryManagerController {
                 $css =  $this->modx->getOption('gallery.tiny.theme_advanced_css_selectors',null,'');
         
                 /** @var modAction $browserAction */
-                $browserAction = $this->modx->getObject('modAction',array('controller' => 'browser'));
+                $browserAction = null;
+                if ($this->modx->getVersionData()['version'] < 3){
+                    //V2
+                    $browserAction = $this->modx->getObject('modAction',array('controller' => 'browser'));
+                }
         
                 /* If the settings are empty, override them with the generic tinymce settings. */
                 $tinyProperties = array(

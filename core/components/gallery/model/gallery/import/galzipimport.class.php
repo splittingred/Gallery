@@ -28,7 +28,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'galimport.class.php';
  */
 class galZipImport extends galImport {
     const OPT_IGNORE_DIRECTORIES = 'ignore_directories';
-    
+
     /**
      * Initialize the zip import class and setup directory based options.
      *
@@ -56,7 +56,7 @@ class galZipImport extends galImport {
 
     /**
      * Run the import script.
-     * 
+     *
      * @param array $options
      * @return bool|string
      */
@@ -90,20 +90,21 @@ class galZipImport extends galImport {
 
     /**
      * Import a specific file into the current album
-     * 
+     *
      * @param object $file A DirectoryIterator item that represents the file
      * @param array $options
      * @return bool
      */
-    public function importFile($file,array $options = array()) {
-        if (in_array($file->getFilename(),$this->config[galZipImport::OPT_IGNORE_DIRECTORIES])) return false;
+    public function importFile(object $file, array $options = array()): bool
+    {
+        if (in_array($file->getFilename(), $this->config[self::OPT_IGNORE_DIRECTORIES], true)) return false;
 
         $fileName = $file->getFilename();
         $filePathName = $file->getPathname();
 
         $fileExtension = pathinfo($filePathName,PATHINFO_EXTENSION);
         $fileExtension = $this->config[galImport::OPT_USE_MULTIBYTE] ? mb_strtolower($fileExtension,$this->config[galImport::OPT_ENCODING]) : strtolower($fileExtension);
-        if (!in_array($fileExtension,$this->config[galImport::OPT_EXTENSIONS])) return false;
+        if (!in_array($fileExtension, $this->config[galImport::OPT_EXTENSIONS], true)) return false;
 
         /* create item */
         $item = $this->modx->newObject('galItem');
@@ -146,18 +147,22 @@ class galZipImport extends galImport {
 
     /**
      * Unpack the zip file using the xPDOZip class
-     * 
+     *
      * @return bool|string
      */
     public function unpack() {
-        if (!$this->modx->loadClass('compression.xPDOZip',$this->modx->getOption('core_path').'xpdo/',true,true)) {
-            return $this->modx->lexicon('gallery.xpdozip_err_nf');
+        $archive = null;
+        if ($this->modx->getVersionData()['version'] >= 3){
+            //V3
+            $archive = new xPDO\Compression\xPDOZip($this->modx,$this->source['tmp_name']);
+        } else {
+            //V2
+            if (!$this->modx->loadClass('compression.xPDOZip',$this->modx->getOption('core_path').'xpdo/',true,true)) {
+                return $this->modx->lexicon('gallery.xpdozip_err_nf');
+            }
+            $archive = new xPDOZip($this->modx,$this->source['tmp_name']);
         }
         /* unpack zip file */
-        $archive = new xPDOZip($this->modx,$this->source['tmp_name']);
-        if (!$archive) {
-            return $this->modx->lexicon('gallery.zip_err_unpack');
-        }
         $archive->unpack($this->target);
         $archive->close();
         return true;

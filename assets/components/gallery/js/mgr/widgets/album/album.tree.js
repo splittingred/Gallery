@@ -4,7 +4,7 @@ GAL.tree.Album = function(config) {
     Ext.applyIf(config,{
         id: 'gal-tree-album'
         ,url: GAL.config.connector_url
-        ,action: 'mgr/album/getNodes'
+        ,action: 'mgr/album/getnodes'
         ,tbar: [{
             text: _('gallery.album_create')
             ,cls: 'primary-button'
@@ -52,7 +52,7 @@ Ext.extend(GAL.tree.Album,MODx.tree.Tree,{
     
     ,updateAlbum: function(btn,e) {
         var id = this.cm.activeNode ? this.cm.activeNode.attributes.pk : 0;
-        location.href = '?a='+GAL.action+'&album='+id+'&action=album/update';
+        MODx.loadPage('album/update', 'namespace=gallery&album='+id);
     }
     
     ,removeAlbum: function(btn,e) {

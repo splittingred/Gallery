@@ -63,6 +63,7 @@ class GalleryItemGetListProcessor extends modObjectGetListProcessor {
             ) AS tags'
         ));
         $c->groupBy('id');
+        $c->groupBy('rank');
         return $c;
     }
 

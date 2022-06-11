@@ -1,5 +1,12 @@
 Changelog for Gallery.
 
+Gallery 2.0.0
+====================================
+- Fixed to work with MODX 3
+- Fixed image upload error in log
+- Fix missing images in the manager
+- Fix nonaggregated images in the manager
+
 Gallery 1.7.1
 ====================================
 - Fixed critical vulnerability in phpthumb processor
@@ -25,7 +32,7 @@ Gallery 1.6.0
 ====================================
 - [#271] [GalleryAlbums] Added image_absolute placeholder
 - [#270] [GalleryAlbums] Added containerTpl (with navigation placeholders) and totalVar placeholder
-- [#266] Add support for selection of album cover. 
+- [#266] Add support for selection of album cover.
 - [#259] Do not cache in getList() when $sort = RAND()
 - [#252] Database Optimization
 - [#248] Fix getPage support in Gallery snippet
@@ -35,7 +42,7 @@ Gallery 1.6.0
 - [#226] German localization
 - [#151] Needed to show links to next/prev albums
 - [#91] Allow false boolean
-- [#258] Bug fix with random sorting when cached 
+- [#258] Bug fix with random sorting when cached
 - Bug fixes
 
 Gallery 1.5.3

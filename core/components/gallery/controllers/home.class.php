@@ -25,6 +25,8 @@
  * @package gallery
  * @subpackage controllers
  */
+require_once dirname(__FILE__,2) . '/index.class.php';
+
 class GalleryHomeManagerController extends GalleryManagerController {
     public function getPageTitle() { return $this->modx->lexicon('gallery'); }
     public function loadCustomCssJs() {

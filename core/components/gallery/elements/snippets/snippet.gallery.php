@@ -24,9 +24,10 @@
  *
  * @var modX $modx
  * @var Gallery $gallery
- * 
+ *
  * @package gallery
  */
+/** @noinspection PhpUndefinedVariableInspection */
 $gallery = $modx->getService('gallery','Gallery',$modx->getOption('gallery.core_path',null,$modx->getOption('core_path').'components/gallery/').'model/gallery/',$scriptProperties);
 if (!($gallery instanceof Gallery)) return '';
 $modx->lexicon->load('gallery:web');
@@ -45,7 +46,9 @@ if (empty($scriptProperties['album']) && empty($scriptProperties['tag'])) return
 
 $data = $modx->call('galItem','getList',array(&$modx,$scriptProperties));
 $totalVar = $modx->getOption('totalVar', $scriptProperties, 'total');
-$modx->setPlaceholder($totalVar,$data['total']);
+if (is_array($data) && isset($data['total'])){
+    $modx->setPlaceholder($totalVar,$data['total']);
+}
 
 /* load plugins */
 $plugin = $modx->getOption('plugin',$scriptProperties,'');
@@ -110,7 +113,7 @@ $keys = array_keys($scriptProperties);
 $nthTpls = array();
 foreach($keys as $key) {
     $keyBits = $gallery->explodeAndClean($key, '_');
-    if (isset($keyBits[0]) && $keyBits[0] === 'thumbTpl') {
+    if (isset($keyBits[0]) && $keyBits[0] === 'thumbTpl' && isset($keyBits[1])) {
         if ($i = (int) $keyBits[1]) $nthTpls[$i] = $scriptProperties[$key];
     }
 }
@@ -166,7 +169,7 @@ if (!empty($containerTpl)) {
         'thumbnails' => $output,
         'album_name' => $data['album']['name'],
         'album_description' => $data['album']['description'],
-        'album_year' => isset($data['album']['year']) ? $data['album']['year'] : '',
+        'album_year' => $data['album']['year'] ?? '',
         'albumRequestVar' => $albumRequestVar,
         'albumId' => $data['album']['id'],
     ));
@@ -180,7 +183,7 @@ if (!empty($toPlaceholder)) {
         $toPlaceholder => $output,
         $toPlaceholder.'.id' => $data['album']['id'],
         $toPlaceholder.'.name' => $data['album']['name'],
-        $toPlaceholder.'.year' => isset($data['album']['year']) ? $data['album']['year'] : '',
+        $toPlaceholder.'.year' => $data['album']['year'] ?? '',
         $toPlaceholder.'.description' => $data['album']['description'],
         $toPlaceholder.'.total' => $data['total'],
         $toPlaceholder.'.next' => $data['album']['id'] + 1,
@@ -191,7 +194,7 @@ if (!empty($toPlaceholder)) {
     $modx->toPlaceholders(array(
         $placeholderPrefix.'id' => $data['album']['id'],
         $placeholderPrefix.'name' => $data['album']['name'],
-        $placeholderPrefix.'year' => isset($data['album']['year']) ? $data['album']['year'] : '',
+        $placeholderPrefix.'year' => $data['album']['year'] ?? '',
         $placeholderPrefix.'description' => $data['album']['description'],
         $placeholderPrefix.'total' => $data['total'],
         $placeholderPrefix.'next' => $data['album']['id'] + 1,
