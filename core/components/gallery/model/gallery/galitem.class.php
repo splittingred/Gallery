@@ -179,7 +179,8 @@ class galItem extends xPDOSimpleObject {
      * @var int $albumId
      * @return boolean
      */
-    public function upload($file,$albumId) {
+    public function upload($file,$albumId): bool
+    {
         if (empty($file) || empty($file['tmp_name']) || empty($file['name'])) return false;
         if (in_array($this->get('id'),array(0,null,''))) return false;
         /** @var galAlbum $album */
@@ -227,7 +228,8 @@ class galItem extends xPDOSimpleObject {
         return parent::remove($ancestors);
     }
 
-    protected function formatFileSize($bytes, $precision = 2) {
+    protected function formatFileSize($bytes, $precision = 2): string
+    {
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
 
         $bytes = max($bytes, 0);
@@ -255,7 +257,8 @@ class galItem extends xPDOSimpleObject {
      * @param int|galAlbum $album
      * @return boolean
      */
-    public function move($album) {
+    public function move($album): bool
+    {
         /** @var galAlbum $newAlbum */
         $newAlbum = $album instanceof galAlbum ? $album : $this->xpdo->getObject('galAlbum',$album);
         if (empty($newAlbum)) return false;

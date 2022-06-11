@@ -5,14 +5,10 @@
     "author": "Shaun McCormick",
     "version": "2.0.0",
     "package":{
-        "actions": [{
-            "id": 1,
-            "controller": "index"
-        }]
-        ,"menus": [{
+        "menus": [{
             "text": "gallery",
             "description": "gallery.menu_desc",
-            "action": 1,
+            "action": "home",
             "parent": "components"
         }]
         ,"elements": {

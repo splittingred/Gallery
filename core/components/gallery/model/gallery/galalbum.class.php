@@ -224,6 +224,9 @@ class galAlbum extends xPDOSimpleObject {
             $target = fopen($this->getPath().$shortName, "w");
             fclose($input);
             fclose($target);
+        } else {
+            $file = array("name" => $shortName, "tmp_name" => $filePath,"error" => "0"); // emulate a $_FILES object
+            $mediaSource->uploadObjectsToContainer($targetDir,array($file));
         }
         return $fileName;
     }
