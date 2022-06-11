@@ -1,136 +1,501 @@
 {
-    "name": "Gallery"
-    ,"lowCaseName": "gallery"
-    ,"description": "Gallery"
-    ,"author": "Shaun McCormick"
-    ,"version": "1.7.1"
-    ,"package":{
+    "name": "Gallery",
+    "lowCaseName": "gallery",
+    "description": "Gallery",
+    "author": "Shaun McCormick",
+    "version": "2.0.0",
+    "package":{
         "actions": [{
-            "id": 1
-            ,"controller": "index"
+            "id": 1,
+            "controller": "index"
         }]
         ,"menus": [{
-            "text": "gallery"
-            ,"description": "gallery.menu_desc"
-            ,"action": 1
-            ,"parent": "components"
+            "text": "gallery",
+            "description": "gallery.menu_desc",
+            "action": 1,
+            "parent": "components"
         }]
         ,"elements": {
             "snippets": [{
-                "name": "Gallery"
-                ,"file": "snippet.gallery.php"
+                "name": "Gallery",
+                "file": "snippet.gallery.php",
+                "properties": [
+                    {
+                        "name": "album",
+                        "description": "gallery.album_desc",
+                        "value": "",
+                    },{
+                        "name": "tag",
+                        "description": "gallery.tag_desc",
+                        "value": "",
+                    },{
+                        "name": "plugin",
+                        "description": "gallery.plugin_desc",
+                        "value": "",
+                    },{
+                        "name": "pluginPath",
+                        "description": "gallery.pluginpath_desc",
+                        "value": "",
+                    },{
+                        "name": "thumbTpl",
+                        "description": "gallery.thumbtpl_desc",
+                        "value": "galItemThumb",
+                    },{
+                        "name": "containerTpl",
+                        "description": "gallery.containertpl_desc",
+                        "value": "",
+                    },{
+                        "name": "itemCls",
+                        "description": "gallery.itemcls_desc",
+                        "value": "gal-item",
+                    },{
+                        "name": "activeCls",
+                        "description": "gallery.activecls_desc",
+                        "value": "gal-item-active",
+                    },{
+                        "name": "toPlaceholder",
+                        "description": "gallery.toplaceholder_desc",
+                        "value": "",
+                    },{
+                        "name": "thumbWidth",
+                        "description": "gallery.thumbwidth_desc",
+                        "value": "100",
+                    },{
+                        "name": "thumbHeight",
+                        "description": "gallery.thumbheight_desc",
+                        "value": "100",
+                    },{
+                        "name": "thumbZoomCrop",
+                        "description": "gallery.thumbzoomcrop_desc",
+                        "type": "combo-boolean",
+                        "value": true,
+                    },{
+                        "name": "thumbFar",
+                        "description": "gallery.thumbfar_desc",
+                        "value": "C",
+                    },{
+                        "name": "thumbQuality",
+                        "description": "gallery.thumbquality_desc",
+                        "value": 90,
+                    },{
+                        "name": "thumbProperties",
+                        "description": "gallery.thumbproperties_desc",
+                        "value": "",
+                    },{
+                        "name": "linkToImage",
+                        "description": "gallery.linktoimage_desc",
+                        "type": "combo-boolean",
+                        "value": "",
+                    },{
+                        "name": "imageGetParam",
+                        "description": "gallery.imagegetparam_desc",
+                        "value": "galItem",
+                    },{
+                        "name": "imageWidth",
+                        "description": "gallery.imagewidth_desc",
+                        "value": 500,
+                    },{
+                        "name": "imageHeight",
+                        "description": "gallery.imageheight_desc",
+                        "value": 500,
+                    },{
+                        "name": "imageZoomCrop",
+                        "description": "gallery.imagezoomcrop_desc",
+                        "type": "combo-boolean",
+                        "value": false,
+                    },{
+                        "name": "imageFar",
+                        "description": "gallery.imagefar_desc",
+                        "value": "",
+                    },{
+                        "name": "imageQuality",
+                        "description": "gallery.imagequality_desc",
+                        "value": 90,
+                    },{
+                        "name": "imageProperties",
+                        "description": "gallery.imageproperties_desc",
+                        "value": "",
+                    },{
+                        "name": "sort",
+                        "description": "gallery.sort_desc",
+                        "value": "rank",
+                    },{
+                        "name": "dir",
+                        "description": "gallery.dir_desc",
+                        "value": "ASC",
+                    },{
+                        "name": "limit",
+                        "description": "gallery.limit_desc",
+                        "value": 0,
+                    },{
+                        "name": "start",
+                        "description": "gallery.start_desc",
+                        "value": 0,
+                    },{
+                        "name": "showInactive",
+                        "description": "gallery.showinactive_desc",
+                        "type": "combo-boolean",
+                        "value": false,
+                    },{
+                        "name": "checkForRequestAlbumVar",
+                        "description": "gallery.checkforrequestalbumvar_desc",
+                        "type": "combo-boolean",
+                        "value": true,
+                    },{
+                        "name": "albumRequestVar",
+                        "description": "gallery.albumrequestvar_desc",
+                        "value": "galAlbum",
+                    },{
+                        "name": "checkForRequestTagVar",
+                        "description": "gallery.checkforrequesttagvar_desc",
+                        "type": "combo-boolean",
+                        "value": true,
+                    },{
+                        "name": "tagRequestVar",
+                        "description": "gallery.tagrequestvar_desc",
+                        "value": "galTag",
+                    },{
+                        "name": "useCss",
+                        "description": "gallery.usecss_desc",
+                        "type": "combo-boolean",
+                        "value": true,
+                    }
+                ]
             },{
-                "name": "GalleryAlbums"
-                ,"file": "snippet.galleryalbums.php"
+                "name": "GalleryAlbums",
+                "file": "snippet.galleryalbums.php",
+                "properties": [
+                    {
+                        "name": "rowTpl",
+                        "description": "galleryalbums.rowtpl_desc",
+                        "value": "galAlbumRowTpl",
+                    },{
+                        "name": "rowCls",
+                        "description": "galleryalbums.rowcls_desc",
+                        "value": "",
+                    },{
+                        "name": "sort",
+                        "description": "galleryalbums.sort_desc",
+                        "value": "rank",
+                    },{
+                        "name": "dir",
+                        "description": "galleryalbums.dir_desc",
+                        "value": "DESC",
+                    },{
+                        "name": "limit",
+                        "description": "galleryalbums.limit_desc",
+                        "value": "10",
+                    },{
+                        "name": "start",
+                        "description": "galleryalbums.start_desc",
+                        "value": "0",
+                    },{
+                        "name": "toPlaceholder",
+                        "description": "galleryalbums.toplaceholder_desc",
+                        "value": "",
+                    },{
+                        "name": "showInactive",
+                        "description": "galleryalbums.showinactive_desc",
+                        "type": "combo-boolean",
+                        "value": false,
+                    },{
+                        "name": "prominentOnly",
+                        "description": "galleryalbums.prominentonly_desc",
+                        "type": "combo-boolean",
+                        "value": true,
+                    },{
+                        "name": "parent",
+                        "description": "galleryalbums.parent_desc",
+                        "value": "0",
+                    },{
+                        "name": "showAll",
+                        "description": "galleryalbums.showall_desc",
+                        "type": "combo-boolean",
+                        "value": true,
+                    },{
+                        "name": "showName",
+                        "description": "galleryalbums.showname_desc",
+                        "type": "combo-boolean",
+                        "value": true,
+                    },{
+                        "name": "albumRequestVar",
+                        "description": "galleryalbums.albumrequestvar_desc",
+                        "value": "galAlbum",
+                    },{
+                        "name": "albumCoverSort",
+                        "description": "galleryalbums.albumcoversort_desc",
+                        "value": "rank",
+                    },{
+                        "name": "albumCoverSortDir",
+                        "description": "galleryalbums.albumcoversortdir_desc",
+                        "value": "ASC",
+                    },{
+                        "name": "thumbWidth",
+                        "description": "galleryalbums.thumbwidth_desc",
+                        "value": "100",
+                    },{
+                        "name": "thumbHeight",
+                        "description": "galleryalbums.thumbheight_desc",
+                        "value": "100",
+                    },{
+                        "name": "thumbZoomCrop",
+                        "description": "galleryalbums.thumbzoomcrop_desc",
+                        "type": "combo-boolean",
+                        "value": true,
+                    },{
+                        "name": "thumbFar",
+                        "description": "galleryalbums.thumbfar_desc",
+                        "value": "C",
+                    },{
+                        "name": "thumbQuality",
+                        "description": "galleryalbums.thumbquality_desc",
+                        "value": 90,
+                    },{
+                        "name": "thumbProperties",
+                        "description": "galleryalbums.thumbproperties_desc",
+                        "value": "",
+                    }
+                ]
             },{
-                "name": "GalleryItem"
-                ,"file": "snippet.galleryitem.php"
+                "name": "GalleryItem",
+                "file": "snippet.galleryitem.php",
+                "properties": [
+                    {
+                        "name": "id",
+                        "description": "galleryitem.id_desc",
+                        "value": "",
+                    },{
+                        "name": "toPlaceholders",
+                        "description": "galleryitem.toplaceholders_desc",
+                        "type": "combo-boolean",
+                        "value": true,
+                    },{
+                        "name": "toPlaceholdersPrefix",
+                        "description": "galleryitem.toplaceholdersprefix_desc",
+                        "value": "galitem",
+                    },{
+                        "name": "tpl",
+                        "description": "galleryitem.tpl_desc",
+                        "value": "galItem",
+                    },{
+                        "name": "albumTpl",
+                        "description": "galleryitem.albumtpl_desc",
+                        "value": "galItemAlbum",
+                    },{
+                        "name": "albumSeparator",
+                        "description": "galleryitem.albumseparator_desc",
+                        "value": ",&nbsp;",
+                    },{
+                        "name": "albumRequestVar",
+                        "description": "galleryitem.albumrequestvar_desc",
+                        "value": "galAlbum",
+                    },{
+                        "name": "tagTpl",
+                        "description": "galleryitem.tagtpl_desc",
+                        "value": "galItemTag",
+                    },{
+                        "name": "tagSeparator",
+                        "description": "galleryitem.tagseparator_desc",
+                        "value": ",&nbsp;",
+                    },{
+                        "name": "tagSortDir",
+                        "description": "galleryitem.tagsortdir_desc",
+                        "value": "DESC",
+                    },{
+                        "name": "tagRequestVar",
+                        "description": "galleryitem.tagrequestvar_desc",
+                        "value": "galTag",
+                    },{
+                        "name": "thumbWidth",
+                        "description": "galleryitem.thumbwidth_desc",
+                        "value": "100",
+                    },{
+                        "name": "thumbHeight",
+                        "description": "galleryitem.thumbheight_desc",
+                        "value": "100",
+                    },{
+                        "name": "thumbZoomCrop",
+                        "description": "galleryitem.thumbzoomcrop_desc",
+                        "type": "combo-boolean",
+                        "value": true,
+                    },{
+                        "name": "thumbFar",
+                        "description": "galleryitem.thumbfar_desc",
+                        "value": "C",
+                    },{
+                        "name": "thumbQuality",
+                        "description": "galleryitem.thumbquality_desc",
+                        "value": 90,
+                    },{
+                        "name": "thumbProperties",
+                        "description": "galleryitem.thumbproperties_desc",
+                        "value": "",
+                    },{
+                        "name": "imageWidth",
+                        "description": "galleryitem.imagewidth_desc",
+                        "value": "",
+                    },{
+                        "name": "imageHeight",
+                        "description": "galleryitem.imageheight_desc",
+                        "value": "",
+                    },{
+                        "name": "imageZoomCrop",
+                        "description": "galleryitem.imagezoomcrop_desc",
+                        "type": "combo-boolean",
+                        "value": 0,
+                    },{
+                        "name": "imageFar",
+                        "description": "galleryitem.imagefar_desc",
+                        "value": "",
+                    },{
+                        "name": "imageQuality",
+                        "description": "galleryitem.imagequality_desc",
+                        "value": 90,
+                    },{
+                        "name": "imageProperties",
+                        "description": "galleryitem.imageproperties_desc",
+                        "value": "",
+                    }
+                ]
             }]
             ,"chunks": [{
                 "name": "galAlbumRowTpl"
             },{
+                "name": "galAlbumRowWithCoverTpl"
+            },{
+                "name": "galItem"
+            },{
+                "name": "galItemAlbum"
+            },{
+                "name": "galItemTag"
+            },{
                 "name": "galItemThumb"
+            }],
+            "plugins": [{
+                "name": "GalleryCustomTV",
+                "file": "gallerycustomtv.plugin.php",
+                "events": [
+                    "OnTVInputRenderList",
+                    "OnTVInputPropertiesList",
+                    "OnTVOutputRenderList",
+                    "OnTVOutputRenderPropertiesList",
+                    "OnDocFormPrerender",
+                    "OnManagerPageBeforeRender"
+                ]
             }]
         }
         ,"systemSettings": [{
-            "key": "backend_thumb_far"
-            ,"type": "textfield"
-            ,"area": "backend"
-            ,"value": "C"
+            "key": "backend_thumb_far",
+            "type": "textfield",
+            "area": "backend",
+            "value": "C"
         },{
-            "key": "backend_thumb_height"
-            ,"type": "textfield"
-            ,"area": "backend"
-            ,"value": "100"
+            "key": "backend_thumb_height",
+            "type": "textfield",
+            "area": "backend",
+            "value": "100"
         },{
-            "key": "backend_thumb_width"
-            ,"type": "textfield"
-            ,"area": "backend"
-            ,"value": "100"
+            "key": "backend_thumb_width",
+            "type": "textfield",
+            "area": "backend",
+            "value": "100"
         },{
-            "key": "backend_thumb_zoomcrop"
-            ,"type": "combo-boolean"
-            ,"area": "backend"
-            ,"value": 1
+            "key": "backend_thumb_zoomcrop",
+            "type": "combo-boolean",
+            "area": "backend",
+            "value": 1
         },{
-            "key": "default_batch_upload_path"
-            ,"type": "textfield"
-            ,"area": "backend"
-            ,"value": "{assets_path}images/"
+            "key": "default_batch_upload_path",
+            "type": "textfield",
+            "area": "backend",
+            "value": "{assets_path}images/"
         },{
-            "key": "thumbs_prepend_site_url"
-            ,"type": "combo-boolean"
-            ,"area": "backend"
-            ,"value": 0
+            "key": "thumbs_prepend_site_url",
+            "type": "combo-boolean",
+            "area": "backend",
+            "value": 0
         },{
-            "key": "mediaSource"
-            ,"type": "modx-combo-source"
-            ,"area": "backend"
-            ,"value": 1
+            "key": "mediaSource",
+            "type": "modx-combo-source",
+            "area": "backend",
+            "value": 1
         },{
-            "key": "use_richtext"
-            ,"type": "combo-boolean"
-            ,"area": "TinyMCE"
-            ,"value": 0
+            "key": "use_richtext",
+            "type": "combo-boolean",
+            "area": "TinyMCE",
+            "value": 0
         },{
-            "key": "tiny.width"
-            ,"type": "textfield"
-            ,"area": "TinyMCE"
-            ,"value": "95%"
+            "key": "tiny.width",
+            "type": "textfield",
+            "area": "TinyMCE",
+            "value": "95%"
         },{
-            "key": "tiny.height"
-            ,"type": "textfield"
-            ,"area": "TinyMCE"
-            ,"value": "200"
+            "key": "tiny.height",
+            "type": "textfield",
+            "area": "TinyMCE",
+            "value": "200"
         },{
-            "key": "tiny.buttons1"
-            ,"type": "textfield"
-            ,"area": "TinyMCE"
-            ,"value": "undo,redo,selectall,pastetext,pasteword,charmap,separator,image,modxlink,unlink,media,separator,code,help"
+            "key": "tiny.buttons1",
+            "type": "textfield",
+            "area": "TinyMCE",
+            "value": "undo,redo,selectall,pastetext,pasteword,charmap,separator,image,modxlink,unlink,media,separator,code,help"
         },{
-            "key": "tiny.buttons2"
-            ,"type": "textfield"
-            ,"area": "TinyMCE"
-            ,"value": "bold,italic,underline,strikethrough,sub,sup,separator,bullist,numlist,outdent,indent,separator,justifyleft,justifycenter,justifyright,justifyfull"
+            "key": "tiny.buttons2",
+            "type": "textfield",
+            "area": "TinyMCE",
+            "value": "bold,italic,underline,strikethrough,sub,sup,separator,bullist,numlist,outdent,indent,separator,justifyleft,justifycenter,justifyright,justifyfull"
         },{
-            "key": "tiny.buttons3"
-            ,"type": "textfield"
-            ,"area": "TinyMCE"
-            ,"value": "styleselect,formatselect,separator,styleprops"
+            "key": "tiny.buttons3",
+            "type": "textfield",
+            "area": "TinyMCE",
+            "value": "styleselect,formatselect,separator,styleprops"
         },{
-            "key": "tiny.buttons4"
-            ,"type": "textfield"
-            ,"area": "TinyMCE"
-            ,"value": ""
+            "key": "tiny.buttons4",
+            "type": "textfield",
+            "area": "TinyMCE",
+            "value": ""
         },{
-            "key": "tiny.buttons5"
-            ,"type": "textfield"
-            ,"area": "TinyMCE"
-            ,"value": ""
+            "key": "tiny.buttons5",
+            "type": "textfield",
+            "area": "TinyMCE",
+            "value": ""
         },{
-            "key": "tiny.custom_plugins"
-            ,"type": "textfield"
-            ,"area": "TinyMCE"
-            ,"value": ""
+            "key": "tiny.custom_plugins",
+            "type": "textfield",
+            "area": "TinyMCE",
+            "value": ""
         },{
-            "key": "tiny.theme"
-            ,"type": "textfield"
-            ,"area": "TinyMCE"
-            ,"value": ""
+            "key": "tiny.theme",
+            "type": "textfield",
+            "area": "TinyMCE",
+            "value": ""
         },{
-            "key": "tiny.theme_advanced_blockformats"
-            ,"type": "textfield"
-            ,"area": "TinyMCE"
-            ,"value": ""
+            "key": "tiny.theme_advanced_blockformats",
+            "type": "textfield",
+            "area": "TinyMCE",
+            "value": ""
         },{
-            "key": "tiny.theme_advanced_css_selectors"
-            ,"type": "textfield"
-            ,"area": "TinyMCE"
-            ,"value": ""
+            "key": "tiny.theme_advanced_css_selectors",
+            "type": "textfield",
+            "area": "TinyMCE",
+            "value": ""
         }]
     }
     ,"database": {
         "tables": ["galItem", "galAlbum", "galAlbumItem", "galAlbumContext", "galTag"]
     }
-    ,"extensionPackage": {}
+    ,"build": {
+        "setupOptions": {
+            "source": "setup.options.php"
+        },
+        "resolver": {
+            "before": [
+                "resolve.paths.php"
+            ],
+            "after": [
+                "resolve.albumfiles.php",
+                "resolve.spaces.php"
+            ]
+        }
+    }
 }

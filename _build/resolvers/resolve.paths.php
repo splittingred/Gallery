@@ -53,7 +53,9 @@ if ($object->xpdo) {
             /* setup paths */
             createSetting($modx,'files_path','[[++assets_path]]gallery/');
 
-            @mkdir($modx->getOption('assets_path').'gallery/',0775);
+            if (!mkdir($concurrentDirectory = $modx->getOption('assets_path') . 'gallery/', 0775) && !is_dir($concurrentDirectory)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+            }
 
             /* setup urls */
             createSetting($modx,'files_url','[[++assets_url]]gallery/');
