@@ -23,142 +23,142 @@
                     {
                         "name": "album",
                         "description": "gallery.album_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "tag",
                         "description": "gallery.tag_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "plugin",
                         "description": "gallery.plugin_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "pluginPath",
                         "description": "gallery.pluginpath_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "thumbTpl",
                         "description": "gallery.thumbtpl_desc",
-                        "value": "galItemThumb",
+                        "value": "galItemThumb"
                     },{
                         "name": "containerTpl",
                         "description": "gallery.containertpl_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "itemCls",
                         "description": "gallery.itemcls_desc",
-                        "value": "gal-item",
+                        "value": "gal-item"
                     },{
                         "name": "activeCls",
                         "description": "gallery.activecls_desc",
-                        "value": "gal-item-active",
+                        "value": "gal-item-active"
                     },{
                         "name": "toPlaceholder",
                         "description": "gallery.toplaceholder_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "thumbWidth",
                         "description": "gallery.thumbwidth_desc",
-                        "value": "100",
+                        "value": "100"
                     },{
                         "name": "thumbHeight",
                         "description": "gallery.thumbheight_desc",
-                        "value": "100",
+                        "value": "100"
                     },{
                         "name": "thumbZoomCrop",
                         "description": "gallery.thumbzoomcrop_desc",
                         "type": "combo-boolean",
-                        "value": true,
+                        "value": true
                     },{
                         "name": "thumbFar",
                         "description": "gallery.thumbfar_desc",
-                        "value": "C",
+                        "value": "C"
                     },{
                         "name": "thumbQuality",
                         "description": "gallery.thumbquality_desc",
-                        "value": 90,
+                        "value": 90
                     },{
                         "name": "thumbProperties",
                         "description": "gallery.thumbproperties_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "linkToImage",
                         "description": "gallery.linktoimage_desc",
                         "type": "combo-boolean",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "imageGetParam",
                         "description": "gallery.imagegetparam_desc",
-                        "value": "galItem",
+                        "value": "galItem"
                     },{
                         "name": "imageWidth",
                         "description": "gallery.imagewidth_desc",
-                        "value": 500,
+                        "value": 500
                     },{
                         "name": "imageHeight",
                         "description": "gallery.imageheight_desc",
-                        "value": 500,
+                        "value": 500
                     },{
                         "name": "imageZoomCrop",
                         "description": "gallery.imagezoomcrop_desc",
                         "type": "combo-boolean",
-                        "value": false,
+                        "value": false
                     },{
                         "name": "imageFar",
                         "description": "gallery.imagefar_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "imageQuality",
                         "description": "gallery.imagequality_desc",
-                        "value": 90,
+                        "value": 90
                     },{
                         "name": "imageProperties",
                         "description": "gallery.imageproperties_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "sort",
                         "description": "gallery.sort_desc",
-                        "value": "rank",
+                        "value": "rank"
                     },{
                         "name": "dir",
                         "description": "gallery.dir_desc",
-                        "value": "ASC",
+                        "value": "ASC"
                     },{
                         "name": "limit",
                         "description": "gallery.limit_desc",
-                        "value": 0,
+                        "value": 0
                     },{
                         "name": "start",
                         "description": "gallery.start_desc",
-                        "value": 0,
+                        "value": 0
                     },{
                         "name": "showInactive",
                         "description": "gallery.showinactive_desc",
                         "type": "combo-boolean",
-                        "value": false,
+                        "value": false
                     },{
                         "name": "checkForRequestAlbumVar",
                         "description": "gallery.checkforrequestalbumvar_desc",
                         "type": "combo-boolean",
-                        "value": true,
+                        "value": true
                     },{
                         "name": "albumRequestVar",
                         "description": "gallery.albumrequestvar_desc",
-                        "value": "galAlbum",
+                        "value": "galAlbum"
                     },{
                         "name": "checkForRequestTagVar",
                         "description": "gallery.checkforrequesttagvar_desc",
                         "type": "combo-boolean",
-                        "value": true,
+                        "value": true
                     },{
                         "name": "tagRequestVar",
                         "description": "gallery.tagrequestvar_desc",
-                        "value": "galTag",
+                        "value": "galTag"
                     },{
                         "name": "useCss",
                         "description": "gallery.usecss_desc",
                         "type": "combo-boolean",
-                        "value": true,
+                        "value": true
                     }
                 ]
             },{
@@ -168,92 +168,92 @@
                     {
                         "name": "rowTpl",
                         "description": "galleryalbums.rowtpl_desc",
-                        "value": "galAlbumRowTpl",
+                        "value": "galAlbumRowTpl"
                     },{
                         "name": "rowCls",
                         "description": "galleryalbums.rowcls_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "sort",
                         "description": "galleryalbums.sort_desc",
-                        "value": "rank",
+                        "value": "rank"
                     },{
                         "name": "dir",
                         "description": "galleryalbums.dir_desc",
-                        "value": "DESC",
+                        "value": "DESC"
                     },{
                         "name": "limit",
                         "description": "galleryalbums.limit_desc",
-                        "value": "10",
+                        "value": "10"
                     },{
                         "name": "start",
                         "description": "galleryalbums.start_desc",
-                        "value": "0",
+                        "value": "0"
                     },{
                         "name": "toPlaceholder",
                         "description": "galleryalbums.toplaceholder_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "showInactive",
                         "description": "galleryalbums.showinactive_desc",
                         "type": "combo-boolean",
-                        "value": false,
+                        "value": false
                     },{
                         "name": "prominentOnly",
                         "description": "galleryalbums.prominentonly_desc",
                         "type": "combo-boolean",
-                        "value": true,
+                        "value": true
                     },{
                         "name": "parent",
                         "description": "galleryalbums.parent_desc",
-                        "value": "0",
+                        "value": "0"
                     },{
                         "name": "showAll",
                         "description": "galleryalbums.showall_desc",
                         "type": "combo-boolean",
-                        "value": true,
+                        "value": true
                     },{
                         "name": "showName",
                         "description": "galleryalbums.showname_desc",
                         "type": "combo-boolean",
-                        "value": true,
+                        "value": true
                     },{
                         "name": "albumRequestVar",
                         "description": "galleryalbums.albumrequestvar_desc",
-                        "value": "galAlbum",
+                        "value": "galAlbum"
                     },{
                         "name": "albumCoverSort",
                         "description": "galleryalbums.albumcoversort_desc",
-                        "value": "rank",
+                        "value": "rank"
                     },{
                         "name": "albumCoverSortDir",
                         "description": "galleryalbums.albumcoversortdir_desc",
-                        "value": "ASC",
+                        "value": "ASC"
                     },{
                         "name": "thumbWidth",
                         "description": "galleryalbums.thumbwidth_desc",
-                        "value": "100",
+                        "value": "100"
                     },{
                         "name": "thumbHeight",
                         "description": "galleryalbums.thumbheight_desc",
-                        "value": "100",
+                        "value": "100"
                     },{
                         "name": "thumbZoomCrop",
                         "description": "galleryalbums.thumbzoomcrop_desc",
                         "type": "combo-boolean",
-                        "value": true,
+                        "value": true
                     },{
                         "name": "thumbFar",
                         "description": "galleryalbums.thumbfar_desc",
-                        "value": "C",
+                        "value": "C"
                     },{
                         "name": "thumbQuality",
                         "description": "galleryalbums.thumbquality_desc",
-                        "value": 90,
+                        "value": 90
                     },{
                         "name": "thumbProperties",
                         "description": "galleryalbums.thumbproperties_desc",
-                        "value": "",
+                        "value": ""
                     }
                 ]
             },{
@@ -263,98 +263,98 @@
                     {
                         "name": "id",
                         "description": "galleryitem.id_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "toPlaceholders",
                         "description": "galleryitem.toplaceholders_desc",
                         "type": "combo-boolean",
-                        "value": true,
+                        "value": true
                     },{
                         "name": "toPlaceholdersPrefix",
                         "description": "galleryitem.toplaceholdersprefix_desc",
-                        "value": "galitem",
+                        "value": "galitem"
                     },{
                         "name": "tpl",
                         "description": "galleryitem.tpl_desc",
-                        "value": "galItem",
+                        "value": "galItem"
                     },{
                         "name": "albumTpl",
                         "description": "galleryitem.albumtpl_desc",
-                        "value": "galItemAlbum",
+                        "value": "galItemAlbum"
                     },{
                         "name": "albumSeparator",
                         "description": "galleryitem.albumseparator_desc",
-                        "value": ",&nbsp;",
+                        "value": ",&nbsp;"
                     },{
                         "name": "albumRequestVar",
                         "description": "galleryitem.albumrequestvar_desc",
-                        "value": "galAlbum",
+                        "value": "galAlbum"
                     },{
                         "name": "tagTpl",
                         "description": "galleryitem.tagtpl_desc",
-                        "value": "galItemTag",
+                        "value": "galItemTag"
                     },{
                         "name": "tagSeparator",
                         "description": "galleryitem.tagseparator_desc",
-                        "value": ",&nbsp;",
+                        "value": ",&nbsp;"
                     },{
                         "name": "tagSortDir",
                         "description": "galleryitem.tagsortdir_desc",
-                        "value": "DESC",
+                        "value": "DESC"
                     },{
                         "name": "tagRequestVar",
                         "description": "galleryitem.tagrequestvar_desc",
-                        "value": "galTag",
+                        "value": "galTag"
                     },{
                         "name": "thumbWidth",
                         "description": "galleryitem.thumbwidth_desc",
-                        "value": "100",
+                        "value": "100"
                     },{
                         "name": "thumbHeight",
                         "description": "galleryitem.thumbheight_desc",
-                        "value": "100",
+                        "value": "100"
                     },{
                         "name": "thumbZoomCrop",
                         "description": "galleryitem.thumbzoomcrop_desc",
                         "type": "combo-boolean",
-                        "value": true,
+                        "value": true
                     },{
                         "name": "thumbFar",
                         "description": "galleryitem.thumbfar_desc",
-                        "value": "C",
+                        "value": "C"
                     },{
                         "name": "thumbQuality",
                         "description": "galleryitem.thumbquality_desc",
-                        "value": 90,
+                        "value": 90
                     },{
                         "name": "thumbProperties",
                         "description": "galleryitem.thumbproperties_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "imageWidth",
                         "description": "galleryitem.imagewidth_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "imageHeight",
                         "description": "galleryitem.imageheight_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "imageZoomCrop",
                         "description": "galleryitem.imagezoomcrop_desc",
                         "type": "combo-boolean",
-                        "value": 0,
+                        "value": 0
                     },{
                         "name": "imageFar",
                         "description": "galleryitem.imagefar_desc",
-                        "value": "",
+                        "value": ""
                     },{
                         "name": "imageQuality",
                         "description": "galleryitem.imagequality_desc",
-                        "value": 90,
+                        "value": 90
                     },{
                         "name": "imageProperties",
                         "description": "galleryitem.imageproperties_desc",
-                        "value": "",
+                        "value": ""
                     }
                 ]
             }]
